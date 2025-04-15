@@ -1,0 +1,6 @@
+data
+literature
+*.pdf
+*.docx
+writing/* 
+!writing/thesis.tex

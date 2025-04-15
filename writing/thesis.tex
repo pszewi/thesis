@@ -1,0 +1,64 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage[style=apa]{biblatex}
+\usepackage[hidelinks]{hyperref}
+
+
+\geometry{a4paper, margin=1in}
+\addbibresource{references.bib}
+
+\title{Your Thesis Title}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\pagebreak
+
+\begin{abstract}
+Your abstract goes here.
+\end{abstract}
+\pagebreak
+
+\tableofcontents
+\pagebreak
+
+\section{Introduction}\label{sect:introduction}
+Your introduction goes here.
+
+\section{Literature Review}\label{sect:literature_review}
+Your literature review goes here.
+Just adding~\parencite{Lagasio2024} and~\parencite{Wu2020} for visibility here.
+\parencite{Bingler2022}
+\parencite{Bingler2024}
+\parencite{Callaway2024}
+\parencite{Gourier2024}
+\parencite{Ilhan2023}
+
+\section{Methodology}\label{sect:methodology}
+Your methodology goes here.
+
+\section{Results}\label{sect:results}
+Your results go here.
+
+\section{Discussion}\label{sect:discussion}
+Your discussion goes here.
+
+\section{Conclusion}\label{sect:conclusion}
+Your conclusion goes here.
+
+\pagebreak
+\printbibliography{}
+\pagebreak
+\appendix
+
+\section{Data}
+Your appendix goes here.
+
+\section{Models}
+Here's another appendix
+\end{document}
