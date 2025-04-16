@@ -3,5 +3,5 @@ literature
 *.pdf
 *.docx
 writing/* 
-img/*
+img
 !writing/thesis.tex
