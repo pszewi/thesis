@@ -1,7 +1,7 @@
 data
 literature
+img
 *.pdf
 *.docx
 writing/* 
-img
 !writing/thesis.tex
