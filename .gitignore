@@ -1,6 +1,7 @@
 data
 literature
 img
+img/*
 *.pdf
 *.docx
 writing/* 
