@@ -5,3 +5,6 @@ images
 *.docx
 writing/* 
 !writing/thesis.tex
+!writing/titlepage.tex
+code/__pycache__
+.vscode
