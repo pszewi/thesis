@@ -8,3 +8,4 @@ writing/*
 !writing/titlepage.tex
 code/__pycache__
 .vscode
+.lintr

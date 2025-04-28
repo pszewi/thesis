@@ -175,7 +175,7 @@ def ComputeGreenInd(series_name, input_dir, pipe_class, pipe_spec):
             clim_related_nums.append(pd.NA)  
             non_spec_nums.append(pd.NA)
             green_inds.append(pd.NA)
-            with open("_exceptions_green.log", "a") as logfile:
+            with open(f"{input_dir}/_exceptions_green_ind.log", "a") as logfile:
                 logfile.write(rf"The company that the error occured on:{row}\n")
                 print_exc(file=logfile)
                 

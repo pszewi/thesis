@@ -1,0 +1,92 @@
+---
+title: "Data Analysis for Thesis"
+author: "Jakub Przewoski"
+date: "2025-04-28"
+output: html_document
+---
+
+# Description
+In this file I will be writing down the methodological notes for my thesis and I will also compute here my experiment. 
+
+
+
+## Experiment-setup:
+I am trying to investigate whether firms can utilize greenwashing as a profitable strategy. In order to do that I want to create a measure of greenwashing by following *(Lagasio, 2024)*. Furthermore, I will utilize a natural experiment (DiD) to search for causality.
+
+
+## Experiment notes:
+* Use a DiD with continuous treatment to see whether greenwashing more makes you profit more
+* For applying treatment, use the level of greenwashing from 2017/2018
+    * The justification is that I need to assume that the treatment level was constant which implies that I should have as little time as possible between the treatment assignment and my shock 
+    * I have computed both the 2017 and the 2018 Greenwashing index.
+* For the shock, use September 2019, as that's when there was a lot of buzz around another IPCC report and Fridays For Future movement
+    * use cumulative abnormal returns as the outcome variable 
+    * use sales as a secondary outcome variable
+
+Some pictures showing google trends around specific queries around that time:
+
+<div>
+<img src="../images/ipcc_trends_2008_2021.png" width="600"/>
+</div>
+
+
+<div>
+<img src="../images/climate_trends_2004_2022.png" width="600"/>
+</div>
+
+
+----
+
+## Some links:
+* [IPPC Wikipedia Page](https://en.wikipedia.org/wiki/Intergovernmental_Panel_on_Climate_Change)
+* [6th IPCC Assessment](https://en.wikipedia.org/wiki/IPCC_Sixth_Assessment_Report)
+* [IPCC Special Report from 2019](https://en.wikipedia.org/wiki/Special_Report_on_Climate_Change_and_Land)
+* [Fridays For Future movement Wiki](https://en.wikipedia.org/wiki/Fridays_for_Future)
+* [List of school climate strikes](https://en.wikipedia.org/wiki/List_of_school_climate_strikes)
+
+
+----
+
+# Code
+
+## Loading libraries
+
+```{r, libs, message = FALSE}
+library(httpgd)
+library(tidyverse)
+library(data.table)
+library(ggplot2)
+
+```
+
+## Loading Data
+
+First loading here data at the weekly frequency as it seems the most reasonable.
+
+
+```{r,data, message = FALSE}
+
+data_abnormal_returns_w <- read_csv("data/output/data_abnormal_returns_w.csv")
+company_characteristics <- read_csv("data/output/company_characteristics.csv")
+greenwashing_ind  <- read_csv("data/text_processing/greenwashing_ind_2017.csv")
+
+```
+
+```{r, head}
+
+greenwashing_ind  %>% head()
+
+```
+
+Testing ggplot
+```{r}
+
+ggplot() + geom_line(data = data_abnormal_returns_w[1:6, ],
+                     aes(x = DATE, y = STOCK_LOG_RETURN,
+                         group = NAME))
+
+
+```
+
+
+
