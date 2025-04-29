@@ -96,7 +96,7 @@ reg_data <- merge(company_characteristics_2017, data_abnormal_returns_w, by = "N
         ABN_RET_LOG = STOCK_LOG_RETURN - NORMAL_RETURN,
         T_ = ifelse(GREEN_IND > mean(GREEN_IND), 1, 0),
         POST = ifelse(DATE > as.Date("2019-09-20"), 1, 0),
-        TxPOST = T_ * POST,
+        TxPOST = as.factor(T_ * POST),
         DATE = as.Date(DATE),
         DATE_factor = factor(DATE),
         NAME_factor = factor(NAME)
@@ -111,8 +111,24 @@ reg_data <- reg_data  %>%
 # View(reg_data)
 
 test <- reg_data %>%
-    filter(DATE > as.Date("2019-08-01"), DATE < as.Date("2019-11-01"))
+    filter(DATE > as.Date("2019-08-01"), DATE < as.Date("2019-11-01")) %>%
+    arrange(NAME, DATE)
 
+# View(test)
+```
+
+## CAR Evolution per group
+
+```{r, trend_graph}
+
+car_graph  <- test %>%
+    group_by(T_, DATE) %>%
+    summarize(mean_car = mean(CAR))
+
+head(car_graph)
+
+
+ggplot() + geom_line(data=car_graph, aes(x = DATE, y = mean_car, color = as.factor(T_)))
 
 ```
 
@@ -121,6 +137,18 @@ test <- reg_data %>%
 ```{r, balance_tab}
 #
 ```
+
+## **IMPORTANT**
+
+* Make sure that data is correctly sorted
+* Investigate why different results from results in python
+* Make a balance table by checking whether treatment correlated with any company_characteristics
+* Read the goddamn papers on diff-in-diff to understand it better!
+* Plot the average CAR returns for Treated/non-treated
+* Make an event study per group!
+
+
+
 
 ## Event study regression
 ```{r, event_study}
@@ -138,29 +166,23 @@ mod_twfe <- feols(CAR ~ i(TimeTo_T, T_, ref = -1) | DATE_factor + NAME_factor,
 iplot(mod_twfe,
       xlab = "Time to treatment",
       main = "Event study: Staggered treatment (TWFE)")
+
+# summary(mod_twfe)
 ```
 
 ## Diff-in-Diff regression
 
 ```{r, did}
-
+test_5periods <- test %>%
+    filter(DATE > as.Date("2019-08-23"), DATE < as.Date("2019-10-18"))
 
 print("------------")
-model <- feols(CAR ~ TxPOST | NAME_factor + DATE_factor, data = test, cluster = ~NAME_factor)
+model <- feols(CAR ~ TxPOST | NAME_factor + DATE_factor, data = test_5periods, cluster = ~NAME_factor)
 summary(model)
 
 
 ```
 
-## Testing ggplot
-```{r, plot}
-
-ggplot() + geom_line(data = data_abnormal_returns_w[1:6, ],
-                     aes(x = DATE, y = STOCK_LOG_RETURN,
-                         group = NAME))
-
-
-```
 
 
 
