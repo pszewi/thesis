@@ -51,11 +51,13 @@ Some pictures showing google trends around specific queries around that time:
 
 ## Loading libraries
 
+
 ```{r, libs, message = FALSE}
 library(httpgd)
 library(tidyverse)
 library(data.table)
 library(ggplot2)
+library(fixest)
 
 ```
 
@@ -63,23 +65,95 @@ library(ggplot2)
 
 First loading here data at the weekly frequency as it seems the most reasonable.
 
-
 ```{r,data, message = FALSE}
+
+# NOTE: MAKE SURE THAT THE DATES ARE PARSED CORRECTLY
+
 
 data_abnormal_returns_w <- read_csv("data/output/data_abnormal_returns_w.csv")
 company_characteristics <- read_csv("data/output/company_characteristics.csv")
-greenwashing_ind  <- read_csv("data/text_processing/greenwashing_ind_2017.csv")
+greenwashing_ind_2017  <- read_csv("data/text_processing/greenwashing_ind_2017.csv")
 
 ```
 
-```{r, head}
+Merging the data into a single dataset for regressing
+```{r, merge}
+# get rid of an observation with a missing indicator and likely faulty outliers
+greenwashing_ind_2017 <- greenwashing_ind_2017 %>%
+    filter(NAME != "Genmab A/S", GREEN_IND < 0.96)
 
-greenwashing_ind  %>% head()
+company_characteristics  <- company_characteristics  %>% filter(YEAR == 2017)
+company_characteristics_2017 <- merge(company_characteristics, greenwashing_ind_2017,
+                                      by.x = "NAME_SCRAPED", by.y = "NAME") %>%
+    select(c("NAME", "BOURSE_NAME", "ICB_INDUSTRY_NAME", "ICB_SECTOR_NAME", "CTRY_OF_DOM_NAME",
+             "CTRY_OF_INC_NAME", "EMPLOYEES", "YEAR", "GREEN_IND")) %>%
+    filter(!duplicated(NAME))
+
+reg_data <- merge(company_characteristics_2017, data_abnormal_returns_w, by = "NAME")  %>%
+    rename("CTRY_OF_DOM_NAME" = "CTRY_OF_DOM_NAME.x") %>%
+    select(-CTRY_OF_DOM_NAME.y) %>%
+    mutate(
+        ABN_RET_LOG = STOCK_LOG_RETURN - NORMAL_RETURN,
+        T_ = ifelse(GREEN_IND > mean(GREEN_IND), 1, 0),
+        POST = ifelse(DATE > as.Date("2019-09-20"), 1, 0),
+        TxPOST = T_ * POST,
+        DATE = as.Date(DATE),
+        DATE_factor = factor(DATE),
+        NAME_factor = factor(NAME)
+    )
+
+reg_data <- reg_data  %>%
+    group_by(NAME) %>%
+    filter(!(is.na(ABN_RET_LOG))) %>%
+    mutate(CAR = cumsum(ABN_RET_LOG)) %>%
+    ungroup()
+
+# View(reg_data)
+
+test <- reg_data %>%
+    filter(DATE > as.Date("2019-08-01"), DATE < as.Date("2019-11-01"))
+
 
 ```
 
-Testing ggplot
-```{r}
+## Balance table
+
+```{r, balance_tab}
+#
+```
+
+## Event study regression
+```{r, event_study}
+event_date <- as.Date("2019-09-20")
+
+test_eve  <- test  %>%
+    mutate(
+        TimeTo_T = as.numeric(difftime(test$DATE, event_date, units = "weeks"))
+
+    )
+
+mod_twfe <- feols(CAR ~ i(TimeTo_T, T_, ref = -1) | DATE_factor + NAME_factor,
+                  cluster = ~NAME_factor, data = test_eve)
+
+iplot(mod_twfe,
+      xlab = "Time to treatment",
+      main = "Event study: Staggered treatment (TWFE)")
+```
+
+## Diff-in-Diff regression
+
+```{r, did}
+
+
+print("------------")
+model <- feols(CAR ~ TxPOST | NAME_factor + DATE_factor, data = test, cluster = ~NAME_factor)
+summary(model)
+
+
+```
+
+## Testing ggplot
+```{r, plot}
 
 ggplot() + geom_line(data = data_abnormal_returns_w[1:6, ],
                      aes(x = DATE, y = STOCK_LOG_RETURN,
