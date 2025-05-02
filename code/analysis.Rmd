@@ -58,7 +58,7 @@ library(tidyverse)
 library(data.table)
 library(ggplot2)
 library(fixest)
-
+library(stargazer)
 ```
 
 ## Loading Data
@@ -66,123 +66,380 @@ library(fixest)
 First loading here data at the weekly frequency as it seems the most reasonable.
 
 ```{r,data, message = FALSE}
-
-# NOTE: MAKE SURE THAT THE DATES ARE PARSED CORRECTLY
+company_characteristics <- read_csv("data/output/company_characteristics.csv")
+greenwashing_ind_2017  <- read_csv("data/text_processing/greenwashing_ind_2017.csv")
+greenwashing_ind_2018  <- read_csv("data/text_processing/greenwashing_ind_2018.csv")
 
 
 data_abnormal_returns_w <- read_csv("data/output/data_abnormal_returns_w.csv")
-company_characteristics <- read_csv("data/output/company_characteristics.csv")
-greenwashing_ind_2017  <- read_csv("data/text_processing/greenwashing_ind_2017.csv")
+data_abnormal_returns_d <- read_csv("data/output/data_abnormal_returns_d.csv")
+data_sales  <- read_csv("data/output/data_sales.csv")
 
 ```
 
-Merging the data into a single dataset for regressing
-```{r, merge}
+Adjusting the universal data (needed for all regressions)
+
+```{r, char_green_data}
+
 # get rid of an observation with a missing indicator and likely faulty outliers
 greenwashing_ind_2017 <- greenwashing_ind_2017 %>%
-    filter(NAME != "Genmab A/S", GREEN_IND < 0.96)
+    filter(NAME != "Genmab A/S")  %>%
+    arrange(CLIMATE_REL)
+# View(greenwashing_ind_2017)
 
-company_characteristics  <- company_characteristics  %>% filter(YEAR == 2017)
-company_characteristics_2017 <- merge(company_characteristics, greenwashing_ind_2017,
+# get rid of an observation with a missing indicator and likely faulty outliers
+greenwashing_ind_2018 <- greenwashing_ind_2018 %>%
+    filter(!(NAME %in% c("Genmab A/S", "Ashland Inc.", "Fletcher Building Limited", "Ethan Allen Interiors Inc.",
+                         "Equifax Inc.", "Sagicor Financial Company Ltd.", "Korn/Ferry International",
+                         "Spark NZ", "Covestro AG")), CLIMATE_REL > 2)  %>%
+    mutate(GREEN_IND_2 = NON_SPEC / CLIMATE_REL)
+# View(greenwashing_ind_2018)
+
+
+company_characteristics  <- company_characteristics  %>% filter(YEAR == 2018)
+company_characteristics_2018 <- merge(company_characteristics, greenwashing_ind_2018,
                                       by.x = "NAME_SCRAPED", by.y = "NAME") %>%
-    select(c("NAME", "BOURSE_NAME", "ICB_INDUSTRY_NAME", "ICB_SECTOR_NAME", "CTRY_OF_DOM_NAME",
+    select(c("TYPE", "NAME", "BOURSE_NAME", "ICB_INDUSTRY_NAME", "ICB_SECTOR_NAME", "CTRY_OF_DOM_NAME",
              "CTRY_OF_INC_NAME", "EMPLOYEES", "YEAR", "GREEN_IND")) %>%
     filter(!duplicated(NAME))
 
-reg_data <- merge(company_characteristics_2017, data_abnormal_returns_w, by = "NAME")  %>%
+```
+
+## Descriptive statistics
+
+```{r, desc_stats, asis=TRUE}
+
+
+desc_stats <- company_characteristics_2018 %>%
+    mutate(T_ = ifelse(GREEN_IND > mean(GREEN_IND), 1, 0))
+
+table(desc_stats$T_, desc_stats$ICB_INDUSTRY_NAME)
+table(desc_stats$T_, desc_stats$CTRY_OF_DOM_NAME)
+table(desc_stats$T_, desc_stats$BOURSE_NAME)
+table(desc_stats$T_, desc_stats$EMPLOYEES)
+
+
+# stargazer(company_characteristics_2018$ICB_INDUSTRY_NAME)
+
+
+library(ggplot2)
+
+
+ggplot(data = desc_stats,
+       #    aes(x = factor(ICB_INDUSTRY_NAME))) +
+       aes(x = factor(ICB_INDUSTRY_NAME), fill = factor(T_))) +
+    # geom_bar(fill   = "steelblue", color  = "black", width  = 0.7) +
+    geom_bar(position = "fill", width = 0.7) +
+    labs(
+         x     = "Category",
+         y     = "Count",
+         title = "Distribution of Categories", 
+         fill="Treatment") +
+    theme_bw(base_size = 14) +
+    theme(
+          panel.grid.major    = element_blank(),
+          panel.grid.minor    = element_blank(),
+          axis.text.x         = element_text(angle = 45, hjust = 1),
+          plot.title          = element_text(hjust = 0.5, face = "bold"),
+          axis.title          = element_text(face = "bold"))
+
+
+
+library(gtsummary)
+
+tbl_ltx = desc_stats %>%
+    select(CTRY_OF_DOM_NAME, T_) %>%
+    tbl_summary(
+                by = T_,
+                statistic = list(CTRY_OF_DOM_NAME ~ "{n} ({p}%)")) %>%
+    add_overall() %>%
+    modify_header(
+                  label     = "Number of ...",
+                  all_stat_cols() ~ "{level} (N = {n})") %>%
+    modify_table_body(~.x %>% relocate(stat_0, stat_2, stat_1, .after = label))
+
+
+tbl_ltx %>%
+  as_kable(
+    format    = "latex",
+    booktabs  = TRUE
+  ) 
+
+# number of reports per year
+tbl_yrs = company_characteristics %>%
+    group_by(YEAR) %>%
+    summarize(num = n()) %>%
+    arrange(desc(num))
+
+as_gtsummary(tbl_yrs) %>%
+  as_kable(
+    format    = "latex",
+    booktabs  = TRUE
+  ) 
+
+```
+
+
+## Stock data
+
+#### Weekly 
+
+Merging the data into a single dataset for regressing
+```{r, merge_w}
+
+# weekly
+reg_data_w <- merge(company_characteristics_2017, data_abnormal_returns_w, by = "NAME")  %>%
     rename("CTRY_OF_DOM_NAME" = "CTRY_OF_DOM_NAME.x") %>%
     select(-CTRY_OF_DOM_NAME.y) %>%
     mutate(
         ABN_RET_LOG = STOCK_LOG_RETURN - NORMAL_RETURN,
         T_ = ifelse(GREEN_IND > mean(GREEN_IND), 1, 0),
-        POST = ifelse(DATE > as.Date("2019-09-20"), 1, 0),
+        POST = ifelse(DATE >= as.Date("2019-08-08"), 1, 0),
         TxPOST = as.factor(T_ * POST),
         DATE = as.Date(DATE),
         DATE_factor = factor(DATE),
         NAME_factor = factor(NAME)
     )
 
-reg_data <- reg_data  %>%
+reg_data_w <- reg_data_w  %>%
     group_by(NAME) %>%
     filter(!(is.na(ABN_RET_LOG))) %>%
     mutate(CAR = cumsum(ABN_RET_LOG)) %>%
-    ungroup()
-
-# View(reg_data)
-
-test <- reg_data %>%
-    filter(DATE > as.Date("2019-08-01"), DATE < as.Date("2019-11-01")) %>%
+    ungroup()  %>%
+    filter(DATE < as.Date("2019-09-08")) %>%
     arrange(NAME, DATE)
 
-# View(test)
+
 ```
 
 ## CAR Evolution per group
 
-```{r, trend_graph}
+```{r, trend_evo_w}
 
-car_graph  <- test %>%
+car_graph_w  <- reg_data_w %>%
     group_by(T_, DATE) %>%
     summarize(mean_car = mean(CAR))
 
-head(car_graph)
+head(car_graph_w)
 
 
-ggplot() + geom_line(data=car_graph, aes(x = DATE, y = mean_car, color = as.factor(T_)))
+ggplot() + geom_line(data = car_graph_w, aes(x = DATE, y = mean_car, color = as.factor(T_)))
 
 ```
 
-## Balance table
-
-```{r, balance_tab}
-#
-```
-
-## **IMPORTANT**
-
-* Make sure that data is correctly sorted
-* Investigate why different results from results in python
-* Make a balance table by checking whether treatment correlated with any company_characteristics
-* Read the goddamn papers on diff-in-diff to understand it better!
-* Plot the average CAR returns for Treated/non-treated
-* Make an event study per group!
-
-
-
-
-## Event study regression
-```{r, event_study}
-event_date <- as.Date("2019-09-20")
-
-test_eve  <- test  %>%
-    mutate(
-        TimeTo_T = as.numeric(difftime(test$DATE, event_date, units = "weeks"))
-
-    )
-
-mod_twfe <- feols(CAR ~ i(TimeTo_T, T_, ref = -1) | DATE_factor + NAME_factor,
-                  cluster = ~NAME_factor, data = test_eve)
-
-iplot(mod_twfe,
-      xlab = "Time to treatment",
-      main = "Event study: Staggered treatment (TWFE)")
-
-# summary(mod_twfe)
-```
-
-## Diff-in-Diff regression
-
-```{r, did}
-test_5periods <- test %>%
-    filter(DATE > as.Date("2019-08-23"), DATE < as.Date("2019-10-18"))
+#### DiD
+```{r, did_w}
 
 print("------------")
-model <- feols(CAR ~ TxPOST | NAME_factor + DATE_factor, data = test_5periods, cluster = ~NAME_factor)
+model <- feols(CAR ~  TxPOST | NAME_factor + DATE_factor,
+               data = reg_data_w, cluster = ~ NAME_factor)
 summary(model)
 
 
 ```
 
 
+## Event study regression
+```{r, event_study_w}
+event_date_1 <- as.Date("2019-08-09")
+event_date_2 <- as.Date("2019-09-20")
+
+reg_data_w_eve <- reg_data_w  %>%
+    mutate(
+        TimeTo_T_1 = as.numeric(difftime(reg_data_w$DATE, event_date_1, units = "weeks")),
+        TimeTo_T_2 = as.numeric(difftime(reg_data_w$DATE, event_date_2, units = "weeks"))
+    )
+
+# View(reg_data_w_eve)
+
+# ------------ FIRST SHOCK
+mod_twfe <- feols(CAR ~ i(TimeTo_T_1, T_, ref = -1) | DATE_factor + NAME_factor,
+                  cluster = ~NAME_factor, data = reg_data_w_eve)
+
+iplot(mod_twfe,
+      xlab = "Time to treatment",
+      main = "Event study: Treatment (TWFE)")
+
+
+# # ----------- SECOND SHOCK
+# reg_data_w_eve <- reg_data_w_eve  %>%
+#     filter(DATE > as.Date("2019-09-10"))
+
+# mod_twfe <- feols(CAR ~ i(TimeTo_T_2, T_, ref = -1) | DATE_factor + NAME_factor,
+#                   cluster = ~NAME_factor, data = reg_data_w_eve)
+
+# iplot(mod_twfe,
+#       xlab = "Time to treatment",
+#       main = "Event study: Treatment (TWFE)")
+```
+
+
+## Diff-in-Diff regression
+
+#### Daily
+
+
+
+```{r, merge_d}
+
+# daily
+reg_data_d <- merge(company_characteristics_2017, data_abnormal_returns_d, by = "NAME")  %>%
+    rename("CTRY_OF_DOM_NAME" = "CTRY_OF_DOM_NAME.x") %>%
+    select(-CTRY_OF_DOM_NAME.y) %>%
+    arrange(NAME, DATE) %>%
+    mutate(
+        ABN_RET_LOG = STOCK_LOG_RETURN - NORMAL_RETURN,
+        T_ = ifelse(GREEN_IND > mean(GREEN_IND), 1, 0),
+        POST_1 = ifelse(DATE >= as.Date("2019-08-08"), 1, 0),
+        POST_2 = ifelse(DATE >= as.Date("2019-09-20"), 1, 0),
+        TxPOST_1 = as.factor(T_ * POST_1),
+        TxPOST_2 = as.factor(T_ * POST_2),
+        DATE = as.Date(DATE),
+        DATE_factor = factor(DATE),
+        NAME_factor = factor(NAME)
+    )
+
+# View(reg_data_d)
+
+reg_data_d <- reg_data_d  %>%
+    group_by(NAME) %>%
+    filter(!(is.na(ABN_RET_LOG))) %>%
+    mutate(CAR = cumsum(ABN_RET_LOG)) %>%
+    ungroup() %>%
+    filter(DATE > as.Date("2019-07-15"), DATE < as.Date("2019-10-01")) %>%
+    arrange(NAME, DATE)
+
+
+```
+
+## CAR Evolution per group
+
+```{r, trend_evo_d}
+
+car_graph_d  <- reg_data_d %>%
+    group_by(T_, DATE) %>%
+    summarize(mean_car = mean(CAR))
+
+head(car_graph_d)
+
+
+ggplot() + geom_line(data = car_graph_d, aes(x = DATE, y = mean_car, color = as.factor(T_)))
+
+```
+
+#### DiD
+```{r, did_d}
+
+print("------------")
+model <- feols(CAR ~  TxPOST_1 | NAME_factor + DATE_factor,
+               data = reg_data_d, cluster = ~ NAME_factor)
+summary(model)
+
+
+```
+
+
+## Event study regression
+```{r, event_study_d}
+event_date_1 <- as.Date("2019-08-08")
+event_date_2 <- as.Date("2019-09-20")
+
+reg_data_d_eve <- reg_data_d  %>%
+    mutate(
+        TimeTo_T_1 = as.numeric(difftime(reg_data_d$DATE, event_date_1, units = "days")),
+        TimeTo_T_2 = as.numeric(difftime(reg_data_d$DATE, event_date_2, units = "days"))
+    )
+
+# View(reg_data_d_eve)
+
+# ------------ FIRST SHOCK
+mod_twfe <- feols(CAR ~ i(TimeTo_T_1, T_, ref = -1) | DATE_factor + NAME_factor,
+                  cluster = ~NAME_factor, data = reg_data_d_eve)
+
+iplot(mod_twfe,
+      xlab = "Time to treatment",
+      main = "Event study: Treatment (TWFE)")
+
+
+# ----------- SECOND SHOCK
+reg_data_d_eve <- reg_data_d_eve  %>%
+    filter(DATE > as.Date("2019-09-10"))
+
+mod_twfe <- feols(CAR ~ i(TimeTo_T_2, T_, ref = -1) | DATE_factor + NAME_factor,
+                  cluster = ~NAME_factor, data = reg_data_d_eve)
+
+iplot(mod_twfe,
+      xlab = "Time to treatment",
+      main = "Event study: Treatment (TWFE)")
+```
+
+
+## Sales data
+
+```{r, merge_sales}
+data_sales  <- data_sales  %>%
+    filter(DATE != "2010 Q1")
+
+reg_data_sales <- merge(company_characteristics_2017, data_sales, by = "TYPE") %>%
+    arrange(NAME.y, DATE)  %>%
+    select(-YEAR.x, -YEAR.y, -QUARTER, -NAME.x)  %>%
+    rename(NAME = NAME.y)  %>%
+    group_by(NAME) %>%
+    mutate(LOG_SALES_DIFF_4 = LOG_SALES_DIFF - lag(LOG_SALES_DIFF, 4))  %>%
+    ungroup() %>%
+    mutate(
+        T_ = ifelse(GREEN_IND > mean(GREEN_IND), 1, 0),
+        POST_1 = ifelse(DATE >= "2019 Q3", 1, 0),
+        TxPOST = as.factor(T_ * POST_1),
+        DATE_factor = factor(DATE),
+        NAME_factor = factor(NAME)
+    )  %>%
+    filter(DATE >= "2018 Q1")
+
+# View(reg_data_sales)
+
+nrow(unique(reg_data_sales[reg_data_sales$T_ == 1, "NAME"]))
+nrow(unique(reg_data_sales[reg_data_sales$T_ == 0, "NAME"]))
+
+```
+
+
+
+#### DiD on sales data
+```{r, did_sales}
+library(zoo)
+
+
+print("------------")
+model <- feols(LOG_SALES_DIFF_4 ~ TxPOST | NAME_factor + DATE_factor,
+               data = reg_data_sales, cluster = ~ NAME_factor)
+summary(model)
+
+event_Q <- "2019 Q3" # nolint
+
+reg_data_eve <- reg_data_sales %>%
+    mutate(
+        # convert your dates to yearqtr
+        DATE_Q   = as.yearqtr(DATE),
+        event_Q  = as.yearqtr(event_Q),
+        # numeric difference in quarters
+        TimeTo_Q = as.numeric(DATE_Q - event_Q)
+    )
+
+# View(reg_data_eve)
+mod_twfe <- feols(LOG_SALES_DIFF_4 ~ i(TimeTo_Q, T_, ref = -0.25) | DATE_factor + NAME_factor,
+                  cluster = ~NAME_factor, data = reg_data_eve)
+
+iplot(mod_twfe,
+      xlab = "Time to treatment",
+      main = "Event study: Treatment (TWFE)")
+
+summary(mod_twfe)
+
+```
+
+If a company makes specific claims in their reports they would probably make them in marketing - better perceived by consumers?
+Think about different justifications, e.g. reports look at the past years, 
+companies make tv commercials that can include sustainability information
 
 

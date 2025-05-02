@@ -14,7 +14,7 @@ import statsmodels.api as sm
 from itertools import product
 from datetime import datetime
 
-def ExtractNameYear(series_names, input_dir, nlp_model):
+def ExtractNameYear(series_names, input_dir, nlp_model, year_str):
     '''Extracts the first page of each document and checks the year of release.'''
     
     filename_year_dict = {}
@@ -39,7 +39,8 @@ def ExtractNameYear(series_names, input_dir, nlp_model):
                     sentences = list(doc.sents)
                     num = [m.group() for sent in sentences if (m := search(r"\d+", sent.text))] 
                     
-                    if "2017" in num:
+                    
+                    if year_str in num:
                         filename = search(r"(.*)\/(.*)", file)[2]
                         filename_year_dict[company_name] = (filename, file)
                     else:
@@ -55,7 +56,7 @@ def ExtractNameYear(series_names, input_dir, nlp_model):
 
 
 
-def ExtractFileName(series_names, input_dir):
+def ExtractFileName(series_names, input_dir, year_str):
     '''Extracts the name of each document (from filename) and checks the year of release.'''
     
     filename_year_dict = {}
@@ -72,8 +73,9 @@ def ExtractFileName(series_names, input_dir):
         for file in listdir(company_dir):    
             try:
                 file_year = findall(r"_\d+|\d+", file)
+                year = "_" + year_str
                 
-                if "_2017" in file_year:
+                if year in file_year:
                     path = company_dir + f"/{file}"
                     filename_year_dict[company_name] = (file, path)
                 else:
