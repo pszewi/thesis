@@ -59,9 +59,60 @@ library(data.table)
 library(ggplot2)
 library(fixest)
 library(stargazer)
+library(readxl)
 ```
 
-## Loading Data
+## Trends in articles data
+
+```{r, query_trends}
+trends <- read_excel("data/nyt_query.xlsx")
+
+trends <- trends %>%
+    group_by(Query) %>%
+    mutate(new_art = num - lag(num),
+           log_new_art = log(new_art),
+           log_diff = log_new_art - lag(log_new_art)) %>%
+    ungroup() %>%
+    mutate(Date = as.Date(trends$Date))  %>%
+    filter(Date > as.Date("2010-01-01"))
+
+# View(trends)
+
+ggplot(data = trends) +
+    geom_line(aes(x = Year, y = new_art), linewidth = 1) +
+    facet_wrap(~Query, scales="free") +
+    scale_x_continuous(breaks = seq(2008, 2023, 1)) +
+    geom_vline(aes(xintercept = 2019),
+               color = "red", linetype = "dashed", size = 1) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+    labs(
+        title = "Number of new New York Times articles, per topic",
+        x = "Year",
+        y = "New articles (num)",
+        caption = "Source: New York Times"
+    )
+
+# ggsave("images/output/nyt_articles.png")
+
+ggplot(data = trends) +
+    geom_line(aes(x = Year, y = log_diff), linewidth = 1) +
+    facet_wrap(~Query, scales = "free") +
+    scale_x_continuous(breaks = seq(2008, 2023, 1)) +
+    geom_vline(aes(xintercept = 2019),
+               color = "red", linetype = "dashed", size = 1) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+    labs(
+        title = "Change in new New York Times articles, per topic",
+        x = "Year",
+        y = "\u0394 in new articles",
+        caption = "Source: New York Times"
+    )
+
+```
+
+
+
+## Loading Data for Analysis
 
 First loading here data at the weekly frequency as it seems the most reasonable.
 
@@ -91,8 +142,19 @@ greenwashing_ind_2017 <- greenwashing_ind_2017 %>%
 greenwashing_ind_2018 <- greenwashing_ind_2018 %>%
     filter(!(NAME %in% c("Genmab A/S", "Ashland Inc.", "Fletcher Building Limited", "Ethan Allen Interiors Inc.",
                          "Equifax Inc.", "Sagicor Financial Company Ltd.", "Korn/Ferry International",
-                         "Spark NZ", "Covestro AG")), CLIMATE_REL > 2)  %>%
-    mutate(GREEN_IND_2 = NON_SPEC / CLIMATE_REL)
+                         "Spark NZ", "Covestro AG")),
+           CLIMATE_REL > 2)  %>%
+    mutate(GREEN_IND_2 = NON_SPEC / CLIMATE_REL,
+        T_cont = case_when(
+            GREEN_IND_2 < quantile(GREEN_IND_2, prob = c(0.25)) ~ 1,
+            (GREEN_IND_2 >= quantile(GREEN_IND_2, prob = c(0.25))) &
+                (GREEN_IND_2 < quantile(GREEN_IND_2, prob = c(0.5))) ~ 2,
+            (GREEN_IND_2 >= quantile(GREEN_IND_2, prob = c(0.5))) &
+                (GREEN_IND_2 < quantile(GREEN_IND_2, prob = c(0.75))) ~ 3,
+            GREEN_IND_2 >= quantile(GREEN_IND_2, prob = c(0.75)) ~ 4
+        ),
+        T_ = ifelse(GREEN_IND > mean(GREEN_IND), 1, 0)
+    )
 # View(greenwashing_ind_2018)
 
 
@@ -100,7 +162,7 @@ company_characteristics  <- company_characteristics  %>% filter(YEAR == 2018)
 company_characteristics_2018 <- merge(company_characteristics, greenwashing_ind_2018,
                                       by.x = "NAME_SCRAPED", by.y = "NAME") %>%
     select(c("TYPE", "NAME", "BOURSE_NAME", "ICB_INDUSTRY_NAME", "ICB_SECTOR_NAME", "CTRY_OF_DOM_NAME",
-             "CTRY_OF_INC_NAME", "EMPLOYEES", "YEAR", "GREEN_IND")) %>%
+             "CTRY_OF_INC_NAME", "EMPLOYEES", "YEAR", "GREEN_IND_2", "T_", "T_cont")) %>%
     filter(!duplicated(NAME))
 
 ```
@@ -109,23 +171,15 @@ company_characteristics_2018 <- merge(company_characteristics, greenwashing_ind_
 
 ```{r, desc_stats, asis=TRUE}
 
-
-desc_stats <- company_characteristics_2018 %>%
-    mutate(T_ = ifelse(GREEN_IND > mean(GREEN_IND), 1, 0))
-
-table(desc_stats$T_, desc_stats$ICB_INDUSTRY_NAME)
-table(desc_stats$T_, desc_stats$CTRY_OF_DOM_NAME)
-table(desc_stats$T_, desc_stats$BOURSE_NAME)
-table(desc_stats$T_, desc_stats$EMPLOYEES)
+ggplot(greenwashing_ind_2018) +
+    geom_density(aes(x = GREEN_IND), color = "red") +
+    geom_density(aes(x = GREEN_IND_2), color = "blue")
 
 
-# stargazer(company_characteristics_2018$ICB_INDUSTRY_NAME)
 
 
-library(ggplot2)
 
-
-ggplot(data = desc_stats,
+ggplot(data = company_characteristics_2018,
        #    aes(x = factor(ICB_INDUSTRY_NAME))) +
        aes(x = factor(ICB_INDUSTRY_NAME), fill = factor(T_))) +
     # geom_bar(fill   = "steelblue", color  = "black", width  = 0.7) +
@@ -145,37 +199,38 @@ ggplot(data = desc_stats,
 
 
 
-library(gtsummary)
+# here I made some tables for the latex document (descriptive statistics)
+# library(gtsummary)
 
-tbl_ltx = desc_stats %>%
-    select(CTRY_OF_DOM_NAME, T_) %>%
-    tbl_summary(
-                by = T_,
-                statistic = list(CTRY_OF_DOM_NAME ~ "{n} ({p}%)")) %>%
-    add_overall() %>%
-    modify_header(
-                  label     = "Number of ...",
-                  all_stat_cols() ~ "{level} (N = {n})") %>%
-    modify_table_body(~.x %>% relocate(stat_0, stat_2, stat_1, .after = label))
+# tbl_ltx = company_characteristics_2018 %>%
+#     select(CTRY_OF_DOM_NAME, T_cont) %>%
+#     tbl_summary(
+#                 by = T_cont,
+#                 statistic = list(CTRY_OF_DOM_NAME ~ "{n} ({p}%)")) %>%
+#     add_overall() %>%
+#     modify_header(
+#                   label     = "Number of ...",
+#                   all_stat_cols() ~ "{level} (N = {n})") %>%
+#     modify_table_body(~.x %>% relocate(stat_0, stat_2, stat_1, .after = label))
 
 
-tbl_ltx %>%
-  as_kable(
-    format    = "latex",
-    booktabs  = TRUE
-  ) 
+# tbl_ltx %>%
+#   as_kable(
+#     format    = "latex",
+#     booktabs  = TRUE
+#   ) 
 
-# number of reports per year
-tbl_yrs = company_characteristics %>%
-    group_by(YEAR) %>%
-    summarize(num = n()) %>%
-    arrange(desc(num))
+# # number of reports per year
+# tbl_yrs = company_characteristics %>%
+#     group_by(YEAR) %>%
+#     summarize(num = n()) %>%
+#     arrange(desc(num))
 
-as_gtsummary(tbl_yrs) %>%
-  as_kable(
-    format    = "latex",
-    booktabs  = TRUE
-  ) 
+# as_gtsummary(tbl_yrs) %>%
+#   as_kable(
+#     format    = "latex",
+#     booktabs  = TRUE
+#   ) 
 
 ```
 
@@ -188,12 +243,11 @@ Merging the data into a single dataset for regressing
 ```{r, merge_w}
 
 # weekly
-reg_data_w <- merge(company_characteristics_2017, data_abnormal_returns_w, by = "NAME")  %>%
+reg_data_w <- merge(company_characteristics_2018, data_abnormal_returns_w, by = "NAME")  %>%
     rename("CTRY_OF_DOM_NAME" = "CTRY_OF_DOM_NAME.x") %>%
     select(-CTRY_OF_DOM_NAME.y) %>%
     mutate(
         ABN_RET_LOG = STOCK_LOG_RETURN - NORMAL_RETURN,
-        T_ = ifelse(GREEN_IND > mean(GREEN_IND), 1, 0),
         POST = ifelse(DATE >= as.Date("2019-08-08"), 1, 0),
         TxPOST = as.factor(T_ * POST),
         DATE = as.Date(DATE),
@@ -283,13 +337,12 @@ iplot(mod_twfe,
 ```{r, merge_d}
 
 # daily
-reg_data_d <- merge(company_characteristics_2017, data_abnormal_returns_d, by = "NAME")  %>%
+reg_data_d <- merge(company_characteristics_2018, data_abnormal_returns_d, by = "NAME")  %>%
     rename("CTRY_OF_DOM_NAME" = "CTRY_OF_DOM_NAME.x") %>%
     select(-CTRY_OF_DOM_NAME.y) %>%
     arrange(NAME, DATE) %>%
     mutate(
         ABN_RET_LOG = STOCK_LOG_RETURN - NORMAL_RETURN,
-        T_ = ifelse(GREEN_IND > mean(GREEN_IND), 1, 0),
         POST_1 = ifelse(DATE >= as.Date("2019-08-08"), 1, 0),
         POST_2 = ifelse(DATE >= as.Date("2019-09-20"), 1, 0),
         TxPOST_1 = as.factor(T_ * POST_1),
@@ -299,16 +352,17 @@ reg_data_d <- merge(company_characteristics_2017, data_abnormal_returns_d, by = 
         NAME_factor = factor(NAME)
     )
 
-# View(reg_data_d)
 
 reg_data_d <- reg_data_d  %>%
     group_by(NAME) %>%
     filter(!(is.na(ABN_RET_LOG))) %>%
     mutate(CAR = cumsum(ABN_RET_LOG)) %>%
     ungroup() %>%
-    filter(DATE > as.Date("2019-07-15"), DATE < as.Date("2019-10-01")) %>%
+    filter(DATE > as.Date("2019-07-15"), DATE < as.Date("2019-08-21")) %>%
+    # filter(DATE > as.Date("2019-09-10"), DATE < as.Date("2019-10-01")) %>%
     arrange(NAME, DATE)
 
+View(reg_data_d)
 
 ```
 
@@ -335,6 +389,12 @@ model <- feols(CAR ~  TxPOST_1 | NAME_factor + DATE_factor,
                data = reg_data_d, cluster = ~ NAME_factor)
 summary(model)
 
+# ---------------------------
+# did but with
+
+model <- feols(CAR ~  i(T_cont, POST_1, ref = 1) | ICB_INDUSTRY_NAME^DATE_factor,
+               data = reg_data_d, cluster = ~ NAME_factor)
+summary(model)
 
 ```
 
@@ -380,7 +440,7 @@ iplot(mod_twfe,
 data_sales  <- data_sales  %>%
     filter(DATE != "2010 Q1")
 
-reg_data_sales <- merge(company_characteristics_2017, data_sales, by = "TYPE") %>%
+reg_data_sales <- merge(company_characteristics_2018, data_sales, by = "TYPE") %>%
     arrange(NAME.y, DATE)  %>%
     select(-YEAR.x, -YEAR.y, -QUARTER, -NAME.x)  %>%
     rename(NAME = NAME.y)  %>%
@@ -388,7 +448,6 @@ reg_data_sales <- merge(company_characteristics_2017, data_sales, by = "TYPE") %
     mutate(LOG_SALES_DIFF_4 = LOG_SALES_DIFF - lag(LOG_SALES_DIFF, 4))  %>%
     ungroup() %>%
     mutate(
-        T_ = ifelse(GREEN_IND > mean(GREEN_IND), 1, 0),
         POST_1 = ifelse(DATE >= "2019 Q3", 1, 0),
         TxPOST = as.factor(T_ * POST_1),
         DATE_factor = factor(DATE),
@@ -396,7 +455,7 @@ reg_data_sales <- merge(company_characteristics_2017, data_sales, by = "TYPE") %
     )  %>%
     filter(DATE >= "2018 Q1")
 
-# View(reg_data_sales)
+View(reg_data_sales)
 
 nrow(unique(reg_data_sales[reg_data_sales$T_ == 1, "NAME"]))
 nrow(unique(reg_data_sales[reg_data_sales$T_ == 0, "NAME"]))
@@ -443,3 +502,20 @@ Think about different justifications, e.g. reports look at the past years,
 companies make tv commercials that can include sustainability information
 
 
+## Testing continuous treatment on sales
+
+```{r}
+
+reg_data_sales <- reg_data_sales %>%
+    mutate(
+        T_cont = as.factor(T_cont)
+    )  %>%
+    filter(DATE <=  as.yearqtr("2020 Q3"))
+
+print("------------")
+model <- feols(LOG_SALES_DIFF_4 ~ i(T_cont, POST_1, ref = 1) | NAME_factor + DATE_factor,
+               data = reg_data_sales, cluster = ~ NAME_factor)
+summary(model)
+
+
+```

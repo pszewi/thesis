@@ -1,6 +1,6 @@
 \documentclass[12pt]{article}
 
-\usepackage{amsmath}
+\usepackage{amsmath, amssymb}
 \usepackage{graphicx}
 \usepackage[margin=1in]{geometry}
 \usepackage[style=apa]{biblatex}
@@ -8,15 +8,20 @@
 \usepackage{booktabs}
 \usepackage{rotating}
 \usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{longtable}
+\usepackage[flushleft]{threeparttable}
 \usepackage{hyperref}
 \geometry{a4paper, margin=1in}
 \addbibresource{references.bib}
+\graphicspath{ {../images/output/} }
+
+
 
 % \title{}
 \author{Your Name}
 \date{Date of submission: \today}
 \renewcommand{\arraystretch}{1.3}
-
 
 % -------------------------------------------------------------------------------------------
 \begin{document}
@@ -26,6 +31,8 @@
 
 \begin{abstract}
 Your abstract goes here.
+
+
 \end{abstract}
 \pagebreak
 
@@ -35,95 +42,115 @@ Your abstract goes here.
 \section{Introduction}\label{sect:introduction}
 Your introduction goes here.
 
-\section{Literature Review}\label{sect:literature_review}
-Your literature review goes here.
-Just adding~\parencite{Lagasio2024} and~\parencite{Wu2020} for visibility here.
-\parencite{Bingler2022}
-\parencite{Bingler2024}
-\parencite{Callaway2024}
-\parencite{Gourier2024}
-\parencite{Ilhan2023}
+Here is a picture of trends in articles: 
 
+\begin{figure}[!h]
+    \includegraphics[width=\textwidth]{nyt_articles.png}
+\end{figure}
+
+Literature on the topic of greenwashing has so far mostly focused on the relationship between principals and managers, as well as on how does the 
+
+
+Just adding~\parencite{lagasio_esg-washing_2024} and~\parencite{wu_bad_2020} for visibility here.
+\parencite{bingler_cheap_2022}
+\parencite{bingler_how_2024}
+\parencite{gourier_greenwashing_2024}
+\parencite{ilhan_climate_2023}
+
+\newpage
 
 \section{Data}\label{sect:data}
 
 The data collected for the thesis comes from multiple sources. The ESG reports were scraped from the \href{https://responsibilityreports.com}{ResponsibilityReports.com}. The company characteristics, their stock price returns as well as their quarterly earnings have been extracted from the Refinitiv database. Furthermore, a measure of abnormal returns and a greenwashing indicator were constructed.
 
+
 \subsection{Scraping}
 
-Scraping the ResponsibilityReports.com allowed us to collect company reports relating to ESG and/or CSR. Additionally, it also allowed us to retrieve information on company headquarters location and the approximate number of employees. Table \ref{tab:sust_reps} displays the number of reports per year.
+Scraping the \href{https://responsibilityreports.com}{ResponsibilityReports.com} website allowed me to collect company reports relating to ESG and CSR\@. Additionally, it also allowed me to retrieve information on company headquarters location and the approximate number of employees. Table\ref{tab:sust_reps} displays the number of reports available per year. As can be seen, the number of reports is non-homogenous across the years, as with time, communicating sustainability has become more important. 
+    
+% More text follows here. Generally the next step is to describe what the sustainability reports contain and why are they useful, why I haven't chosen them instead of something else, how they relate to my outcome variables.
+    
+\subsection{Greenwashing Indicator}
 
-\begin{wrapfigure}{l}{0.5\textwidth}
-    \caption{Number of reports per year}\label{tab:sust_reps}
-    \begin{tabular}{cc}
-        \toprule
-        YEAR & Number of Reports\\
-        \midrule
-        2023 & 1859\\
-        2022 & 2020\\
-        2021 & 1733\\
-        2020 & 1355\\
-        2019 & 1081\\
-        2018 & 852\\
-        2017 & 686\\
-        2016 & 558\\
-        2015 & 475\\
-        2014 & 415\\
-        2013 & 357\\
-        2012 & 300\\
-        2011 & 252\\
-        2010 & 216\\
-        \bottomrule
-    \end{tabular}
-\end{wrapfigure}
+Sustainability reports contain information meant for investors and stakeholders. They inform the reader on initiatives undertaken by the company to manage its impact on the environment, its production standards, as well as the climate risk a company is exposed to. To illustrate, \citeauthor{3m2018sustainability}'s 2018 Sustainability Report titled ``Improving Lives'' contains the following sections:  ``Our Values, Vision, and 
+Strategies'', ``Enterprise Risk'', ``Environmental Management'' (non-exhaustive). 
 
-More text follows here. Generally the next step is to describe what the sustainability reports contain and why are they useful, why I haven't chosen them instead of something else, how they relate to my outcome variables. 
+As these reports do not fall under the oversight of any institutions (unlike annual earnings reports), the companies issuing them, may overstate their environmental achievements and as such use them to appeal to investors/consumers rather than present unbiased information. This implies the possibility of greenwashing and deception introduced by companies, to manipulate the perception of stakeholders without bearing the cost. 
+
+To identify this phenomenon in relation to the environmental claims, the text was extracted from the reports. This has been done by using blocks contained in the PDF files to keep individual paragraphs separate.\ \textbf{Note: emphasize that only text was extracted, can't analyse tables}. To further refine the data, each block has been classified as a paragraph, if it spanned at least 3 lines, contained at least 30 words and had at least one full stop. This has been done following the rule-based approach of \parencite{bingler_how_2024}. 
+
+Then, again following the approach of \citeauthor{bingler_how_2024}, the Climate Cheap-Talk Indicator ($CTI$) was constructed.\ \textbf{NOTE:\@ BRIEFLY DESCRIBE THE INS AND OUTS OF THE MODEL HERE.} This has been done in two steps. Firstly, a version of the \texttt{ClimateBert}$_{CTI}$ model fine-tuned for classifying paragraphs was used to determine whether a given paragraph is climate related or not. Then, another version of the \texttt{ClimateBert}$_{CTI}$ model, fine-tuned for classifying paragraphs as specific (containing specific commitments) and non-specific (containing only vague commitments) was used to determine the specificity of each paragraph in each document. Then, finally, the $CTI$ was constructed by using the formula:
+
+
+\begin{equation}
+    CTI = \frac{CLIM_i \cap NONSPEC_i}{CLIM_{i}}
+\end{equation}
+
+Where for a sustainability report of company $i$, $CLIM_i$ represents the number of climate-related paragraphs, $NONSPEC_i$ represents the number of paragraphs containing specific commitments, and $CLIM_i \cap NONSPEC_i$ represents the intersection between the two. 
+This approach is motivated by the work of\ \cite{coen_are_2022}, which finds that companies are less likely to follow-up on their commitments if these are stated in a vague and non-specific manner. Therefore, the $CTI$, interpreted as a measure of non-specificity of companies climate commitments, is used as a proxy for greenwashing.\ \textbf{NOTE:\@ DESCRIBE THE LIMITATIONS OF THE APPROACH HERE --- NO WAY TO CONCRETELY DETERMINE GREENWASHING}
+
+
 \subsection{Refinitiv}
 
-Here go over the data characteristics, what data you got.
+The Refinitiv dataset has been used to retrieve data on firms' characteristics, their price indices, quarterly earnings. Additionally, the regional indices (\textit{explain better, values for index funds/stock indices, i.e.\@ S\&P and stuff}) were retrieved in order to estimate the normal returns of each company. The characteristic variables include the stock exchange of the listing, country of incorporation, country of domicile, the company's sector and the company's industry. The price indices (defined as the value of the stock as a fraction of the initial listing price), were log-differenced to transform them into percentage changes. The same has been done for the quarterly earnings and for the values of regional stock indices.\ \textbf{Talk about how many periods retrieved for estimation of normal returns and for event window!!}.
 
-\subsection{Merging}
-I will certainly need to reduce these sections to paragraphs but here you should describe the process of merging the data and what observations you lost 
 \subsection{Abnormal Returns}
 
-Here talk about making the indicator, how you made it, which market model you used, which indices you used etc. 
-\subsection{Greenwashing Indicator}
-Talk the reader through the whole methodology of constructing the greenwashing indicator
+In order to plausibly estimate the effect of the treatment on stock returns, I needed to separate the effects of the market movement from the movement of the stock of the company itself. These abnormal returns were estimated following the market model approach outlined in\ \cite{mackinlayEventStudiesEconomics1997}. This approach relies on estimating the expected stock return by predicting it using the return of the whole market. As the sample contains companies from multiple continents which markets may differ, multiple stock indices were used. The companies were allocated to a geographical market index by their country of domicile. The allocation can be viewed in Table~\ref{tab:mrkt_ind} in the Appendix~\ref{app:data}. The model has been separately estimated for each company using observations that predate the estimation window of interest. Intervals used for estimation of data at each frequency is reported in Table~\ref{tab:data_freq}. Below I report the regression specification used for the estimation:
 
-% \pagebreak
+\begin{equation}\label{eq:reg_market_model}
+    RN_{it} = \alpha_i + \beta_{i} RI_{mt} + \varepsilon_{it}
+\end{equation}
 
-\begin{sidewaystable}
-\caption{Sample Composition}
-\footnotesize{} % Reduce font size
-\setlength{\tabcolsep}{3pt} % Reduce column spacing
-\begin{tabular}{lccc|lccc|lccc}
-    \toprule
-    \multicolumn{4}{c|}{\textbf{ICB Industry}} & \multicolumn{4}{c|}{\textbf{Number of Employees}} & \multicolumn{4}{c}{\textbf{Country of Domicile}} \\
-    \cmidrule(lr){1-4} \cmidrule(lr){5-8} \cmidrule(lr){9-12}
-    Industry & Total & Treated & Control & Employees & Total & Treated & Control & Country & Total & Treated & Control \\
-    \midrule
-    Industrials & 120 (19\%) & 59 (18\%) & 61 (19\%) & 10,000+ & 487 (62\%) & 250 (63\%) & 237 (61\%) & United States & 376 (59\%) & 164 (51\%) & 212 (66\%) \\
-    Consumer Discretionary & 99 (15\%) & 30 (9.4\%) & 69 (21\%) & 1001--5000 & 134 (17\%) & 70 (18\%) & 64 (16\%) & United Kingdom & 64 (10\%) & 38 (12\%) & 26 (8.1\%) \\
-    Financials & 87 (14\%) & 65 (20\%) & 22 (6.9\%) & 5001--10,000 & 120 (15\%) & 54 (14\%) & 66 (17\%) & Canada & 55 (8.6\%) & 30 (9.4\%) & 25 (7.8\%) \\
-    Basic Materials & 83 (13\%) & 47 (15\%) & 36 (11\%) & 201--500 & 20 (2.5\%) & 10 (2.5\%) & 10 (2.6\%) & Australia & 48 (7.5\%) & 31 (9.7\%) & 17 (5.3\%) \\
-    Consumer Staples & 57 (8.9\%) & 20 (6.3\%) & 37 (12\%) & 501--1000 & 13 (1.6\%) & 5 (1.3\%) & 8 (2.1\%) & Other & 97 (15\%) & 56 (17\%) & 41 (12\%) \\
-    Technology & 52 (8.1\%) & 36 (11\%) & 16 (5.0\%) & 11--50 & 8 (1.0\%) & 5 (1.3\%) & 3 (0.8\%) & Unknown & 155 & 84 & 71 \\
-    Utilities & 47 (7.3\%) & 10 (3.1\%) & 37 (12\%) & 51--200 & 6 (0.8\%) & 4 (1.0\%) & 2 (0.5\%) & & & & \\
-    Health Care & 46 (7.2\%) & 28 (8.8\%) & 18 (5.6\%) & 1--10 & 1 (0.1\%) & 1 (0.3\%) & 0 (0\%) & & & & \\
-    Telecommunications & 20 (3.1\%) & 14 (4.4\%) & 6 (1.9\%) & Unknown & 6 & 4 & 2 & & & & \\
-    Energy & 17 (2.7\%) & 7 (2.2\%) & 10 (3.1\%) & & & & & & & & \\
-    Real Estate & 12 (1.9\%) & 3 (0.9\%) & 9 (2.8\%) & & & & & & & & \\
-    Unknown & 155 & 84 & 71 & & & & & & & & \\
-    \midrule
-    Total & N = 795 & N = 403 & N = 392 & Total & N = 795 & N = 403 & N = 392 & Total & N = 795 & N = 403 & N = 392 \\
-    \bottomrule
-\end{tabular}\label{tab:sample_composition}
-\end{sidewaystable}
+Where, $RN_{it}$ is the return of the security $i$ at time $t$ predicted by the return of its geographical market $m$, where $RI_{mt}$ is the return of the said market. Finally, as this regression estimates the return of the security predicted by the return of the market, the abnormal return for $i$ in a given time period $t$ is given by the residual $\varepsilon_{it}$.
 
-% \pagebreak
+This type of modelling is sufficient for my use case, as per the work of~\citeauthor{mackinlayEventStudiesEconomics1997}, employing more sophisticated models (e.g.~factor models) yields limited improvement in studies that do not rely on within-group variation, such as within-sector variation.
+
+Moreover, the abnormal returns for each of the securities were later cumulatively summed to arrive at the Cumulative Abnormal Return (CAR). This was done, as aggregation across time is needed in order to draw useful inference from the results of the actual study (\textbf{Maybe describe in more detail --- if you're estimating the DiD on AR then it's meaningless}). 
+
+\subsection{Merging}
+
+The data on greenwashing has been merged with the stock indices. This has been a difficult process, as company names are often reported differently between different services. Multiple strategies were used to merge the data. Firstly, the data was merged on the names retrieved from the \href{https://responsibilityreports.com}{ResponsibilityReports.com} and the longest version of names available in the Refinitiv database.\@ \textbf{This resulted in \dots\ observations}. After that, the datasets were merged on the stock tickers conditional on being listed on the same exchange.\@ \textbf{This resulted in \dots\ observations}. Finally, the \dots\ (remaining strategy).\ \textbf{Unfortunately this has left \dots\ observations missing}. However, this can be safely assumed away, as only \dots\ companies were missing out of the \dots\ companies that posted the 2018, which will be used for analysis. Therefore, the resulting dataset has \dots\ companies. 
+
+\vspace{1cm}
+\textbf{Make a table showcasing how many companies are lost??}
+
+
 
 \section{Methodology}\label{sect:methodology}
-Your methodology goes here.
+
+This section describes the methodology used in the attempt to estimate the causal effect of greenwashing on company performance.
+My initial approach was to use a classic Difference-in-Differences (DiD) methodology with multiple periods, however upon consideration I decided to implement a variation of DiD with multivalued treatments following \parencite{callawayDifferenceindifferencesContinuousTreatment2024}. This approach is motivated by the fact, that the market may react differently to firms that use more cheap talk in their communication. 
+
+Given the use of newly developed methods in this study, I chose to contrast their methodology with the well-understood traditional DiD framework to better illustrate how this approach can improve upon the default approach. Therefore, the methodology is divided into three parts. Firstly, I will cover the conventional difference-in-differences design. Then I will contrast it with the implemented design using multivalued treatment. Finally, I will describe the differences in the taken approach when estimating the effect on sales of companies instead of stock prices.
+
+
+\subsection{Default Difference-in-Differences}
+
+Conventional Difference-in-Differences studies try to elicit the causal effect of a policy by the units across time and then to each other (\textbf{reword this nicely}). In order to separate the causal effect, they require three assumptions explained below. 
+
+\textbf{Parallel trends (PT) assumption}, which requires that in the absence of treatment, the outcomes of the units assigned to the treatment group would have evolved in the same way (in terms of the trend) as the outcomes of the units that were not assigned to treatment. In my example, it implies that in the absence of cheap-talk of a company (i.e.\ greenwashing), their stock price/sales would have evolved similarly to those that do not engage in cheap talk currently. Although this assumption is untestable, it is argued for below. Formally it is given by: 
+
+\begin{equation}
+    \mathbb{E}[Y_{i,2}(0) - Y_{i,1}(0) | D_i = 1] = \mathbb{E}[Y_{i,2}(0) - Y_{i,1}(0) | D_i = 0]
+\end{equation}
+
+\textbf{No anticipation assumption}, imposes that the individuals do not anticipate the shock. In my example, it implies that the market does not anticipate 
+
+\begin{equation}
+    Y_{i,1}(0) = Y_{i,1}(1) \text{ for all } i \text{ with } D_i = 1
+\end{equation}
+
+
+
+\subsection{Multivalued Difference-in-Differences}
+
+\subsection{Validity of Assumptions}
+
+\subsection{Difference-in-Differences with Sales}
+
+
+\newpage
 
 \section{Results}\label{sect:results}
 Your results go here.
@@ -139,9 +166,184 @@ Your conclusion goes here.
 \pagebreak
 \appendix
 
-\section{Data}
-Your appendix goes here.
+\section{Data}\label{app:data}
 
-\section{Models}
-Here's another appendix
+\textbf{ADD SOURCES TO ALL OF THE TABLES + ADD GENERAL NOTES SO THAT THEY ARE SELF-EXPLANATORY}
+
+
+\small
+\centering
+
+\begin{table}[h]
+    \captionof{table}{Number of reports per year}\label{tab:sust_reps}
+    \centering
+        \begin{tabular}{cc}
+            \toprule
+            Year & Number of Reports\\
+            \midrule
+            2023 & 1859\\
+            2022 & 2020\\
+            2021 & 1733\\
+            2020 & 1355\\
+            2019 & 1081\\
+            2018 & 852\\
+            2017 & 686\\
+            2016 & 558\\
+            2015 & 475\\
+            2014 & 415\\
+            2013 & 357\\
+            2012 & 300\\
+            2011 & 252\\
+            2010 & 216\\
+            \bottomrule
+        \end{tabular}
+\end{table}
+
+% \pagebreak
+
+% \begin{sidewaystable}
+% \caption{Sample Composition}
+% \footnotesize{} % Reduce font size
+% \setlength{\tabcolsep}{3pt} % Reduce column spacing
+% \begin{tabular}{lccc|lccc|lccc}
+%     \toprule
+%     \multicolumn{4}{c|}{\textbf{ICB Industry}} & \multicolumn{4}{c|}{\textbf{Number of Employees}} & \multicolumn{4}{c}{\textbf{Country of Domicile}} \\
+%     \cmidrule(lr){1-4} \cmidrule(lr){5-8} \cmidrule(lr){9-12}
+%     Industry & Total & Treated & Control & Employees & Total & Treated & Control & Country & Total & Treated & Control \\
+%     \midrule
+%     Industrials & 120 (19\%) & 59 (18\%) & 61 (19\%) & 10,000+ & 487 (62\%) & 250 (63\%) & 237 (61\%) & United States & 376 (59\%) & 164 (51\%) & 212 (66\%) \\
+%     Consumer Discretionary & 99 (15\%) & 30 (9.4\%) & 69 (21\%) & 1001--5000 & 134 (17\%) & 70 (18\%) & 64 (16\%) & United Kingdom & 64 (10\%) & 38 (12\%) & 26 (8.1\%) \\
+%     Financials & 87 (14\%) & 65 (20\%) & 22 (6.9\%) & 5001--10,000 & 120 (15\%) & 54 (14\%) & 66 (17\%) & Canada & 55 (8.6\%) & 30 (9.4\%) & 25 (7.8\%) \\
+%     Basic Materials & 83 (13\%) & 347 (15\%) & 36 (11\%) & 201--500 & 20 (2.5\%) & 10 (2.5\%) & 10 (2.6\%) & Australia & 48 (7.5\%) & 31 (9.7\%) & 17 (5.3\%) \\
+%     Consumer Staples & 57 (8.9\%) & 20 (6.3\%) & 37 (12\%) & 501--1000 & 13 (1.6\%) & 5 (1.3\%) & 8 (2.1\%) & Other & 97 (15\%) & 56 (17\%) & 41 (12\%) \\
+%     Technology & 52 (8.1\%) & 36 (11\%) & 16 (5.0\%) & 11--50 & 8 (1.0\%) & 5 (1.3\%) & 3 (0.8\%) & Unknown & 155 & 84 & 71 \\
+%     Utilities & 47 (7.3\%) & 10 (3.1\%) & 37 (12\%) & 51--200 & 6 (0.8\%) & 4 (1.0\%) & 2 (0.5\%) & & & & \\
+%     Health Care & 46 (7.2\%) & 28 (8.8\%) & 18 (5.6\%) & 1--10 & 1 (0.1\%) & 1 (0.3\%) & 0 (0\%) & & & & \\
+%     Telecommunications & 20 (3.1\%) & 14 (4.4\%) & 6 (1.9\%) & Unknown & 6 & 4 & 2 & & & & \\
+%     Energy & 17 (2.7\%) & 7 (2.2\%) & 10 (3.1\%) & & & & & & & & \\
+%     Real Estate & 12 (1.9\%) & 3 (0.9\%) & 9 (2.8\%) & & & & & & & & \\
+%     Unknown & 155 & 84 & 71 & & & & & & & & \\
+%     \midrule
+%     Total & N = 795 & N = 403 & N = 392 & Total & N = 795 & N = 403 & N = 392 & Total & N = 795 & N = 403 & N = 392 \\
+%     \bottomrule
+% \end{tabular}\label{tab:sample_composition}
+% \end{sidewaystable}
+
+% \pagebreak
+
+
+
+
+\begin{longtable}[c]{cc}
+    \caption{Allocation of countries to regional markets}\label{tab:mrkt_ind} \\
+       \toprule
+       Country & Market Index \\
+       \midrule
+       \endfirsthead{}
+       
+       \\
+       \toprule
+       Country & Market Index \\
+       \midrule
+       \endhead{}
+
+
+       \\
+       \midrule
+       \multicolumn{2}{c}{\footnotesize Note: All indices denominated in dollars (but actually as \% of their listing price I think)} \\
+       \bottomrule
+       \endfoot{}
+       
+       United States & S\&P 500 Composite \\
+       Canada & S\&P 500 Composite \\
+       Bermuda & S\&P 500 Composite \\
+       Cayman Islands & S\&P 500 Composite \\
+       
+       Mexico & MSCI EM Latin America  \\
+       Puerto Rico & MSCI EM Latin America  \\
+       Costa Rica & MSCI EM Latin America  \\
+       Barbados & MSCI EM Latin America  \\
+       Panama & MSCI EM Latin America  \\
+       Colombia & MSCI EM Latin America  \\
+       Brazil & MSCI EM Latin America  \\
+       Chile & MSCI EM Latin America  \\
+       Peru & MSCI EM Latin America  \\
+       Uruguay & MSCI EM Latin America  \\
+       Argentina & MSCI EM Latin America  \\
+       
+       United Kingdom & MSCI Europe  \\
+       Ireland & MSCI Europe  \\
+       Switzerland & MSCI Europe  \\
+       Netherlands & MSCI Europe  \\
+       Greece & MSCI Europe  \\
+       Germany & MSCI Europe  \\
+       Belgium & MSCI Europe  \\
+       Denmark & MSCI Europe  \\
+       Monaco & MSCI Europe  \\
+       Luxembourg & MSCI Europe  \\
+       France & MSCI Europe  \\
+       Sweden & MSCI Europe  \\
+       Isle of Man & MSCI Europe  \\
+       Spain & MSCI Europe  \\
+       Finland & MSCI Europe  \\
+       Romania & MSCI Europe  \\
+       Italy & MSCI Europe  \\
+       Austria & MSCI Europe  \\
+       Jersey & MSCI Europe  \\
+       Guernsey & MSCI Europe  \\
+       Turkey & MSCI Europe  \\
+       
+       
+       Hong Kong & MSCI Pacific  \\
+       Singapore & MSCI Pacific  \\
+       Japan & MSCI Pacific  \\
+       Australia & MSCI Pacific  \\
+       New Zealand & MSCI Pacific  \\
+       Papua New Guinea & MSCI Pacific  \\
+       
+       China & MSCI AC Asia  \\
+       India & MSCI AC Asia  \\
+       South Korea & MSCI AC Asia  \\
+       Taiwan & MSCI AC Asia  \\
+       Mongolia & MSCI AC Asia  \\
+       Indonesia & MSCI AC Asia  \\
+       Philippines & MSCI AC Asia  \\
+       
+       Israel & MSCI World  \\
+       Kazakhstan & MSCI World  \\
+       United Arab Emirates & MSCI World  \\
+       South Africa & MSCI World \\
+    
+\end{longtable}
+
+
+\begin{table}[!h]
+    \captionof{table}{Estimation periods for each frequency}\label{tab:data_freq}
+    \begin{tabular}{ccc}
+        \toprule
+        Frequency & Normal Returns Estimation & Event Window \\
+        \midrule
+        Monthly & 2014--01--01 --- 2018--05--31 & 2018--06--01 --- yyyy---mm---dd \\ 
+        Weekly & 2016--01--01 --- 2019--06--30 & 2019--07--01 --- yyyy---mm---dd \\
+        Daily & 2019--01--01 --- 2019--07--31 & 2019--08--01 --- 2019--08--xx\\
+        Quarterly (Sales) && \\ 
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}
+        \footnotesize
+        \item \textbf{NOTE:\@ THINK WHETHER TO INCLUDE NUMBER OF PERIODS OF ESTIMATION, THINK WHETHER THAT SHOULD BE SYMMETRICAL FOR EACH OF THE FREQUENCIES}
+      \end{tablenotes}
+\end{table}
+
+
+\newpage
+\normalsize
+\raggedright{}
+\section{Models}\label{app:models}
+\small
+\centering
+
+% Here's another appendix
+
+
 \end{document}
