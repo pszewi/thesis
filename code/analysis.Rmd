@@ -79,34 +79,49 @@ trends <- trends %>%
 # View(trends)
 
 ggplot(data = trends) +
-    geom_line(aes(x = Year, y = new_art), linewidth = 1) +
-    facet_wrap(~Query, scales="free") +
-    scale_x_continuous(breaks = seq(2008, 2023, 1)) +
+    geom_line(aes(x = Year, y = new_art/1000), linewidth = 1) +
+    facet_wrap(~Query, scales = "free_y", ncol = 2) +
+    scale_x_continuous(breaks = seq(2010, 2023, 2)) +
     geom_vline(aes(xintercept = 2019),
-               color = "red", linetype = "dashed", size = 1) +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+               color = "red", linetype = "dashed", size = 0.8) +
+    theme_bw(base_size = 12) +
+    theme(
+        axis.text = element_text(size = 13),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.title = element_text(size = 16, face = "bold"),
+        panel.grid.minor = element_blank(),
+        panel.spacing = unit(1, "lines"),
+        # legend.position = "none",
+        strip.text = element_text(face = "bold", size = 12),
+        strip.background = element_rect(fill = "white"),
+        plot.title = element_text(size = 14, face = "bold", hjust = 0),
+        plot.subtitle = element_text(size = 12, hjust = 0),
+        plot.caption = element_text(size = 10, hjust = 0, face = "italic")
+    ) +
+    scale_color_grey(start = 0.2, end = 0.8) +
     labs(
-        title = "Number of new New York Times articles, per topic",
+        # title = "Growth in New York Times Coverage by Topic",
+        # subtitle = "Number of new articles published per year (2010-2023)",
         x = "Year",
-        y = "New articles (num)",
-        caption = "Source: New York Times"
+        y = "New Articles (thousands)",
+        # caption = "Source: New York Times"
     )
 
-# ggsave("images/output/nyt_articles.png")
+ggsave("images/output/nyt_articles.png")
 
-ggplot(data = trends) +
-    geom_line(aes(x = Year, y = log_diff), linewidth = 1) +
-    facet_wrap(~Query, scales = "free") +
-    scale_x_continuous(breaks = seq(2008, 2023, 1)) +
-    geom_vline(aes(xintercept = 2019),
-               color = "red", linetype = "dashed", size = 1) +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
-    labs(
-        title = "Change in new New York Times articles, per topic",
-        x = "Year",
-        y = "\u0394 in new articles",
-        caption = "Source: New York Times"
-    )
+# ggplot(data = trends) +
+#     geom_line(aes(x = Year, y = log_diff), linewidth = 1) +
+#     facet_wrap(~Query, scales = "free") +
+#     scale_x_continuous(breaks = seq(2008, 2023, 1)) +
+#     geom_vline(aes(xintercept = 2019),
+#                color = "red", linetype = "dashed", size = 1) +
+#     theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+#     labs(
+#         title = "Change in new New York Times articles, per topic",
+#         x = "Year",
+#         y = "\u0394 in new articles",
+#         caption = "Source: New York Times"
+#     )
 
 ```
 
@@ -440,6 +455,8 @@ iplot(mod_twfe,
 data_sales  <- data_sales  %>%
     filter(DATE != "2010 Q1")
 
+# View(data_sales)
+
 reg_data_sales <- merge(company_characteristics_2018, data_sales, by = "TYPE") %>%
     arrange(NAME.y, DATE)  %>%
     select(-YEAR.x, -YEAR.y, -QUARTER, -NAME.x)  %>%
@@ -453,15 +470,72 @@ reg_data_sales <- merge(company_characteristics_2018, data_sales, by = "TYPE") %
         DATE_factor = factor(DATE),
         NAME_factor = factor(NAME)
     )  %>%
-    filter(DATE >= "2018 Q1")
+    filter(DATE >= "2017 Q3", DATE < "2021 Q1")
 
-View(reg_data_sales)
+# View(reg_data_sales)
 
 nrow(unique(reg_data_sales[reg_data_sales$T_ == 1, "NAME"]))
 nrow(unique(reg_data_sales[reg_data_sales$T_ == 0, "NAME"]))
 
 ```
 
+#### Trend evolution per group
+
+```{r, trend_evo_sales}
+
+trend_graph_sales  <- reg_data_sales %>%
+    group_by(T_cont, DATE) %>%
+    summarize(mean_sales = mean(SALES),
+              mean_sales_diff = mean(LOG_SALES_DIFF_4))
+
+head(trend_graph_sales)
+
+
+# Mean sales by treatment group
+ggplot(data = trend_graph_sales) +
+    geom_line(aes(x = DATE, y = mean_sales, color = as.factor(T_cont), group = T_cont), linewidth = 1) +
+    geom_vline(aes(xintercept = "2019 Q3"),
+               color = "red", linetype = "dashed", size = 0.8) +
+    scale_color_grey(start = 0.2, end = 0.8, name = "Treatment") +
+    theme_bw(base_size = 12) +
+    theme(
+        axis.text = element_text(size = 13),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.title = element_text(size = 16, face = "bold"),
+        panel.grid.minor = element_blank(),
+        panel.spacing = unit(1, "lines"),
+        strip.text = element_text(face = "bold", size = 12),
+        strip.background = element_rect(fill = "white"),
+        plot.title = element_text(size = 14, face = "bold", hjust = 0)
+    ) +
+    labs(
+        x = "Quarter",
+        y = "Mean Sales"
+    )
+
+# Mean sales difference by treatment group
+ggplot(data = trend_graph_sales) +
+    geom_line(aes(x = DATE, y = mean_sales_diff, color = as.factor(T_cont), group = T_cont), linewidth = 1) +
+    geom_vline(aes(xintercept = "2019 Q3"),
+               color = "red", linetype = "dashed", size = 0.8) +
+    scale_color_grey(start = 0.2, end = 0.8, name = "Treatment") +
+    theme_bw(base_size = 12) +
+    theme(
+        axis.text = element_text(size = 13),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.title = element_text(size = 16, face = "bold"),
+        panel.grid.minor = element_blank(),
+        panel.spacing = unit(1, "lines"),
+        strip.text = element_text(face = "bold", size = 12),
+        strip.background = element_rect(fill = "white"),
+        plot.title = element_text(size = 14, face = "bold", hjust = 0)
+    ) +
+    labs(
+        x = "Quarter",
+        y = "Mean Log Sales Difference (Year-over-Year)"
+    )
+
+```
 
 
 #### DiD on sales data
@@ -489,11 +563,13 @@ reg_data_eve <- reg_data_sales %>%
 mod_twfe <- feols(LOG_SALES_DIFF_4 ~ i(TimeTo_Q, T_, ref = -0.25) | DATE_factor + NAME_factor,
                   cluster = ~NAME_factor, data = reg_data_eve)
 
+mod_twfe <- feols(LOG_SALES_DIFF_4 ~ i(TimeTo_Q, T_cont, ref = -0.25) | DATE_factor + NAME_factor,
+                  cluster = ~NAME_factor, data = reg_data_eve)
+summary(mod_twfe)
 iplot(mod_twfe,
       xlab = "Time to treatment",
       main = "Event study: Treatment (TWFE)")
 
-summary(mod_twfe)
 
 ```
 
@@ -510,7 +586,7 @@ reg_data_sales <- reg_data_sales %>%
     mutate(
         T_cont = as.factor(T_cont)
     )  %>%
-    filter(DATE <=  as.yearqtr("2020 Q3"))
+    filter(DATE <=  as.yearqtr("2020 Q4"))
 
 print("------------")
 model <- feols(LOG_SALES_DIFF_4 ~ i(T_cont, POST_1, ref = 1) | NAME_factor + DATE_factor,
