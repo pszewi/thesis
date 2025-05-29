@@ -9,3 +9,4 @@ writing/*
 code/__pycache__
 .vscode
 .lintr
+feedback/*
