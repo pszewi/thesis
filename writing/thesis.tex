@@ -10,9 +10,11 @@
 \usepackage{wrapfig}
 \usepackage{caption}
 \usepackage{longtable}
+\usepackage{setspace}
 \usepackage[flushleft]{threeparttable}
 \usepackage{hyperref}
 \geometry{a4paper, margin=1in}
+\doublespacing{}
 \addbibresource{references.bib}
 \graphicspath{ {../images/output/} }
 
@@ -47,13 +49,13 @@ Your abstract goes here.
 In recent years, climate change has become an issue of a global importance. Policymakers, international 
 organizations as well as consumers have been growing more aware of the problems facing the world in the upcoming years. In turn, heightened awareness has led to more and more people becoming educated on the topic of sustainability and climate change prevention. This awareness has lead to a rapid development of sustainable finance and a creation of a large body of ESG investment funds. Companies, trying to answer the needs of consumers have reoriented their supply chains and started transitioning to more sustainable methods of production. At the same time, this structural shift in demand created an avenue for greenwashing. In this setting, some companies can choose to appear as sustainable through making statements or campaigns aimed at sustainable consumers/investors, while not carrying through with their promises. Recent theoretical literature suggests that there exist equilibria where it is optimal for companies to greenwash~\parencite{wu_bad_2020, cartellierCanInvestorsCurb2023}, as the investments in sustainability are largely unobserved. In sectors with large costs of the transition, this could potentially allow them to benefit from this shift in demand, while not bearing the costs. 
 
-This paper tries to answer the question: Is greenwashing a beneficial strategy for company performance in the presence of a positive sustainability demand shock? My approach consists of two steps.
+This paper tries to answer the question: Is greenwashing a beneficial strategy for company performance in the presence of a positive sustainability demand shock? My approach consists of two steps. Firstly, I collect and process the sustainability reports for a sample of public companies, for which such reports are available. After processing, the reports are used to create a Cheap-Talk-Index (CTI) that gauges the credibility of climate commitments made by companies \parencite{bingler_how_2024}. This index allows for measuring the likelihood of greenwashing following the contributions of~\cite{coen_are_2022}. Secondly, I try to estimate a causal response of cumulative abnormal returns (CAR) of companies stock prices' to greenwashing in presence of a demand shock to sustainability. Using the world-wide September 2019 strikes organized by Fridays For Future (20 \& 27 September 2019)\footnote{A series of 4500 strikes across over 150 countries on the last two Fridays of September 2019} and the occurrence of the ``Global Week for Future'', as the shock and the CTI as the treatment, I test whether the markets have responded differently to firms more likely to greenwash. I find that\ \dots
+%  the shock did not significantly impact the CAR of companies more likely to greenwash.The CAR showed no economically significant difference over the specified period.\ 
+This result can be explained by\ \dots.
 
-Firstly, I collect and process the sustainability reports for a sample of public companies, for which such reports are available. After processing, the reports are used to create a Cheap-Talk-Index (CTI) that gauges the credibility of climate commitments made by companies \parencite{bingler_how_2024}. This index allows for measuring the likelihood of greenwashing following the contributions of~\cite{coen_are_2022}.
-
-Secondly, I try to estimate a causal response of cumulative abnormal returns (CAR) of companies stock prices' to greenwashing in presence of a demand shock to sustainability. Using the release of the 2019 International Panel on Climate Change (IPCC) report titled ``Special Report on Climate Change and Land'' (8 August 2019) and the occurrence of the ``Global Week for Future'', a series of 4500 strikes across over 150 countries on the last two Fridays of September 2019, as the shock and the CTI as the treatment, I test whether the markets have responded to differently to firms more likely to greenwash. I find that the shock did not significantly impact the CAR of companies more likely to greenwash. The CAR showed no economically significant difference over the specified period.\ \textbf{This result can be explained by assumptions or by some other mechanism}.
-
-Finally, I use the same procedure to investigate the effects on sales of the abovementioned companies. I argue that companies trying to be perceived among investors as environmentally friendly, are likely to try to be perceived in the same way by their customers. Using the CTI, I test whether the sales of greenwashing companies have been substantially impacted following the shock. Results indicate that their clients did not change their approach to consumption following the summer of 2019.\ \textbf{This result can be explained by assumptions or by some other mechanism}. 
+Finally, I use the same procedure to investigate the effects on sales of the abovementioned companies. I argue that companies trying to be perceived among investors as environmentally friendly, are likely to try to be perceived in the same way by their customers. Using the CTI, I test whether the sales of greenwashing companies have been substantially impacted following the shock. Results indicate that\ \dots 
+% their clients did not change their approach to consumption following the summer of 2019.
+This result can be explained by\ \dots 
  
 
 This study is related to the \textbf{X} streams of literature. First, it contributes to the literature on market reactions to greenwashing, by showing how the market has re-priced the value of the greenwashing firms in the presence of a shock.  
@@ -65,103 +67,118 @@ Finally, it contributes to literature on the link between advertising and consum
 
 \section{Background}\label{sect:background}
 
-The year 2019 was an important year for climate change awareness as well as for climate change policy. Over the course of the year, popularity of the climate strikes had been rising, with the peak reaching reported over 4 million of people taking part in them across many countries in October 2019. Moreover, this year has been impacted by many droughts, hottest days and climactic events. In August 2019 the special IPCC report has been released talking about the impact of Climate Change on land use and land changes. 
+The year 2019 was an important year for climate change awareness as well as for climate change policy. The Fridays For Future (FFF) movement started in August 2018 by Greta Thunberg has been picking up in popularity following the release of a previous IPCC report on the commitments needed to stop the rising world temperatures. At the same time, 2019 witnessed many climate-related disasters. It was the second-hottest year since the start of the record keeping in 1880 \parencite{noaa2019global}. According to The Guardian, extreme events such as floods, droughts, storms and wildfires have accounted for more than \$100bn worth of damages \parencite{harvey2019climate}. As evidenced by the Figure~\ref{fig:news_trends}, 2019 marked a significant increase in new articles related to climate change compared to the previous years. While the overall number of new articles created by the New York Times has been in decline from 2012 until 2019, authors have been writing more articles revolving around climate change. Sustainability and Environment have also been more pronounced, however their temporary rise may be associated with the fact that more articles were written in general in 2020.  
 
-
-% argue how the release of IPCC IS DIFFERENT FROM THE STRIKES BECAUSE THEY ARE AN ACTION FROM INDIVIDUALS AND NOT JUST A STATEMENT FROM SCIENTIST
 
 % \vfill
-\begin{figure}[!h]
+\begin{figure}[t]
     \caption{Growth in New York Times Coverage by Topic}\label{fig:news_trends}
     \includegraphics[width=\textwidth]{nyt_articles.png}
     \captionsetup{font=footnotesize}
     \caption*{Number of new articles published per year (2010--2023). Red line indicates the year of the shock. Source: New York Times}
 \end{figure}
 
-As evidenced by the Figure~\ref{fig:news_trends}, climate change both have been gaining importance in the minds of the public in the past few years. While the overall number of new articles created by the New York Times has been in decline from 2012 until 2019, authors have been writing more articles revolving around climate change. Sustainability and Environment have also been more pronounced, however their temporary rise may be associated with the fac that more articles were written in general in 2020. 
+\begin{figure}[t]
+    \caption{Google Search Trends of ``Fridays For Future''}\label{fig:fff_trend}
+    \includegraphics[width=\textwidth]{fff_trend.png}
+    \captionsetup{font=footnotesize}
+    \caption*{Proportion of searches relative to the most searched. Red dots show major strikes organized my FFF.\@ These strikes happened on the following dates (from left to right): 15--03--2019, 20--09--2019, 27--09--2019, 29--11--2019. Source: Google Trends}
+\end{figure}
 
+The pressure exerted on policymakers culminated in September during a series of strikes titled ``Global Week for Future'' (23--27 September 2019), during which the United Nations Climate Action Summit (UNCAS) took place. In the prior and during that week, FFF organized two global strikes across +270 countries that were attended by 4 million (for both the 20--09--2019 and 27--09--2019 ones) according to the organizers \parencite{fffStrikeStats}. The number of participants as well as the interest were an order of magnitude larger than the previously organized events. Moreover, it was the first time when the youth movement was joined by adults with \citeauthor{watts2019climate} of The Guardian describing it as:
 
+\begin{quote}
+    \small
+    \textit{For the first time since the school strikes for climate began last year, young people called on adults to join them – and they were heard. Trade unions representing hundreds of millions of people around the world mobilised in support, employees left their workplaces, doctors and nurses marched and workers at firms like Amazon, Google and Facebook walked out to join the climate strikes.} \parencite{watts2019climate}
+\end{quote}
 
+As shown on the Figure~\ref{fig:fff_trend}, strikes related to that week attracted over twice as much attention online as any other strikes organized by FFF.\@ This effect has been amplified by speeches given by Greta Thunberg at the climate strike in New York City and at the UNCAS in which she motivated the strikers as well as attacked the governmental officials for not taking appropriate action on climate change \parencite{2019thunberg}.
+
+These events had an impact on financial markets. In a \citeyear{schusterStockPriceReactions2023} study,~\citeauthor{schusterStockPriceReactions2023} found that the FFF global climate strikes significantly affected the short-term stock performance of firms from the S\&P 500 and STOXX Europe 600 indices. They estimated a financial event study and find that the two global climate strikes in September 2019 generally hurt the performance of the companies in these indices.\footnote{Describe more of the study here}
+
+Overall, the action taken by the FFF grasped the imagination of the public with many people choosing to walk out onto the streets and support their causes. The events gathered news and online attention and can be said to have had an impact on the performance of companies in that period.\footnote{Describe here also the events that happened afterwards: the COP of that year (December) and the IPCC report that came out earlier}
 
 \newpage
 
 \section{Data}\label{sect:data}
 
-The data collected for the thesis comes from multiple sources. The ESG reports were scraped from the \href{https://responsibilityreports.com}{ResponsibilityReports.com}. The company characteristics, their stock price returns as well as their quarterly earnings have been extracted from the Refinitiv database. Furthermore, a measure of abnormal returns and a greenwashing indicator were constructed.
+\subsection{Cheap-Talk Indicator}
+
+The ESG reports were scraped from the \href{https://responsibilityreports.com}{ResponsibilityReports.com}. Additionally, the website allowed me to retrieve information on company headquarters location and the approximate number of employees. Table~\ref{tab:sust_reps} displays the number of reports available per year. As can be seen, the number of reports is non-homogenous across the years, as with time, communicating sustainability has become more important. As the analysis concerns the events of 2019, the scraped data was subset for companies reporting in 2018, to guarantee that the reports did not originate in response to the upcoming shock. 
 
 
-\subsection{Scraping}
-
-Scraping the \href{https://responsibilityreports.com}{ResponsibilityReports.com} website allowed me to collect company reports relating to ESG and CSR\@. Additionally, it also allowed me to retrieve information on company headquarters location and the approximate number of employees. Table\ref{tab:sust_reps} displays the number of reports available per year. As can be seen, the number of reports is non-homogenous across the years, as with time, communicating sustainability has become more important. 
+% ---------------------
+% TODO: verify whether to add it in here or whether the general method should be mentioned in the introduction
+% ---------------------
+% These reports were the primary choice of data for this study, as\footnote{More text follows here. Generally the next step is to describe what the sustainability reports contain and why are they useful, why I haven't chosen them instead of something else (e.g. ESG ratings), how they relate to my outcome variables.}
     
-% More text follows here. Generally the next step is to describe what the sustainability reports contain and why are they useful, why I haven't chosen them instead of something else, how they relate to my outcome variables.
-    
-\subsection{Greenwashing Indicator}
+Sustainability reports contain information meant for investors and stakeholders. They inform the reader on initiatives undertaken by the company to manage its impact on the environment, its production standards, as well as the climate risk a company is exposed to. To illustrate, \citeauthor{3m2018sustainability}'s 2018 Sustainability Report titled ``Improving Lives'' contains (among others) the following sections:  ``Our Values, Vision, and Strategies'', ``Enterprise Risk'', ``Environmental Management''.
 
-Sustainability reports contain information meant for investors and stakeholders. They inform the reader on initiatives undertaken by the company to manage its impact on the environment, its production standards, as well as the climate risk a company is exposed to. To illustrate, \citeauthor{3m2018sustainability}'s 2018 Sustainability Report titled ``Improving Lives'' contains the following sections:  ``Our Values, Vision, and 
-Strategies'', ``Enterprise Risk'', ``Environmental Management'' (non-exhaustive). 
+As these reports do not fall under the oversight of any institutions (unlike annual earnings reports), the companies issuing them, may overstate their environmental achievements and as such use them to appeal to investors/consumers rather than present unbiased information. In essence, these reports allow for the companies to manipulate the perception of their environmental efforts (or their lack). Therefore, they introduce the possibility of greenwashing and deception. 
 
-As these reports do not fall under the oversight of any institutions (unlike annual earnings reports), the companies issuing them, may overstate their environmental achievements and as such use them to appeal to investors/consumers rather than present unbiased information. This implies the possibility of greenwashing and deception introduced by companies, to manipulate the perception of stakeholders without bearing the cost. 
+To identify this phenomenon in relation to the environmental claims, the text was extracted from the reports. This has been done by using blocks contained in the PDF files to preserve the structure of the paragraphs.\footnote{By \textit{blocks}, I mean an object within the structure of a PDF file that usually determines the location of a paragraph on a page.} To further refine the data, each block has been classified as a paragraph, if it spanned at least 3 lines, contained at least 30 words and had at least one full stop. This has been done following the rule-based approach of \textcite{bingler_how_2024}. 
 
-To identify this phenomenon in relation to the environmental claims, the text was extracted from the reports. This has been done by using blocks contained in the PDF files to keep individual paragraphs separate.\ \textbf{Note: emphasize that only text was extracted, can't analyse tables}. To further refine the data, each block has been classified as a paragraph, if it spanned at least 3 lines, contained at least 30 words and had at least one full stop. This has been done following the rule-based approach of \parencite{bingler_how_2024}. 
+Using this data, I constructed the Climate Cheap-Talk Index ($CTI$) following the methods of \textcite{bingler_how_2024}. In this study, the authors utilize text from annual financial reports of a sample of companies to construct and train machine learning models that may be used to examine the level of cheap-talk in a given report. Their method consist of two steps. Firstly, they fine-tune an instance of the ClimateBert model developed by \textcite{wkbl2022climatebert} for classifying paragraphs as \textit{climate related}. Then, they train another instance of the same model to classify paragraphs as specific (containing specific commitments) and non-specific (containing only vague commitments).\footnote{For more information on the models, examples of the researchers' data, and general information regarding the construction of the $CTI$ see Appendix~\ref{app:data:cti}} The procedure that the authors used for training both of the models is described in \textcite{bingler_cheap_2022,bingler_how_2024}.
 
-Then, again following the approach of \citeauthor{bingler_how_2024}, the Climate Cheap-Talk Indicator ($CTI$) was constructed.\ \textbf{NOTE:\@ BRIEFLY DESCRIBE THE INS AND OUTS OF THE MODEL HERE.} This has been done in two steps. Firstly, a version of the \texttt{ClimateBert}$_{CTI}$ model fine-tuned for classifying paragraphs was used to determine whether a given paragraph is climate related or not. Then, another version of the \texttt{ClimateBert}$_{CTI}$ model, fine-tuned for classifying paragraphs as specific (containing specific commitments) and non-specific (containing only vague commitments) was used to determine the specificity of each paragraph in each document. Then, finally, the $CTI$ was constructed by using the formula:
+By applying their models to my data, I was able to classify the scraped reports according to their methodology and construct the $CTI$ by following their approach. Equation~\ref{eq:cti} presents the formula for the index:
 
 
-\begin{equation}
+% ---------------------------
+%   here I have some old descriptions 
+% ---------------------------
+%  Firstly, they use version of the ClimateBert$_{CTI}$ model fine-tuned for classifying paragraphs was used to determine whether a given paragraph is climate related or not. The model is a version of the ClimateBert model developed by \textcite{wkbl2022climatebert}, that the authors further trained using annual financial report data.
+%Then, another version of the ClimateBert$_{CTI}$ model, fine-tuned for classifying paragraphs as specific (containing specific commitments) and non-specific (containing only vague commitments), was used to determine the specificity of each paragraph in each document.
+
+
+\begin{equation}\label{eq:cti}
     CTI = \frac{CLIM_i \cap NONSPEC_i}{CLIM_{i}}
 \end{equation}
 
 Where for a sustainability report of company $i$, $CLIM_i$ represents the number of climate-related paragraphs, $NONSPEC_i$ represents the number of paragraphs containing specific commitments, and $CLIM_i \cap NONSPEC_i$ represents the intersection between the two. 
-This approach is motivated by the work of\ \cite{coen_are_2022}, which finds that companies are less likely to follow-up on their commitments if these are stated in a vague and non-specific manner. Therefore, the $CTI$, interpreted as a measure of non-specificity of companies climate commitments, is used as a proxy for greenwashing.\ \textbf{NOTE:\@ DESCRIBE THE LIMITATIONS OF THE APPROACH HERE --- NO WAY TO CONCRETELY DETERMINE GREENWASHING}
+This approach is motivated by the work of\ \cite{coen_are_2022}, which finds that companies are less likely to follow-up on their commitments if these are stated in a vague and non-specific manner. Therefore, the $CTI$, interpreted as a measure of non-specificity of companies climate commitments, is used as a proxy for greenwashing. However, it must be noted that this is only an approximation, as greenwashing itself usually cannot be observed, unless a given company is involved in a scandal related to it. Nonetheless, as investors and consumers act on the \textit{perceived} greenwashing of a company (as they also cannot observe it), this method was deemed as the best approximation available.\footnote{Include the arguments of the authors from the paper!!!}  
 
-% \subsubsection{Robustness}
+Finally, the $CTI$ was aggregated into quartiles, to create the final treatment-dose variable $D_i$. The aggregation was carried out for two reasons. Firstly, one could argue that investors/consumers would not see the difference in behaviour of two companies whose score is very close. Therefore, dividing the continuous variable into separate bins would resemble the reasoning of the agents more closely and reduce the noise in the estimation. Secondly, as the index itself is very sensitive to the number of climate related paragraphs, grouping the treatment variable again reduces noise. 
 
-% I think I should retrieve (somehow) and analyze the ESG ratings of the companies that I use to have an alternative description/robustness check on this issue (or at least ned to argue why ESG ratings are not reliable if I'm not including them/could also include this in the limitations)
 
 
 \subsection{Refinitiv}
 
-The Refinitiv dataset has been used to retrieve data on firms' characteristics, their price indices, quarterly earnings. Additionally, the regional indices (\textit{explain better, values for index funds/stock indices, i.e.\@ S\&P and stuff}) were retrieved in order to estimate the normal returns of each company. The characteristic variables include the stock exchange of the listing, country of incorporation, country of domicile, the company's sector and the company's industry. The price indices (defined as the value of the stock as a fraction of the initial listing price), were log-differenced to transform them into percentage changes. The same has been done for the quarterly earnings and for the values of regional stock indices.\ \textbf{Talk about how many periods retrieved for estimation of normal returns and for event window!!}.
+The Refinitiv dataset has been used to retrieve data on firms' characteristics, their price indices and their quarterly earnings. Moreover, it was also used to retrieve the prices for regional market indices (e.g.\ S\&P500, MSCI Europe, etc.) that were needed to estimate the normal returns for each company. The characteristic variables include the stock exchange of the listing, country of incorporation, country of domicile, the company's sector and the company's industry. The price indices (defined as the stock price expressed as a fraction of the initial listing price), were log-differenced to transform them into percentage changes. The same has been done for the quarterly earnings and for the values of regional stock indices. The data has been retrieved at weekly frequency for stock prices and at quarterly frequency for the earnings. Table~\ref{tab:data_freq} shows the total number of periods that were retrieved.
 
-\subsection{Abnormal Returns}
+% \subsubsection{Abnormal Returns}
 
-In order to plausibly estimate the effect of the treatment on stock returns, I needed to separate the effects of the market movement from the movement of the stock of the company itself. These abnormal returns were estimated following the market model approach outlined in\ \cite{mackinlayEventStudiesEconomics1997}. This approach relies on estimating the expected stock return by predicting it using the return of the whole market. As the sample contains companies from multiple continents which markets may differ, multiple stock indices were used. The companies were allocated to a geographical market index by their country of domicile. The allocation can be viewed in Table~\ref{tab:mrkt_ind} in the Appendix~\ref{app:data}. The model has been separately estimated for each company using observations that predate the estimation window of interest. Intervals used for estimation of data at each frequency is reported in Table~\ref{tab:data_freq}. Below I report the regression specification used for the estimation:
+In order to plausibly estimate the effect of the treatment on stock returns, I needed to separate the effects of the market movement from the movement of the stock of the company itself. These abnormal returns were estimated following the market model approach outlined in~\textcite{mackinlayEventStudiesEconomics1997}. This approach relies on estimating the expected stock return by predicting it using the return of the whole market. As the sample contains companies from multiple continents which markets may differ, each company was allocated to a geographical market index by their country of domicile. The allocation can be viewed in Table~\ref{tab:mrkt_ind} in the Appendix~\ref{app:data}. The model has been separately estimated for each company using observations that predate the estimation window of interest. Intervals that were used are reported in Table~\ref{tab:data_freq}. Below I report the regression specification used for the estimation:
 
 \begin{equation}\label{eq:reg_market_model}
     RN_{it} = \alpha_i + \beta_{i} RI_{mt} + \varepsilon_{it}
 \end{equation}
 
-Where, $RN_{it}$ is the return of the security $i$ at time $t$ predicted by the return of its geographical market $m$, where $RI_{mt}$ is the return of the said market. Finally, as this regression estimates the return of the security predicted by the return of the market, the abnormal return for $i$ in a given time period $t$ is given by the residual $\varepsilon_{it}$.
+Where, $RN_{it}$ is the return of the security $i$ at time $t$ predicted by the return of its geographical market $m$, $\alpha_i$ is the regression constant of for the company $i$, $RI_{mt}$ is the return of the said market, and $\varepsilon_{i,t}$ is the noise. Finally, as this regression estimates the return of the security predicted by the return of the market, the abnormal return for $i$ in a given time period $t$ is given by the residual $\varepsilon_{it}$.
 
 This type of modelling is sufficient for my use case, as per the work of~\citeauthor{mackinlayEventStudiesEconomics1997}, employing more sophisticated models (e.g.~factor models) yields limited improvement in studies that do not rely on within-group variation, such as within-sector variation.
 
-Moreover, the abnormal returns for each of the securities were later cumulatively summed to arrive at the Cumulative Abnormal Return (CAR). This was done, as aggregation across time is needed in order to draw useful inference from the results of the actual study (\textbf{Maybe describe in more detail --- if you're estimating the DiD on AR then it's meaningless}). 
+Moreover, the abnormal returns for each of the securities were later cumulatively summed to arrive at the Cumulative Abnormal Return (CAR). This was done, as aggregation across time is needed in order to draw useful inference from the results of the actual study. This results from the fact that estimating the average abnormal returns directly would not take into account the path of the data following treatment, but only the instantaneous effect of the treatment dose. 
 
 \subsection{Merging}
 
-The data on greenwashing has been merged with the stock indices. This has been a difficult process, as company names are often reported differently between different services. Multiple strategies were used to merge the data. Firstly, the data was merged on the names retrieved from the \href{https://responsibilityreports.com}{ResponsibilityReports.com} and the longest version of names available in the Refinitiv database.\@ \textbf{This resulted in \dots\ observations}. After that, the datasets were merged on the stock tickers conditional on being listed on the same exchange.\@ \textbf{This resulted in \dots\ observations}. Finally, the \dots\ (remaining strategy).\ \textbf{Unfortunately this has left \dots\ observations missing}. However, this can be safely assumed away, as only \dots\ companies were missing out of the \dots\ companies that posted the 2018, which will be used for analysis. Therefore, the resulting dataset has \dots\ companies. 
-
-\vspace{1cm}
-\textbf{Make a table showcasing how many companies are lost??}
-
+In the last step of the data preparation, the two datasets were merged. As this process was difficult and required multiple steps, its description is included in the Appendix~\ref{app:data:merging}. Overall, the final dataset contained 795 companies, with 57 being dropped due to inability to be merged.\footnote{I believe that the 57 is incorrect, I still need to resolve it. Note: I am yet to include descriptive statistics here}
 
 
 \section{Methodology}\label{sect:methodology}
 
 This section describes the methodology used in the attempt to estimate the causal effect of greenwashing on company performance.
-My initial approach was to use a classic Difference-in-Differences (DiD) methodology with multiple periods, however upon consideration I decided to implement a variation of DiD with multivalued treatments following \parencite{callawayDifferenceindifferencesContinuousTreatment2024}. This approach is motivated by the fact, that the market may react differently to firms that use more cheap talk in their communication. 
+My initial approach was to use a classic Difference-in-Differences (DiD) methodology with binary treatment, however upon consideration I decided to implement a variation of DiD with multivalued treatment following \textcite{callawayDifferenceindifferencesContinuousTreatment2024}. This approach is motivated by the fact, that the market may react differently to firms that use more cheap talk in their communication. This method also allows for estimation of experiments in settings without an untreated group, where the group with the lowest treatment-intensity is used as a comparison. 
 
 Given the use of newly developed methods in this study, I chose to contrast their methodology with the well-understood traditional DiD framework to better illustrate how this approach can improve upon the default approach. Therefore, the methodology is divided into three parts. Firstly, I will cover the conventional difference-in-differences design. Then I will contrast it with the implemented design using multivalued treatment. Finally, I will describe the differences in the taken approach when estimating the effect on sales of companies instead of stock prices.
 
 
 \subsection{Default Difference-in-Differences}
 
-Conventional Difference-in-Differences studies try to elicit the causal effect of a policy by the units across time and then to each other (\textbf{reword this nicely}). In order to separate the causal effect, they require two main assumptions explained below\footnote{A formal treatment of these assumptions can be found in Appendix~\ref{app:models:assumptions}}. 
+Conventional Difference-in-Differences studies aim to estimate the causal effect of a policy by comparing units over time and then comparing those changes across groups. In order to separate the causal effect, they require two main assumptions explained below.\footnote{A formal treatment of these assumptions can be found in Appendix~\ref{app:models:assumptions}} 
 
-\textbf{Parallel trends (PT) assumption}, which requires that in the absence of treatment, the outcomes of the units assigned to the treatment group would have evolved in the same way (in terms of the trend) as the outcomes of the units that were not assigned to treatment. In my example, it implies that in the absence of cheap-talk of a company (i.e.\ greenwashing), their stock price/sales would have evolved similarly to those that do not engage in cheap talk currently. 
+\textbf{Parallel trends (PT) assumption}, which requires that in the absence of treatment, the outcomes of the units assigned to the treatment group would have evolved in the same way (in terms of the trend) as the outcomes of the units that were not assigned to treatment. In my example, it implies that in the absence of cheap-talk of a company, their stock price/sales would have evolved in the same way as the stock price/sales of those that do not engage in cheap talk. 
 
-\textbf{No anticipation assumption}, imposes that the individuals do not anticipate the treatment. In my example, it implies that the market does not anticipate the outcome of the IPCC report conference and therefore the investors do not act on their expectation in advance of the event.\ \textit{In other words, you being treated does not matter for the outcome in advance of the treatment --- think whether this could be rewritten this way.}
+\textbf{No-anticipation assumption}, imposes that the individuals do not act in anticipation of the treatment. In my example, it implies that before the shock, the investors do not expect the greenwashing firms to perform differently from non-greenwashing firms after the shock, and therefore choose not to adjust their portfolios in advance of it. In other words, belonging to the treatment or the control group should not matter for the outcomes of the companies before the climate strikes shock.
 
 Under these two assumptions and an additional assumption on independent sampling, the treatment effect can be recovered using the following regression specification utilizing two-way-fixed-effects (TWFE):
 
@@ -169,21 +186,71 @@ Under these two assumptions and an additional assumption on independent sampling
     Y_{i,t} = \alpha_i + \Phi_t + \beta^{twfe} D_{i} \cdot Post_{t} + \varepsilon_{i,t}
 \end{equation}
 
-Where $Y_{it}$ is the outcome variable, $\alpha_i$ is the entity fixed effect, $\Phi_t$ is the time fixed effect, $D_i$ is the treatment dummy, $Post_t$ is the period dummy and $\beta^{twfe}$ recovers the causal effect. 
+Where $Y_{it}$ is the outcome variable, $\alpha_i$ is the entity fixed effect, $\Phi_t$ is the time fixed effect, $D_i$ is the binary treatment dummy, $Post_t$ is the post-treatment period dummy. In this setting, $\beta^{twfe}$ recovers the average treatment effect.\footnote{Note: Cite studies that mention problems with TWFE estimators?} 
 
-Although the interpretation of this treatment effect has been well described, it is not useful when analysing cases with multiple treatment doses \parencite{callawayDifferenceindifferencesContinuousTreatment2024} Therefore, in the following section I describe the methodology of an adjusted framework.
+Although the interpretation of this treatment effect has been well described, it is not useful when analysing cases with multiple treatment doses, as it can be shown that the TWFE parameter becomes a weighted average of dose-$ATT$'s, with weights that deprive this parameter of its causal interpretation \parencite{callawayDifferenceindifferencesContinuousTreatment2024}. Therefore, in the following section, I describe the methodology of an adjusted framework.
 
 \subsection{Multivalued Difference-in-Differences}
 
+In order to incorporate the multivalued treatment into my study, I implemented the framework developed by~\textcite{callawayDifferenceindifferencesContinuousTreatment2024}. This is not the only approach present in the literature (see~\cite{dechaisemartinDifferenceinDifferenceEstimatorsContinuous2024}), however I deemed it the most suitable based on the required setting. This method was developed in the context of estimating the average treatment effect in settings where there is no treatment in pre-event periods.\@ \citeauthor{dechaisemartinDifferenceinDifferenceEstimatorsContinuous2024} differs in this regard, as it relies on treatment being positive in the periods prior to the event, and it requires a change in intensity in the event-period, to retrieve the average treatment effect. As in my case the treatment is fixed for a unit, but varies in intensity between them, this requires the~\textcite{callawayDifferenceindifferencesContinuousTreatment2024} approach. It proposes the use of a multivalued treatment, where the single dummy $D_i$ can be replaced with multiple dummies $D_{i,d} \in \mathcal{D}$ that show that the unit $i$ has received the dose $d$, where $d$ refers to the ``bins'' that signify different treatment intensity. Then, this approach compares the dose of a group $D_{i,d}$, to the untreated group $D_{i,0}$.
+
+This framework shares the no-anticipation and the independent sampling assumptions with the conventional DiD literature, however the differences arise in the parallel-trends assumption. In this setting, the traditional PT assumption allows for the estimation of each of the individual intensity parameters (i.e. $ATT$ for each treatment is still recovered), however, a stronger assumption is needed to compare the effects across these estimators. Therefore, this assumption is required in order to assess the effect of higher greenwashing intensity of a firm.  
+
+The \textbf{Strong Parallel Trends (SPD) assumption} requires that the average evolution of  outcomes for the entire treated population if all experienced dose $d$ is equal to the path of outcomes that dose group $d$ actually experienced \parencite{callawayDifferenceindifferencesContinuousTreatment2024}. This assumption is called the strong parallel trends, as it implies that the average response to the treatment would be the same for all dose groups, if they were to receive (for example) a lower dose $d$. It is more restrictive than the regular parallel trends assumption, and the researchers themselves argue that it may be unreasonable in many cases due to treatment effect heterogeneity of different groups. However, under this assumption, one can estimate the average causal response parameter, which the researchers denote as $ACRT$. They show that the $ACRT$ is equal to the difference in average potential outcomes between dose level $d$ and the next lowest dose, scaled by the difference between these two doses. 
+
+Furthermore, the authors extend this framework to allow for estimation of treatment effects, where there are no untreated units, implying a setting where all dose-groups are compared to the lowest-dose group. While in the case with an untreated group the $ATT$ estimates the effect of switching from no treatment to a treatment of dose $d$, they show that in this case, the $ATT$ compares the change from low-intensity treatment to high intensity treatment. This introduces a selection bias which cannot be solved with a standard parallel trends assumption, and therefore calls for the use of the strong parallel trends. Due to the fact that in my setting there are no explicitly untreated companies, but only companies that are in the lowest quartile of the CTI index, this assumption is required for the whole estimation process.
+
+In order to retrieve the causal effect, I estimate the following multivalued specification:
+
+\begin{equation}
+    Y_{i,t} = \alpha_i + \phi_t + \sum_{d=2}^{4} \beta_d \cdot 1\{D_{i,d}=d\}\cdot Post_t + \varepsilon_{i,t}
+\end{equation}
+
+Where $Y_{i,t}$ is the outcome variable, $\alpha_i$ are the unit fixed effects, $\phi_i$ are the time fixed effects, $1\{D_{i}=d\}$ is a dummy variable equal to $1$ if the unit $i$ belongs to the treatment group $d$, $Post_t$ is the dummy variable equal to one in the post-treatment period, and $\varepsilon_{i,t}$ is the standard normal noise.\footnote{Note: forgot to talk about the event window} Note that $d=1$ is omitted, as the regression is estimated relative to the lowest dose group. In this specification, each $\beta_d$ estimates the difference between $ATT(d)$ and the $ATT(d_L)$, which is average difference in outcomes when treated with $d$ instead of $d_L$. Formally, it can be expressed as: 
+\begin{equation}
+    \beta_d = E[Y|D = d] - E[Y |D = d_L] = ATT(d) - ATT(d_L) = E[Y_{t=2}(d) - Y_{t=2}(d_L)]
+\end{equation}
+This is a common approach adopted by many applied researchers \parencite{acemoglu_finkelstein_medicare,deschenes_greenstone_clim_change}. While this approach does not summarize the effect of the policy with one parameter, in the same way as the $\beta^{twfe}$ does, \citeauthor{callawayDifferenceindifferencesContinuousTreatment2024} argue for this as their preferred specification. According to their study, estimating these parameters separately omits the weighting problem faced by specifications such as:
+
+\begin{equation}
+    Y_{i,t} = \alpha_i + \phi_t +  \beta^{twfe} Post_t \cdot (d_j - d_{j-1}) + \varepsilon_{i,t}
+\end{equation}
+
+Where the $\beta^{twfe}$ tries to aggregate the dose-specific $ATT$'s into a single number. They propose their own aggregation scheme that estimates\ \dots\footnote{Still need to figure out how to aggregate them into a single summary ATT/ACRT because they assume that there are untreated values present in this framework, but this is not true in mine!}
+
+% \Delta Y_i = \beta_{0} + \sum_{T=1}^{4} \beta_T \cdot 1\{D_{i}=T\}\cdot Post_t + \varepsilon_{i,t}
 \subsection{Validity of Assumptions --- Stock Prices}
 
+The chosen framework requires no-anticipation and the strong parallel trends assumptions. With respect to the SPT, this assumption may be concerning, as in the same way as in \textcite{koenigImpulsePurchasesGun2023}, the companies self-select into being treated. To alleviate this concern, Figure~\ref{fig:stock_trend} shows that the firms stock prices followed similar paths no matter their treatment assignment.
+% \footnote{Expand more your description of the picture} 
+Furthermore, an event study is run in the next section to evaluate the possibility of pre-trends. However, it has to be noted that the authors of \textcite{callawayDifferenceindifferencesContinuousTreatment2024} state that this method of evaluating the existence of pre-trends has low power, and therefore the lack of significance within the pre-trends does not necessarily imply that they actually do not exist. Nonetheless, the event study is estimated as per the standard practice.
+With respect to the no-anticipation assumption, concerns are more pronounced. In their event study, \textcite{schusterStockPriceReactions2023} found evidence of anticipation of the stock market within a period of 20 days prior to the FFF strikes. In order to alleviate this concern, an analysis is performed with the shock date being shifted to multiple different dates preceding the shock.
+
+\begin{figure}[t]
+    \caption{Mean Cumulative Abnormal Return (Daily)}\label{fig:stock_trend}
+    \centering
+    \includegraphics[width=\textwidth]{stock_d_trend.png}
+    \captionsetup{font=footnotesize}
+    \caption*{Treatment Groups indicated with numbers from (lowest dose) 1--4 (highest dose). Red line indicates the first Fridays For Future climate strike during the Global Week For Future. Source: Refinitiv}
+\end{figure}
+
 \subsection{Validity of Assumptions --- Sales}
+
+The argument with respect to the sales data follows similar reasoning, however seems to be less plagued by the necessary assumptions. The relative lack of interest in climate change and sustainability seems to validate the fact that there should be no differences prior to the shock in the quarterly sales of treated and untreated companies. Therefore, as long as the treatment is evenly distributed across different firms (Figure~\ref{fig:sales_trend}), the SPT assumption should hold. Nonetheless, it is analysed with an event study. With regard to the no-anticipation assumption, one could argue that consumers may need more time to re-orient their spending to more sustainable sources, following such an increase in interest. In such case they would be less likely to adjust their consumption prior to the FFF climate strikes, assuming that they would have heard about these protest before they happened. Therefore, in this case the assumptions seem more probable. On the other hand, one must acknowledge, that in this scheme, the CTI works only as a proxy to the belief of consumers about the greenwashing-intensity of the companies. This is not an obvious assumption, as firms may try to be more (or less) deceitful to consumers than to investors. However, given the lack of public information on marketing spending in relation to ESG, it is reasonable to assume that firms communicate similarly with both consumers and investors, and therefore that their ESG reports would reflect their sustainability-oriented marketing. 
+
+\begin{figure}[t]
+    \caption{Year-over-Year Change in Quarterly Sales}\label{fig:sales_trend}
+    \centering
+    \includegraphics[width=\textwidth]{sales_trend.png}
+    \captionsetup{font=footnotesize}
+    \caption*{Treatment Groups indicated with numbers from (lowest dose) 1--4 (highest dose). Red line indicates the quarter which witnessed the Global Week For Future. Source: Refinitiv}
+\end{figure}
 
 
 \newpage
 
 \section{Results}\label{sect:results}
-Your results go here.
+Results go here.
 
 
 
@@ -196,6 +263,10 @@ List of things to add to the discussion:
 
 \end{itemize}
 
+% ---------------------------------------------------------------------------------------------------------
+% ---------------------------------------------------------------------------------------------------------
+% ---------------------------------------------------------------------------------------------------------
+
 \pagebreak
 \printbibliography{}
 \pagebreak
@@ -205,7 +276,7 @@ List of things to add to the discussion:
 
 \textbf{ADD SOURCES TO ALL OF THE TABLES + ADD GENERAL NOTES SO THAT THEY ARE SELF-EXPLANATORY}
 
-
+\subsection{Tables}
 \small
 \centering
 
@@ -234,37 +305,37 @@ List of things to add to the discussion:
         \end{tabular}
 \end{table}
 
-% \pagebreak
+\pagebreak
 
-% \begin{sidewaystable}
-% \caption{Sample Composition}
-% \footnotesize{} % Reduce font size
-% \setlength{\tabcolsep}{3pt} % Reduce column spacing
-% \begin{tabular}{lccc|lccc|lccc}
-%     \toprule
-%     \multicolumn{4}{c|}{\textbf{ICB Industry}} & \multicolumn{4}{c|}{\textbf{Number of Employees}} & \multicolumn{4}{c}{\textbf{Country of Domicile}} \\
-%     \cmidrule(lr){1-4} \cmidrule(lr){5-8} \cmidrule(lr){9-12}
-%     Industry & Total & Treated & Control & Employees & Total & Treated & Control & Country & Total & Treated & Control \\
-%     \midrule
-%     Industrials & 120 (19\%) & 59 (18\%) & 61 (19\%) & 10,000+ & 487 (62\%) & 250 (63\%) & 237 (61\%) & United States & 376 (59\%) & 164 (51\%) & 212 (66\%) \\
-%     Consumer Discretionary & 99 (15\%) & 30 (9.4\%) & 69 (21\%) & 1001--5000 & 134 (17\%) & 70 (18\%) & 64 (16\%) & United Kingdom & 64 (10\%) & 38 (12\%) & 26 (8.1\%) \\
-%     Financials & 87 (14\%) & 65 (20\%) & 22 (6.9\%) & 5001--10,000 & 120 (15\%) & 54 (14\%) & 66 (17\%) & Canada & 55 (8.6\%) & 30 (9.4\%) & 25 (7.8\%) \\
-%     Basic Materials & 83 (13\%) & 347 (15\%) & 36 (11\%) & 201--500 & 20 (2.5\%) & 10 (2.5\%) & 10 (2.6\%) & Australia & 48 (7.5\%) & 31 (9.7\%) & 17 (5.3\%) \\
-%     Consumer Staples & 57 (8.9\%) & 20 (6.3\%) & 37 (12\%) & 501--1000 & 13 (1.6\%) & 5 (1.3\%) & 8 (2.1\%) & Other & 97 (15\%) & 56 (17\%) & 41 (12\%) \\
-%     Technology & 52 (8.1\%) & 36 (11\%) & 16 (5.0\%) & 11--50 & 8 (1.0\%) & 5 (1.3\%) & 3 (0.8\%) & Unknown & 155 & 84 & 71 \\
-%     Utilities & 47 (7.3\%) & 10 (3.1\%) & 37 (12\%) & 51--200 & 6 (0.8\%) & 4 (1.0\%) & 2 (0.5\%) & & & & \\
-%     Health Care & 46 (7.2\%) & 28 (8.8\%) & 18 (5.6\%) & 1--10 & 1 (0.1\%) & 1 (0.3\%) & 0 (0\%) & & & & \\
-%     Telecommunications & 20 (3.1\%) & 14 (4.4\%) & 6 (1.9\%) & Unknown & 6 & 4 & 2 & & & & \\
-%     Energy & 17 (2.7\%) & 7 (2.2\%) & 10 (3.1\%) & & & & & & & & \\
-%     Real Estate & 12 (1.9\%) & 3 (0.9\%) & 9 (2.8\%) & & & & & & & & \\
-%     Unknown & 155 & 84 & 71 & & & & & & & & \\
-%     \midrule
-%     Total & N = 795 & N = 403 & N = 392 & Total & N = 795 & N = 403 & N = 392 & Total & N = 795 & N = 403 & N = 392 \\
-%     \bottomrule
-% \end{tabular}\label{tab:sample_composition}
-% \end{sidewaystable}
+\begin{sidewaystable}
+\caption{Sample Composition}\label{tab:balanced_panel}
+\footnotesize{} % Reduce font size
+\setlength{\tabcolsep}{3pt} % Reduce column spacing
+\begin{tabular}{lccc|lccc|lccc}
+    \toprule
+    \multicolumn{4}{c|}{\textbf{ICB Industry}} & \multicolumn{4}{c|}{\textbf{Number of Employees}} & \multicolumn{4}{c}{\textbf{Country of Domicile}} \\
+    \cmidrule(lr){1-4} \cmidrule(lr){5-8} \cmidrule(lr){9-12}
+    Industry & Total & Treated & Control & Employees & Total & Treated & Control & Country & Total & Treated & Control \\
+    \midrule
+    Industrials & 120 (19\%) & 59 (18\%) & 61 (19\%) & 10,000+ & 487 (62\%) & 250 (63\%) & 237 (61\%) & United States & 376 (59\%) & 164 (51\%) & 212 (66\%) \\
+    Consumer Discretionary & 99 (15\%) & 30 (9.4\%) & 69 (21\%) & 1001--5000 & 134 (17\%) & 70 (18\%) & 64 (16\%) & United Kingdom & 64 (10\%) & 38 (12\%) & 26 (8.1\%) \\
+    Financials & 87 (14\%) & 65 (20\%) & 22 (6.9\%) & 5001--10,000 & 120 (15\%) & 54 (14\%) & 66 (17\%) & Canada & 55 (8.6\%) & 30 (9.4\%) & 25 (7.8\%) \\
+    Basic Materials & 83 (13\%) & 347 (15\%) & 36 (11\%) & 201--500 & 20 (2.5\%) & 10 (2.5\%) & 10 (2.6\%) & Australia & 48 (7.5\%) & 31 (9.7\%) & 17 (5.3\%) \\
+    Consumer Staples & 57 (8.9\%) & 20 (6.3\%) & 37 (12\%) & 501--1000 & 13 (1.6\%) & 5 (1.3\%) & 8 (2.1\%) & Other & 97 (15\%) & 56 (17\%) & 41 (12\%) \\
+    Technology & 52 (8.1\%) & 36 (11\%) & 16 (5.0\%) & 11--50 & 8 (1.0\%) & 5 (1.3\%) & 3 (0.8\%) & Unknown & 155 & 84 & 71 \\
+    Utilities & 47 (7.3\%) & 10 (3.1\%) & 37 (12\%) & 51--200 & 6 (0.8\%) & 4 (1.0\%) & 2 (0.5\%) & & & & \\
+    Health Care & 46 (7.2\%) & 28 (8.8\%) & 18 (5.6\%) & 1--10 & 1 (0.1\%) & 1 (0.3\%) & 0 (0\%) & & & & \\
+    Telecommunications & 20 (3.1\%) & 14 (4.4\%) & 6 (1.9\%) & Unknown & 6 & 4 & 2 & & & & \\
+    Energy & 17 (2.7\%) & 7 (2.2\%) & 10 (3.1\%) & & & & & & & & \\
+    Real Estate & 12 (1.9\%) & 3 (0.9\%) & 9 (2.8\%) & & & & & & & & \\
+    Unknown & 155 & 84 & 71 & & & & & & & & \\
+    \midrule
+    Total & N = 795 & N = 403 & N = 392 & Total & N = 795 & N = 403 & N = 392 & Total & N = 795 & N = 403 & N = 392 \\
+    \bottomrule
+\end{tabular}\label{tab:sample_composition}
+\end{sidewaystable}
 
-% \pagebreak
+\pagebreak
 
 
 
@@ -358,22 +429,34 @@ List of things to add to the discussion:
         \toprule
         Frequency & Normal Returns Estimation & Event Window \\
         \midrule
-        Monthly & 2014--01--01 --- 2018--05--31 & 2018--06--01 --- yyyy---mm---dd \\ 
+        % Monthly & 2014--01--01 --- 2018--05--31 & 2018--06--01 --- yyyy---mm---dd \\ 
         Weekly & 2016--01--01 --- 2019--06--30 & 2019--07--01 --- yyyy---mm---dd \\
-        Daily & 2019--01--01 --- 2019--07--31 & 2019--08--01 --- 2019--08--xx\\
+        % Daily & 2019--01--01 --- 2019--07--31 & 2019--08--01 --- 2019--08--xx\\
         Quarterly (Sales) && \\ 
         \bottomrule
     \end{tabular}
     \begin{tablenotes}
         \footnotesize
         \item \textbf{NOTE:\@ THINK WHETHER TO INCLUDE NUMBER OF PERIODS OF ESTIMATION, THINK WHETHER THAT SHOULD BE SYMMETRICAL FOR EACH OF THE FREQUENCIES}
-      \end{tablenotes}
+    \end{tablenotes}
 \end{table}
-
 
 \newpage
 \normalsize
 \raggedright{}
+
+\subsection{Cheap-Talk Index}\label{app:data:cti}
+
+The models for estimation were retrieved from\ \dots
+
+The table below presents multiple examples of data classified by the researchers in training the model:\ \dots 
+
+Reports that contained less than 3 climate related paragraphs were dropped due to having to little data, which was prone to producing outliers.
+
+\subsection{Merging}\label{app:data:merging}
+
+The merging of the data was a difficult process, as company names are often reported differently between different services. Multiple strategies were used to merge the data. Firstly, the data was merged on the names retrieved from the \href{https://responsibilityreports.com}{ResponsibilityReports.com} and the longest version of names available in the Refinitiv database.\@ \textbf{This resulted in \dots\ observations}. After that, the datasets were merged on the stock tickers conditional on being listed on the same exchange.\@ \textbf{This resulted in \dots\ observations}. Finally, the remaining companies were merged using fuzzy matching.\ \textbf{Unfortunately this has left \dots\ observations missing}.
+
 \section{Models}\label{app:models}
 
 \subsection{Formal assumptions}\label{app:models:assumptions}
