@@ -4,6 +4,7 @@ images
 *.pdf
 *.docx
 writing/* 
+!writing/thesis.pdf
 !writing/thesis.tex
 !writing/titlepage.tex
 code/__pycache__
