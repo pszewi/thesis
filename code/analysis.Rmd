@@ -64,6 +64,7 @@ library(stringr)
 library(grid)
 library(gridExtra)
 library(zoo)
+library(stargazer)
 ```
 
 ## User-defined functions
@@ -134,6 +135,30 @@ eve_by_t <- function(object, t_group, event_date, daily = FALSE, qtr = FALSE) {
     p
 }
 
+get_acrt <- function(feols_obj){
+coefs <- as.data.frame(feols_obj$coeftable)
+coefs$doses <- unique(as.numeric(str_extract(rownames(feols_obj$coeftable), "(?<=T_cont::)\\d")))
+coefs$ACRT <- NA
+coefs$ACRT_se <- NA
+coefs$ACRT_se <- NA
+coefs$ACRT_t.val <- NA
+coefs$ACRT_p.val <- NA
+dof <- feols_obj$fixef_sizes[1] - 1
+
+for(i in c(2:nrow(coefs))){
+    est_diff <- coefs$Estimate[i] - coefs$Estimate[(i - 1)]
+    vcov_mat <- vcov(feols_obj)
+    varr_diff <- vcov_mat[i, i] + vcov_mat[(i - 1), (i - 1)] - (2 * vcov_mat[i, (i - 1)])
+    coefs$ACRT[i] <- est_diff
+    coefs$ACRT_se[i]  <- sqrt(varr_diff)
+    coefs$ACRT_t.val[i] <- (coefs$ACRT[i] / coefs$ACRT_se[i])
+    coefs$ACRT_p.val[i] <- 2 * pt(abs(coefs$ACRT_t.val[i]), df = dof, lower.tail = FALSE)
+
+}
+
+coefs %>% select(ACRT, ACRT_se, ACRT_t.val, ACRT_p.val) %>% rename('Std. Error' = ACRT_se, 't value' = ACRT_t.val, 'Pr(>|t|)' = ACRT_p.val)
+}
+
 ```
 
 
@@ -144,19 +169,29 @@ trends <- read_excel("data/nyt_query.xlsx")
 
 trends <- trends %>%
     group_by(Query) %>%
-    mutate(new_art = num - lag(num),
-           log_new_art = log(new_art),
-           log_diff = log_new_art - lag(log_new_art)) %>%
+    mutate(new_art = num - lag(num)) %>%
     ungroup() %>%
     mutate(Date = as.Date(trends$Date))  %>%
     filter(Date > as.Date("2010-01-01"))
 
-# View(trends)
+
+# making shares as david requested
+trends_total <- trends %>%
+    filter(Query == "Total") %>%
+    select(Year, new_art) %>%
+    rename("new_art_total" = new_art)
+
+trends <- trends %>%
+    merge(trends_total, by = "Year", all.x = TRUE) %>%
+    filter(Query != "Total") %>%
+    mutate(num_share = (new_art / new_art_total))
+
 
 ggplot(data = trends) +
-    geom_line(aes(x = Year, y = new_art/1000), linewidth = 0.7) +
-    facet_wrap(~Query, scales = "free_y", ncol = 2) +
+    geom_line(aes(x = Year, y = num_share), linewidth = 0.7) +
+    facet_wrap(~Query, scales = "free_y", ncol = 3) +
     scale_x_continuous(breaks = seq(2010, 2023, 2)) +
+    scale_y_continuous(labels = scales::percent) +
     geom_vline(aes(xintercept = 2019),
                color = "red", linetype = "dashed", size = 0.7) +
     theme_bw(base_size = 12) +
@@ -180,26 +215,12 @@ ggplot(data = trends) +
         # title = "Growth in New York Times Coverage by Topic",
         # subtitle = "Number of new articles published per year (2010-2023)",
         x = "Year",
-        y = "New Articles (thousands)",
+        y = "Share of New Articles",
         # caption = "Source: New York Times"
     )
 
-ggsave("images/output/nyt_articles.pdf", height=6, width=8)
 
-# ggplot(data = trends) +
-#     geom_line(aes(x = Year, y = log_diff), linewidth = 1) +
-#     facet_wrap(~Query, scales = "free") +
-#     scale_x_continuous(breaks = seq(2008, 2023, 1)) +
-#     geom_vline(aes(xintercept = 2019),
-#                color = "red", linetype = "dashed", size = 1) +
-#     theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
-#     labs(
-#         title = "Change in new New York Times articles, per topic",
-#         x = "Year",
-#         y = "\u0394 in new articles",
-#         caption = "Source: New York Times"
-#     )
-
+ggsave("images/output/nyt_articles.pdf", height=5.5, width=11)
 ```
 
 ## Google trends data
@@ -373,6 +394,8 @@ reg_data_d <- merge(company_characteristics_2018, data_abnormal_returns_d, by = 
         ABN_RET_LOG = STOCK_LOG_RETURN - NORMAL_RETURN,
         # POST_test = ifelse((DATE >= as.Date("2019-08-15")) & (DATE <= as.Date("2019-09-10'")), 1, 0),
         POST_1 = ifelse(DATE >= as.Date("2019-09-20"), 1, 0),
+        POST_rb_5 = ifelse(DATE >= as.Date("2019-09-15"), 1, 0),
+        POST_rb_10 = ifelse(DATE >= as.Date("2019-09-10"), 1, 0),
         DATE = as.Date(DATE),
         DATE_factor = factor(DATE),
         NAME_factor = factor(NAME),
@@ -432,15 +455,33 @@ ggsave("images/output/stock_d_trend.pdf", height=6, width=8)
 ```
 
 ### DiD
-```{r, did_d}
+```{r, did_stock}
 
-print("------------")
-model <- feols(CAR ~  i(T_cont, POST_1, ref = 1) | NAME_factor + DATE_factor,
-               data = reg_data_d, cluster = ~ NAME_factor)
-summary(model)
+did_stock <- feols(CAR ~  i(T_cont, POST_1, ref = 1) | NAME_factor + DATE_factor,
+               data = reg_data_d, cluster = ~NAME_factor)
+summary(did_stock)
+
+# -------- estimating acrts
+acrt_did_stock <- get_acrt(did_stock)
 
 ```
 
+
+### DiD for robustness 
+
+```{r, did_stock_robustness}
+
+# ------------ 5 days before
+did_stock_rb_5 <- feols(CAR ~  i(T_cont, POST_rb_5, ref = 1) | NAME_factor + DATE_factor,
+               data = reg_data_d, cluster = ~ NAME_factor)
+summary(did_stock_rb_5)
+
+
+# ------------ 10 days before
+did_stock_rb_10 <- feols(CAR ~  i(T_cont, POST_rb_10, ref = 1) | NAME_factor + DATE_factor,
+               data = reg_data_d, cluster = ~ NAME_factor)
+summary(did_stock_rb_10)
+```
 
 ### Event study regression
 ```{r, event_study_d}
@@ -498,7 +539,7 @@ reg_data_sales <- merge(company_characteristics_2018, data_sales, by = "TYPE") %
 
 ```
 
-### Trend evolution per group
+### Trend evolution per gro %>%up
 
 ```{r, trend_evo_sales}
 
@@ -541,14 +582,19 @@ ggsave("images/output/sales_trend.pdf", height=6, width=8)
 ### DiD on sales data
 ```{r, did_sales}
 
-print("------------")
-model <- feols(LOG_SALES_DIFF_4 ~ i(T_cont, POST_1, ref = 1) | NAME_factor + DATE_factor,
+did_sales <- feols(LOG_SALES_DIFF_4 ~ i(T_cont, POST_1, ref = 1) | NAME_factor + DATE_factor,
                data = reg_data_sales, cluster = ~ NAME_factor)
-summary(model)
+summary(did_sales)
+
+
+
+# -------- estimating acrts
+acrt_did_sales <- get_acrt(did_sales)
 ```
 
 
 ### Event Study - sales
+
 ```{r, sales_eve}
 event_Q <- as.yearqtr("2019 Q3") # nolint
 
@@ -577,6 +623,19 @@ ggsave("images/output/sales_eve_4.pdf", sales_eve_4, height = 4, width = 8)
 
 ```
 
+## Making summary tables for latex
+
+```{r, sum_tbl}
+# main table
+etable(did_stock, did_sales, style.tex = style.tex("aer"), tex = TRUE)
+
+
+# testing the no-anticipation assumption 
+etable(did_stock_rb_5, did_stock_rb_10, style.tex = style.tex("aer"), tex = TRUE)
+
+```
+
+## Other 
 If a company makes specific claims in their reports they would probably make them in marketing - better perceived by consumers?
 Think about different justifications, e.g. reports look at the past years, 
 companies make tv commercials that can include sustainability information
