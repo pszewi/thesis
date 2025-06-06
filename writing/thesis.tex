@@ -47,7 +47,7 @@ Your abstract goes here.
 \section{Introduction}\label{sect:introduction}
 
 In recent years, climate change has become an issue of a global importance. Policymakers, international 
-organizations as well as consumers have been growing more aware of the problems facing the world in the upcoming years. In turn, heightened awareness has led to more and more people becoming educated on the topic of sustainability and climate change prevention. This awareness has lead to a rapid development of sustainable finance and a creation of a large body of ESG investment funds. Companies, trying to answer the needs of consumers have reoriented their supply chains and started transitioning to more sustainable methods of production. At the same time, this structural shift in demand created an avenue for greenwashing. In this setting, some companies can choose to appear as sustainable through making statements or campaigns aimed at sustainable consumers/investors, while not carrying through with their promises. Recent theoretical literature suggests that there exist equilibria where it is optimal for companies to greenwash~\parencite{wu_bad_2020, cartellierCanInvestorsCurb2023}, as the investments in sustainability are largely unobserved. In sectors with large costs of the transition, this could potentially allow them to benefit from this shift in demand, while not bearing the costs. 
+organizations as well as consumers have been growing more aware of the problems facing the world in the upcoming years. In turn, heightened awareness has led to more and more people becoming educated on the topic of sustainability and climate change prevention. This awareness has lead to a rapid development of sustainable finance and a creation of a large body of ESG investment funds. Companies, trying to answer the needs of consumers have reoriented their supply chains and started transitioning to more sustainable methods of production. At the same time, this structural shift in demand created an avenue for greenwashing. In this setting, some companies can choose to appear as sustainable through making statements or campaigns aimed at sustainable consumers/investors, while not carrying through with their promises.\footnote{Write the definition more explicitly and reference papers.} Recent theoretical literature suggests that there exist equilibria where it is optimal for companies to greenwash~\parencite{wu_bad_2020, cartellierCanInvestorsCurb2023}, as the investments in sustainability are largely unobserved. In sectors with large costs of the transition, this could potentially allow them to benefit from this shift in demand, while not bearing the costs. 
 
 This paper tries to answer the question: Is greenwashing a beneficial strategy for company performance in the presence of a positive sustainability demand shock? My approach consists of two steps. Firstly, I collect and process the sustainability reports for a sample of public companies, for which such reports are available. After processing, the reports are used to create a Cheap-Talk-Index (CTI) that gauges the credibility of climate commitments made by companies \parencite{bingler_how_2024}. This index allows for measuring the likelihood of greenwashing following the contributions of~\cite{coen_are_2022}. Secondly, I try to estimate a causal response of cumulative abnormal returns (CAR) of companies stock prices' to greenwashing in presence of a demand shock to sustainability. Using the world-wide September 2019 strikes organized by Fridays For Future (20 \& 27 September 2019)\footnote{A series of 4500 strikes across over 150 countries on the last two Fridays of September 2019} and the occurrence of the ``Global Week for Future'', as the shock and the CTI as the treatment, I test whether the markets have responded differently to firms more likely to greenwash. I find that\ \dots
 %  the shock did not significantly impact the CAR of companies more likely to greenwash.The CAR showed no economically significant difference over the specified period.\ 
@@ -208,7 +208,7 @@ In order to retrieve the causal effect, I estimate the following multivalued spe
     Y_{i,t} = \alpha_i + \phi_t + \sum_{d=2}^{4} \beta_d \cdot 1\{D_{i,d}=d\}\cdot Post_t + \varepsilon_{i,t}
 \end{equation}
 
-Where $Y_{i,t}$ is the outcome variable, $\alpha_i$ are the unit fixed effects, $\phi_i$ are the time fixed effects, $1\{D_{i}=d\}$ is a dummy variable equal to $1$ if the unit $i$ belongs to the treatment group $d$, $Post_t$ is the dummy variable equal to one in the post-treatment period, and $\varepsilon_{i,t}$ is the standard normal noise.\footnote{Note: forgot to talk about the event window} Note that $d=1$ is omitted, as the regression is estimated relative to the lowest dose group. In this specification, each $\beta_d$ estimates the difference between $ATT(d)$ and the $ATT(d_L)$, which is average difference in outcomes when treated with $d$ instead of $d_L$. Formally, it can be expressed as: 
+Where $Y_{i,t}$ is the outcome variable, $\alpha_i$ are the unit fixed effects, $\phi_i$ are the time fixed effects, $1\{D_{i}=d\}$ is a dummy variable equal to $1$ if the unit $i$ belongs to the treatment group $d$, $Post_t$ is the dummy variable equal to one in the post-treatment period, and $\varepsilon_{i,t}$ is the standard normal noise.\footnote{Note: forgot to talk about the event window and the standard errors!} Note that $d=1$ is omitted, as the regression is estimated relative to the lowest dose group. In this specification, each $\beta_d$ estimates the difference between $ATT(d)$ and the $ATT(d_L)$, which is average difference in outcomes when treated with $d$ instead of $d_L$. Formally, it can be expressed as: 
 \begin{equation}
     \beta_d = E[Y|D = d] - E[Y |D = d_L] = ATT(d) - ATT(d_L) = E[Y_{t=2}(d) - Y_{t=2}(d_L)]
 \end{equation}
@@ -218,7 +218,7 @@ This is a common approach adopted by many applied researchers \parencite{acemogl
     Y_{i,t} = \alpha_i + \phi_t +  \beta^{twfe} Post_t \cdot (d_j - d_{j-1}) + \varepsilon_{i,t}
 \end{equation}
 
-Where the $\beta^{twfe}$ tries to aggregate the dose-specific $ATT$'s into a single number. They propose their own aggregation scheme that estimates\ \dots\footnote{Still need to figure out how to aggregate them into a single summary ATT/ACRT because they assume that there are untreated values present in this framework, but this is not true in mine!}
+Where the $\beta^{twfe}$ tries to aggregate the dose-specific $ATT$'s into a single number. They propose their own aggregation scheme that estimates\ \dots\footnote{Explain that the researchers have their own preferred way, but it does not they do not show whether it can be used with no-untreated unit scenario. State that therefore, you limit yourself to showing the dynamic $ATT(D_i)$ for each treatment group.}
 
 % \Delta Y_i = \beta_{0} + \sum_{T=1}^{4} \beta_T \cdot 1\{D_{i}=T\}\cdot Post_t + \varepsilon_{i,t}
 \subsection{Validity of Assumptions --- Stock Prices}
@@ -252,6 +252,105 @@ The argument with respect to the sales data follows similar reasoning, however s
 \newpage
 
 \section{Results}\label{sect:results}
+
+\subsection{Stock Prices Response to Grenewashing}
+\subsection{Sales Response to Grenewashing}
+
+Result table:
+
+\begin{table}
+    
+    \captionof{table}{Results of Estimation}
+    
+    \centering
+    \begin{tabular}{lcc}
+        \toprule
+        \toprule
+                                    & CAR           & $\Delta_4$ Log of Sales \\
+        Variables                   & (1)           & (2)\\
+        \midrule
+        $Post \times D_2$           & -0.0020       & -0.0077\\
+                                    & (0.0054)      & (0.0150)\\
+        $Post \times D_3$           & 0.0008        & 0.0279$^{*}$\\
+                                    & (0.0058)      & (0.0158)\\
+        $Post \times D_4$           & -0.0091$^{*}$ & 0.0032\\
+                                    & (0.0054)      & (0.0160)\\
+        Entity FE                   & $\checkmark$  & $\checkmark$\\
+        Time FE                     & $\checkmark$  & $\checkmark$\\
+        Observations                & 17,752        & 2,515\\
+        Within R$^2$                & 0.00266       & 0.00185\\
+        R$^2$                       & 0.90320       & 0.09844\\  
+        \bottomrule
+    \end{tabular}
+    
+    \begin{tablenotes}
+        \footnotesize
+    \item Estimation Results of regressing the difference in differences on cumulative abnormal returns and the 4-quarter log difference of sales. Time FE is at the day level for (1) and Quarter for (2)\ \textbf{Add p-values and more description}
+    \end{tablenotes}
+\end{table}
+
+\begin{table}
+    \captionof{table}{Robustness Checks Results}
+    \centering
+
+    \begin{tabular}{lcc}
+    \toprule
+                                                & \multicolumn{2}{c}{CAR}\\
+        Variables:                              & (1)           & (2)\\
+    \midrule
+    $POST_{-5} \times D_2$      & -0.0018       &   \\
+                                            & (0.0056)      &   \\
+    $POST_{-5} \times D_3$      & 0.0017        &   \\
+                                            & (0.0059)      &   \\   
+    $POST_{-5} \times D_4$      & -0.0070       &   \\
+                                            & (0.0056)      &   \\
+    $POST_{-10} \times D_2$     &               & -0.0030\\
+                                            &               & (0.0071)\\
+    $POST_{-10} \times D_3$     &               & 0.0058\\
+                                            &               & (0.0073)\\
+    $POST_{-10} \times D_4$     &               & -0.0067\\
+                                            &               & (0.0069)\\
+        Entity FE              & $\checkmark$  & $\checkmark$\\
+        Day FE              & $\checkmark$  & $\checkmark$\\   
+        Observations                            & 17,752        & 17,752\\
+        Within R$^2$                            & 0.00169       & 0.00242\\
+        R$^2$                                   & 0.90311       & 0.90318\\
+    \bottomrule
+    \end{tabular}
+    
+    \begin{tablenotes}
+        \footnotesize
+    \item Estimation Results of regressing the difference in differences on cumulative abnormal returns and the 4-quarter log difference of sales.\ \textbf{Add p-values and more description}
+    \end{tablenotes}
+\end{table}
+
+
+test test
+
+\begin{table}[!htbp] \centering
+  \captionof{table}{Average Causal Responses}\label{}
+
+  \begin{tabular}{lcc}
+        \toprule
+        \toprule
+                                    & CAR           & $\Delta_4$ Log of Sales \\
+        Variables                   & (1)           & (2)\\
+        \midrule
+        $ACRT(D_3)$                 & 0.0028         & 0.0356$^{**}$ \\
+                                    & (0.0053)      & (0.0169)\\
+        $ACRT(D_4)$                 & -0.0099$^{*}$  & -0.0247\\
+                                    & (0.0053)      & (0.0178)\\
+        \bottomrule
+    \end{tabular}
+
+    \begin{tablenotes}
+        \footnotesize
+    \item Estimation of ACRT resulting from the regression. $ACRT(D_2)$ is ommited as it can't be estimated ($D_1$ is the lowest dose)
+    \end{tablenotes}
+
+\end{table}
+
+
 
 Testing the event study plot:
 \newpage
@@ -384,7 +483,8 @@ List of things to add to the discussion:
 
 
 
-
+\begingroup
+\renewcommand*{\arraystretch}{0.85}
 \begin{longtable}[c]{cc}
     \caption{Allocation of countries to regional markets}\label{tab:mrkt_ind} \\
        \toprule
@@ -466,7 +566,7 @@ List of things to add to the discussion:
        South Africa & MSCI World \\
     
 \end{longtable}
-
+\endgroup
 
 \begin{table}[!h]
     \captionof{table}{Estimation periods for each frequency}\label{tab:data_freq}
