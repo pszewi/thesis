@@ -202,7 +202,7 @@ def TransformReturns(df, df_characteristic, old=False):
 
         df.drop(["Retrieving..."], axis=1, inplace=True)
         df = pd.melt(df, id_vars=['NAME', "VARIABLE"]).pivot_table(index=['NAME', 'variable'], columns='VARIABLE', values='value').reset_index().rename(columns={'variable':'DATE'})
-        df = df.merge(df_characteristic[['NAME', 'CTRY_OF_DOM_NAME']], how="left", on="NAME")
+        df = df.merge(df_characteristic[['NAME', 'CTRY_OF_DOM_NAME', 'BOURSE_NAME']], how="left", on="NAME")
 
         df["DATE"] = df["DATE"].dt.date
     
@@ -214,7 +214,7 @@ def TransformReturns(df, df_characteristic, old=False):
 
         df.drop(["Name", 'CURRENCY'], axis=1, inplace=True)
         df = pd.melt(df, id_vars=['NAME', "VARIABLE"]).pivot_table(index=['NAME', 'variable'], columns='VARIABLE', values='value').reset_index().rename(columns={'variable':'DATE'})
-        df = df.merge(df_characteristic[['NAME', 'CTRY_OF_DOM_NAME']], how="left", on="NAME")
+        df = df.merge(df_characteristic[['NAME', 'CTRY_OF_DOM_NAME', 'BOURSE_NAME']], how="left", on="NAME")
 
         df["DATE"] = df["DATE"].dt.date
 
@@ -259,7 +259,7 @@ def MakeReturns(df):
     df['STOCK_PCT_RETURN'] = df.groupby(by='NAME')['PRICE INDEX'].apply(pd.Series.pct_change).reset_index()['PRICE INDEX']
     df["LOG_IND"] = np.log(1+df["PRICE INDEX"].astype(float))
     df['STOCK_LOG_RETURN'] = df.groupby(by='NAME')['LOG_IND'].apply(pd.Series.diff).reset_index()['LOG_IND']
-    df = df[['NAME', 'CTRY_OF_DOM_NAME', 'DATE','STOCK_PCT_RETURN', 'STOCK_LOG_RETURN']]
+    df = df[['NAME', 'CTRY_OF_DOM_NAME', "BOURSE_NAME", 'DATE','STOCK_PCT_RETURN', 'STOCK_LOG_RETURN']]
 
     # making sure that all firms have data starting from the same date
     full_index = pd.DataFrame(product(df["NAME"].unique(), df["DATE"].unique()))
@@ -269,7 +269,7 @@ def MakeReturns(df):
 
     return df
 
-def AbnormalReturns(df_ret, df_ind,  market_dict, training_start_date, training_end_date, ret_variable, ind_variable):
+def AbnormalReturns(df_ret, df_ind,  market_dict, exchange_dict, training_start_date, training_end_date, ret_variable, ind_variable):
 
     df_ret = df_ret[df_ret["DATE"] != datetime.strptime(training_start_date, '%Y-%m-%d').date()]
     df_ind = df_ind[df_ind["DATE"] != datetime.strptime(training_start_date, '%Y-%m-%d').date()]
@@ -278,25 +278,36 @@ def AbnormalReturns(df_ret, df_ind,  market_dict, training_start_date, training_
     date_start = datetime.strptime(training_start_date, '%Y-%m-%d').date()
     date_end = datetime.strptime(training_end_date, '%Y-%m-%d').date()
 
-    company_array = df_ret[['NAME', 'CTRY_OF_DOM_NAME']].drop_duplicates().values
+    company_array = df_ret[['NAME', 'CTRY_OF_DOM_NAME', "BOURSE_NAME"]].drop_duplicates().values
     
     data_abnormal_returns = df_ret[(df_ret["DATE"] >= date_end)]
     data_abnormal_returns['NORMAL_RETURN'] = pd.NA
 
     for company_list in company_array:
-        company, cntry = company_list
+        company, cntry, exchange = company_list
         
         
         print(company)
         print(cntry)
+        print(exchange)
         
-        if (market_dict[cntry] in ["NA", "MSCI WORLD U$"]):
+        if (market_dict[cntry] in ["MSCI WORLD U$"]):
             print(f"Skip {company} because invalid index")
             continue
-        
+        elif (market_dict[cntry] in ["NA"]):
+            market = exchange_dict[exchange]
+            print(market)
+
+            
+            if (market in ["NA", "MSCI WORLD U$"]):
+                print(f"Skip {company} because invalid index")
+                continue
+            
+        else:
+            market = market_dict[cntry]
         
         est_data_comp = df_ret[(df_ret['NAME']==company) & (df_ret["DATE"] > date_start) & (df_ret["DATE"] < date_end)]
-        est_data_ind = df_ind[(df_ind['NAME'] == market_dict[cntry]) & (df_ind['DATE'] > date_start) & (df_ind['DATE']< date_end)].reset_index(drop=True).set_index(est_data_comp.index)
+        est_data_ind = df_ind[(df_ind['NAME'] == market) & (df_ind['DATE'] > date_start) & (df_ind['DATE']< date_end)].reset_index(drop=True).set_index(est_data_comp.index)
         est_data_ind = sm.add_constant(est_data_ind)
         
         if  est_data_comp[ret_variable].isna().sum()>0:
@@ -305,7 +316,7 @@ def AbnormalReturns(df_ret, df_ind,  market_dict, training_start_date, training_
         
         reg = sm.OLS(est_data_comp[ret_variable], est_data_ind[['const', ind_variable]]).fit(cov_type="HC3")
         
-        pred_data_ind = df_ind[(df_ind['NAME'] == market_dict[cntry]) & (df_ind['DATE'] >= date_end)].reset_index(drop=True)
+        pred_data_ind = df_ind[(df_ind['NAME'] == market) & (df_ind['DATE'] >= date_end)].reset_index(drop=True)
         pred_data_ind = sm.add_constant(pred_data_ind)
         
         

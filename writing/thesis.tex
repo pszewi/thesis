@@ -103,7 +103,7 @@ The pressure exerted on policymakers culminated in September during a series of 
 
 As shown on the Figure~\ref{fig:fff_trend}, strikes related to that week attracted over twice as much attention online as any other strikes organized by FFF.\@ This effect has been amplified by speeches given by Greta Thunberg at the climate strike in New York City and at the UNCAS in which she motivated the strikers as well as attacked the governmental officials for not taking appropriate action on climate change \parencite{2019thunberg}.
 
-These events had an impact on financial markets. In a \citeyear{schusterStockPriceReactions2023} study,~\citeauthor{schusterStockPriceReactions2023} found that the FFF global climate strikes significantly affected the short-term stock performance of firms from the S\&P 500 and STOXX Europe 600 indices. They estimated a financial event study and find that the two global climate strikes in September 2019 generally hurt the performance of the companies in these indices.\footnote{Describe more of the study here}.\ This is in line with the findings of a theoretical model by \textcite{pastorSustainableInvestingEquilibrium2021}, which argues that sustainable assets outperform other assets, when concerns for sustainability rise.
+These events had an impact on financial markets. In a \citeyear{schusterStockPriceReactions2023} study,~\citeauthor{schusterStockPriceReactions2023} found that the FFF global climate strikes significantly affected the short-term stock performance of firms from the S\&P 500 and STOXX Europe 600 indices. They estimated a financial event study and find that the two global climate strikes in September 2019 generally hurt the performance of the companies in these indices.\footnote{Describe more of the study here} This is in line with the findings of a theoretical model by \textcite{pastorSustainableInvestingEquilibrium2021}, which argues that sustainable assets outperform other assets, when concerns for sustainability rise.
 
 Overall, the action taken by the FFF grasped the imagination of the public with many people choosing to walk out onto the streets and support their causes. The events gathered news and online attention and can be said to have had an impact on the performance of companies in that period.\footnote{Describe here also the events that happened afterwards: the COP of that year (December) and the IPCC report that came out earlier}
 
@@ -122,9 +122,9 @@ As a counterargument to the use of the reports, one could argue that they are ac
 
 \section{Data}\label{sect:data}
 
-\subsection{Cheap-Talk Index}
+\subsection{Cheap-Talk Index}\footnote{Still come back to this to refine it}
 
-The ESG reports were scraped from the \href{https://responsibilityreports.com}{ResponsibilityReports.com}. Additionally, the website allowed me to retrieve information on company headquarters location and the approximate number of employees.\footnote{Table~\ref{tab:sust_reps} in Appendix~\ref{app:data:tabs} displays the number of reports available per year. The number of published reports increases with time, as communicating sustainability has become more important.} As the analysis concerns the events of 2019, the scraped data was subset for companies reporting in 2018, to guarantee that the reports did not originate in response to the upcoming shock. 
+The ESG reports were scraped from the \href{https://responsibilityreports.com}{ResponsibilityReports.com}. Additionally, the website allowed me to retrieve information on company headquarters location and the approximate number of employees.\footnote{Table~\ref{tab:sust_reps} in Appendix~\ref{app:data:tabs} displays the number of reports available per year. The number of published reports increases with time, as communicating sustainability has become more important.} As the analysis concerns the events of 2019, the scraped data was subset for companies reporting in 2018, to guarantee that the reports did not originate in response to the upcoming shock. This resulted in 852 reports ready for analysis. 
 
 To identify deception in relation to the environmental claims of companies, I implemented the method outlined in \textcite{binglerHowCheapTalk2024}. In this study, the authors create the Climate Cheap-Talk Index ($CTI$), based on the content of annual financial reports. They use the extracted text to construct and train machine learning models that are then used to examine the level of cheap-talk in a given report. 
 
@@ -141,31 +141,36 @@ As a second step, they train another instance of the same model to classify para
 Where for a report of company $i$, $CLIM_i$ represents the number of climate-related paragraphs, $NONSPEC_i$ represents the number of paragraphs containing non-specific commitments, and $CLIM_i \cap NONSPEC_i$ represents the intersection between the two. 
 
 
-In order to apply this method to my data, I proceeded as follows. First, I extracted the text from the reports. This has been done by using blocks contained in the PDF files to preserve the structure of the paragraphs.\footnote{By \textit{blocks}, I mean an object within the structure of a PDF file that usually determines the location of a paragraph on a page.} To further refine the data, each block has been classified as a paragraph, if it spanned at least 3 lines, contained at least 30 words and had at least one full stop. Then, I applied the models trained by the researchers to establish which paragraphs are climate related, and which contain specific commitments.\footnote{Both of these models can be downloaded from \href{https://huggingface.co/climatebert}{\underbar{here}}} Finally, I aggregated the $CTI$ into quartiles, to create the final treatment-dose variable $D_i$. The aggregation was carried out for two reasons. Firstly, one could argue that investors/consumers would not see the difference in behaviour of two companies whose score is very close. Therefore, dividing the continuous variable into separate bins would resemble the reasoning of the agents more closely and reduce the noise in the estimation. Secondly, as the index itself is very sensitive to the number of climate related paragraphs, grouping the treatment variable again reduces noise. 
+In order to apply this method to my data, I proceeded as follows. First, I extracted the text from the reports. This has been done by using blocks contained in the PDF files to preserve the structure of the paragraphs.\footnote{By \textit{blocks}, I mean an object within the structure of a PDF file that usually determines the location of a paragraph on a page.} To further refine the data, each block has been classified as a paragraph, if it spanned at least 3 lines, contained at least 20 words and had at least one full stop. This pre-processing procedure is the same as in \textcite{binglerHowCheapTalk2024}. Then, I applied the models trained by the researchers to establish which paragraphs are climate related, and which contain specific commitments.\footnote{Both of these models can be downloaded from \href{https://huggingface.co/climatebert}{\underbar{here}}} Finally, I aggregated the $CTI$ into quartiles, to create the final treatment-dose variable $D_i$. The aggregation was carried out, because the index is very sensitive to the number of climate related paragraphs, as they enter in the denominator. This implies that small differences in the number of climate-related  paragraphs can disproportionally impact the score of the company. Therefore, aggregating the scores into quartile-bins reduces noise.
 
 
 
 \subsection{Outcome Variables}
 
-The Refinitiv dataset wad used to retrieve data on firms' characteristics, their price indices and their quarterly earnings. Moreover, it was also used to retrieve the prices for regional market indices (e.g.\ S\&P500, MSCI Europe, etc.) that were needed to estimate the normal returns for each company. The characteristic variables include the stock exchange of the listing, country of incorporation, country of domicile, the company's sector and the company's industry. I log-differenced the price indices (defined as the stock price expressed as a fraction of the initial listing price) to transform them into percentage changes. The same has been done for the quarterly earnings and for the values of regional stock indices. I chose the daily frequency for the stock price data and a quarterly frequency for the earnings data. This was motivated by the likely short-term effect on stock prices (as found by \textcite{schusterStockPriceReactions2023}), and data availability for earnings.\footnote{Table~\ref{tab:data_freq} in Appendix~\ref{app:data:tabs} shows the total number of periods that were retrieved.}
+The Refinitiv dataset was used to retrieve data on firms' characteristics, their price indices and their quarterly earnings. Moreover, it was also used to retrieve the prices for regional market indices (e.g.\ S\&P500, MSCI Europe, etc.) that were needed to estimate the normal returns for each company. The characteristic variables include the stock exchange of the listing, country of incorporation, country of domicile, the company's sector and the company's industry. The stock price data and sales data required distinct pre-processing methods. The following section first details the procedure for the stock data, followed by that for the sales data.
+
+First, I log-differenced the price indices (defined as the stock price expressed as a fraction of the initial listing price) to transform them into percentage changes. The same has been done for the values of regional stock indices. I chose the daily frequency for the stock price data, which was motivated by the likely short-term effect on stock prices, as found by \textcite{schusterStockPriceReactions2023}.\footnote{Table~\ref{tab:data_freq} in Appendix~\ref{app:data:tabs} shows the total number of periods that were retrieved.}
 
 % \subsubsection{Abnormal Returns}
 
-In order to plausibly estimate the effect of the treatment on stock returns, I needed to separate the effects of the market movement from the movement of the stock of the company itself. These abnormal returns were estimated following the market model approach outlined in~\textcite{mackinlayEventStudiesEconomics1997}. This approach relies on estimating the expected stock return by predicting it using the return of the whole market. As the sample contains companies from multiple continents which markets may differ, each company was allocated to a geographical market index by their country of domicile. The allocation can be viewed in Table~\ref{tab:mrkt_ind} in the Appendix~\ref{app:data}. The model has been separately estimated for each company using observations that predate the estimation window of interest. Intervals that were used are reported in Table~\ref{tab:data_freq}. Below I report the regression specification used for the estimation:
+In order to plausibly estimate the effect of the treatment on stock returns, I needed to separate the effects of the market movement from the movement of the stock of the company itself. These abnormal returns were estimated following the market model approach outlined in~\textcite{mackinlayEventStudiesEconomics1997}. This approach relies on estimating the expected stock return by predicting it using the return of the whole market. As the sample contains companies from multiple continents with potentially differing markets, each company was allocated to a geographical market index by their country of domicile.\footnote{The allocation can be viewed in Table~\ref{tab:mrkt_ind} in the Appendix~\ref{app:data:tabs}.} If the country of domicile was missing, the regional index was based instead on the country of listing. The model was separately estimated for each company using 212 daily observations that predate the estimation window of interest. Below I report the regression specification used for the estimation:
 
 \begin{equation}\label{eq:reg_market_model}
     RN_{it} = \alpha_i + \beta_{i} RI_{mt} + \varepsilon_{it}
 \end{equation}
 
-Where, $RN_{it}$ is the return of the security $i$ at time $t$ predicted by the return of its geographical market $m$, $\alpha_i$ is the regression constant of for the company $i$, $RI_{mt}$ is the return of the said market, and $\varepsilon_{i,t}$ is the noise. Finally, as this regression estimates the return of the security predicted by the return of the market, the abnormal return for $i$ in a given time period $t$ is given by the residual $\varepsilon_{it}$.
+Where, $RN_{it}$ is the return of the security $i$ at time $t$ predicted by the return of its geographical market $m$, $\alpha_i$ is the regression constant of for the company $i$, and $RI_{mt}$ is the return of the said market. As this regression estimates the return of the security predicted by the return of the market, the abnormal return for $i$ in a given time period $t$ is given by the residual $\varepsilon_{it}$.
 
-This type of modelling is sufficient for my use case, as per the work of~\citeauthor{mackinlayEventStudiesEconomics1997}, employing more sophisticated models (e.g.~factor models) yields limited improvement in studies that do not rely on within-group variation, such as within-sector variation.
+This type of modelling is sufficient for my use case, as per the work of~\textcite{mackinlayEventStudiesEconomics1997}, employing more sophisticated models (e.g.~factor models) yields limited improvement in studies that do not rely on within-group variation, such as within-sector variation.
 
-Moreover, the abnormal returns for each of the securities were later cumulatively summed to arrive at the Cumulative Abnormal Return (CAR). This was done, as aggregation across time is needed in order to draw useful inference from the results of the actual study. This results from the fact that estimating the average abnormal returns directly would not take into account the path of the data following treatment, but only the instantaneous effect of the treatment dose. 
+After estimating the model, I used it to predict the abnormal returns within the event window. Then, the abnormal returns for each of the securities were cumulatively summed to arrive at the Cumulative Abnormal Return (CAR). This was done, as aggregation across time is needed in order to draw useful inference from the results of the actual study. This results from the fact that estimating the average abnormal returns directly would not take into account the path of the data following treatment, but only the instantaneous effect of the treatment dose. 
+
+For the earnings data, the procedure only involved log-differencing of the data to arrive at percentage changes. However, as changes in sales can be seasonal, I instead create Year-on-Year growth rates, by using the difference of sales relative to the same quarter last year. The choice of quarterly frequency was motivated by the data availability, as it was the lowest frequency available. 
+
 
 \subsection{Merging}
 
-In the last step of the data preparation, the two datasets were merged. As this process was difficult and required multiple steps, its description is included in the Appendix~\ref{app:data:merging}. Overall, the final dataset contained 795 companies, with 57 being dropped due to inability to be merged.\footnote{I believe that the 57 is incorrect, I still need to resolve it. Note: I am yet to include descriptive statistics here}
+In the last step of the data preparation, I merged the dataset containing $CTI$ scores of companies, with the dataset containing the stock prices, and the dataset containing quarterly earnings of companies. This process was difficult, because company names are often reported differently between different services. In the process of merging, 60 observations were dropped for the stock price dataset, because they could not be merged. The final dataset contained 792 companies. For the dataset containing quarterly earnings, the loss in values was more severe, because of data availability. Unfortunately, the Refinitiv database did not contain the quarterly earnings for all companies in the sample, which restricted the number of companies to 503.\footnote{Re-read this before sending}
 
 
 \section{Methodology}\label{sect:methodology}
@@ -196,7 +201,7 @@ Although the interpretation of this treatment effect has been well described, it
 
 \subsection{Multivalued Difference-in-Differences}
 
-In order to incorporate the multivalued treatment into my study, I implemented the framework developed by~\textcite{callawayDifferenceinDifferencesContinuousTreatment2025}. This is not the only approach present in the literature (see~\cite{dechaisemartinDifferenceinDifferenceEstimatorsContinuous2024}), however I deemed it the most suitable based on the required setting. This method was developed in the context of estimating the average treatment effect in settings where there is no treatment in pre-event periods.\@ \citeauthor{dechaisemartinDifferenceinDifferenceEstimatorsContinuous2024} differs in this regard, as it relies on treatment being positive in the periods prior to the event, and it requires a change in intensity in the event-period, to retrieve the average treatment effect. As in my case the treatment is fixed for a unit, but varies in intensity between them, this requires the~\textcite{callawayDifferenceinDifferencesContinuousTreatment2025} approach. It proposes the use of a multivalued treatment, where the single dummy $D_i$ can be replaced with multiple dummies $D_{i,d} \in \mathcal{D}$ that show that the unit $i$ has received the dose $d$, where $d$ refers to the ``bins'' that signify different treatment intensity. Then, this approach compares the dose of a group $D_{i,d}$, to the untreated group $D_{i,0}$.
+In order to incorporate the multivalued treatment into my study, I implemented the framework developed by~\textcite{callawayDifferenceinDifferencesContinuousTreatment2025}. This is not the only approach present in the literature (see~\cite{dechaisemartinDifferenceinDifferenceEstimatorsContinuous2024}), however it is the most suitable given the setting of the study. This method was developed in the context of estimating the average treatment effect in settings where there is no treatment in pre-event periods.\@ \citeauthor{dechaisemartinDifferenceinDifferenceEstimatorsContinuous2024} differs in this regard, as it relies on treatment being positive in the periods prior to the event, and it requires a change in intensity in the event-period, to retrieve the average treatment effect. As in my case the treatment is fixed for a unit, but varies in intensity between them, this requires the~\textcite{callawayDifferenceinDifferencesContinuousTreatment2025} approach. It proposes the use of a multivalued treatment, where the single dummy $D_i$ can be replaced with multiple dummies $D_{i,d} \in \mathcal{D}$ that show that the unit $i$ has received the dose $d$, where $d$ refers to the ``bins'' that signify different treatment intensity. Then, this approach compares the dose of a group $D_{i,d}$, to the untreated group $D_{i,0}$.
 
 This framework shares the no-anticipation and the independent sampling assumptions with the conventional DiD literature, however the differences arise in the parallel-trends assumption. In this setting, the traditional PT assumption allows for the estimation of each of the individual intensity parameters (i.e. $ATT$ for each treatment is still recovered), however, a stronger assumption is needed to compare the effects across these estimators. Therefore, this assumption is required in order to assess the effect of higher greenwashing intensity of a firm.  
 
@@ -210,7 +215,7 @@ In order to retrieve the causal effect, I estimate the following multivalued spe
     Y_{i,t} = \alpha_i + \phi_t + \sum_{d=2}^{4} \beta_d \cdot 1\{D_{i,d}=d\}\cdot Post_t + \varepsilon_{i,t}
 \end{equation}
 
-Where $Y_{i,t}$ is the outcome variable, $\alpha_i$ are the unit fixed effects, $\phi_i$ are the time fixed effects, $1\{D_{i}=d\}$ is a dummy variable equal to $1$ if the unit $i$ belongs to the treatment group $d$, $Post_t$ is the dummy variable equal to one in the post-treatment period, and $\varepsilon_{i,t}$ is the standard normal noise. The standard errors are clustered at the company ($i$) level, following \textcite{abadieWhenShouldYou2022}.\footnote{Note: forgot to talk about the event window!} Note that $d=1$ is omitted, as the regression is estimated relative to the lowest dose group. In this specification, each $\beta_d$ estimates the difference between $ATT(d)$ and the $ATT(d_L)$, which is average difference in outcomes when treated with $d$ instead of $d_L$. Formally, it can be expressed as: 
+Where $Y_{i,t}$ is the outcome variable, $\alpha_i$ are the unit fixed effects, $\phi_i$ are the time fixed effects, $1\{D_{i}=d\}$ is a dummy variable equal to $1$ if the unit $i$ belongs to the treatment group $d$, $Post_t$ is the dummy variable equal to one in the period after the FFF climate strike of September 20th, 2019, and $\varepsilon_{i,t}$ is the residual. The standard errors are clustered at the company ($i$) level, following \textcite{abadieWhenShouldYou2022}.\footnote{Note: forgot to talk about the event window!} Note that $d=1$ is omitted, as the regression is estimated relative to the lowest dose group. In this specification, each $\beta_d$ estimates the difference between $ATT(d)$ and the $ATT(d_L)$, which is average difference in outcomes when treated with $d$ instead of $d_L$. Formally, it can be expressed as: 
 \begin{equation}
     \beta_d = E[Y|D = d] - E[Y |D = d_L] = ATT(d) - ATT(d_L) = E[Y_{t=2}(d) - Y_{t=2}(d_L)]
 \end{equation}
@@ -220,7 +225,7 @@ This is a common approach adopted by many applied researchers \parencite{acemogl
     Y_{i,t} = \alpha_i + \phi_t +  \beta^{twfe} Post_t \cdot (d_j - d_{j-1}) + \varepsilon_{i,t}
 \end{equation}
 
-Where the $\beta^{twfe}$ tries to aggregate the dose-specific $ATT$'s into a single number. They propose their own aggregation scheme that estimates\ \dots\footnote{Explain that the researchers have their own preferred way, but it does not they do not show whether it can be used with no-untreated unit scenario. State that therefore, you limit yourself to showing the dynamic $ATT(D_i)$ for each treatment group.}
+Where the $\beta^{twfe}$ tries to aggregate the dose-specific $ATT$'s into a single number. They propose their own aggregation scheme that estimates the local average treatment effect ($ATT^{loc}$), and the local average causal response ($ACRT^{loc}$) which operate by weighing the treatment doses by the probability of observation $i$ being in dose group $d$. However, this aggregation is only described within the context of having untreated observations. As in this study the level treatment effects are estimated relative to a group treated at a lower intensity instead, I refrain from summarizing the results in this way, and present dose specific results in the next section.
 
 % \Delta Y_i = \beta_{0} + \sum_{T=1}^{4} \beta_T \cdot 1\{D_{i}=T\}\cdot Post_t + \varepsilon_{i,t}
 \subsection{Validity of Assumptions --- Stock Prices}
@@ -271,17 +276,18 @@ Result table:
                                     & CAR           & $\Delta_4$ Log of Sales \\
         Variables                   & (1)           & (2)\\
         \midrule
-        $Post \times D_2$           & -0.0020       & -0.0077\\
-                                    & (0.0054)      & (0.0150)\\
-        $Post \times D_3$           & 0.0008        & 0.0279$^{*}$\\
-                                    & (0.0058)      & (0.0158)\\
-        $Post \times D_4$           & -0.0091$^{*}$ & 0.0032\\
-                                    & (0.0054)      & (0.0160)\\
+        $Post \times D_2$           & -0.0014       & 0.0272\\
+                                    & (0.0050)      & (0.0181)\\
+        $Post \times D_3$           & -0.0014       & 0.0233\\
+                                    & (0.0050)      & (0.0176)\\
+        $Post \times D_4$           & -0.0081       & 0.0403$^{**}$\\
+                                    & (0.0050)      & (0.0198)\\
         Entity FE                   & $\checkmark$  & $\checkmark$\\
         Time FE                     & $\checkmark$  & $\checkmark$\\
-        Observations                & 17,752        & 2,515\\
-        Within R$^2$                & 0.00266       & 0.00185\\
-        R$^2$                       & 0.90320       & 0.09844\\  
+        Firms                       & 781           & 503\\
+        Time Periods                & 28            & 7\\
+        Observations                & 21,868        & 3,521\\
+        R$^2$                       & 0.90065       & 0.39530\\  
         \bottomrule
     \end{tabular}
     
@@ -297,26 +303,27 @@ Result table:
 
     \begin{tabular}{lcc}
     \toprule
-                                                & \multicolumn{2}{c}{CAR}\\
-        Variables:                              & (1)           & (2)\\
+                                    & \multicolumn{2}{c}{CAR}\\
+        Variables:                  & (1)           & (2)\\
     \midrule
-    $POST_{-5} \times D_2$      & -0.0018       &   \\
-                                            & (0.0056)      &   \\
-    $POST_{-5} \times D_3$      & 0.0017        &   \\
-                                            & (0.0059)      &   \\   
-    $POST_{-5} \times D_4$      & -0.0070       &   \\
-                                            & (0.0056)      &   \\
-    $POST_{-10} \times D_2$     &               & -0.0030\\
-                                            &               & (0.0071)\\
-    $POST_{-10} \times D_3$     &               & 0.0058\\
-                                            &               & (0.0073)\\
-    $POST_{-10} \times D_4$     &               & -0.0067\\
-                                            &               & (0.0069)\\
-        Entity FE              & $\checkmark$  & $\checkmark$\\
-        Day FE              & $\checkmark$  & $\checkmark$\\   
-        Observations                            & 17,752        & 17,752\\
-        Within R$^2$                            & 0.00169       & 0.00242\\
-        R$^2$                                   & 0.90311       & 0.90318\\
+        $POST_{-5} \times D_2$      & -0.0011       &   \\
+                                    & (0.0052)      &   \\
+        $POST_{-5} \times D_3$      & -0.0002        &   \\
+                                    & (0.0052)      &   \\   
+        $POST_{-5} \times D_4$      & -0.0056       &   \\
+                                    & (0.0051)      &   \\
+        $POST_{-10} \times D_2$     &               & -0.0018\\
+                                    &               & (0.0064)\\
+        $POST_{-10} \times D_3$     &               & 0.0038\\
+                                    &               & (0.0063)\\
+        $POST_{-10} \times D_4$     &               & -0.0040\\
+                                    &               & (0.0063)\\
+        Entity FE                   & $\checkmark$  & $\checkmark$\\
+        Day FE                      & $\checkmark$  & $\checkmark$\\   
+        Firms                       & 781           & 781\\
+        Time Periods                & 28            & 28\\
+        Observations                & 21,868        & 21,868\\
+        R$^2$                       & 0.90055       & 0.90057\\
     \bottomrule
     \end{tabular}
     
@@ -325,6 +332,7 @@ Result table:
     \item Estimation Results of regressing the difference in differences on cumulative abnormal returns and the 4-quarter log difference of sales.\ \textbf{Add p-values and more description}
     \end{tablenotes}
 \end{table}
+
 
 
 \begin{table}[!htbp] \centering
@@ -336,16 +344,16 @@ Result table:
                                     & CAR           & $\Delta_4$ Log of Sales \\
         Variables                   & (1)           & (2)\\
         \midrule
-        $ACRT(D_3)$                 & 0.0028         & 0.0356$^{**}$ \\
-                                    & (0.0053)      & (0.0169)\\
-        $ACRT(D_4)$                 & -0.0099$^{*}$  & -0.0247\\
-                                    & (0.0053)      & (0.0178)\\
+        $ACRT(D_3)$                 & 0.0000         & -0.0038 \\
+                                    & (0.0046)      & (0.0196)\\
+        $ACRT(D_4)$                 & -0.0066  & 0.0170\\
+                                    & (0.0152)      & (0.0212)\\
         \bottomrule
     \end{tabular}
 
     \begin{tablenotes}
         \footnotesize
-    \item Estimation of ACRT resulting from the regression. $ACRT(D_2)$ is ommited as it can't be estimated ($D_1$ is the lowest dose)
+    \item Estimation of ACRT resulting from the regression. $ACRT(D_2)$ is omitted as it can't be estimated ($D_1$ is the lowest dose)
     \end{tablenotes}
 
 \end{table}

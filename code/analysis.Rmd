@@ -515,17 +515,15 @@ ggsave("images/output/stock_price_eve_4.pdf", stock_price_eve_4, height = 4, wid
 
 ### Merge data
 ```{r, merge_sales}
-data_sales  <- data_sales  %>%
-    filter(DATE != "2010 Q1")
 
-# View(data_sales)
 
 reg_data_sales <- merge(company_characteristics_2018, data_sales, by = "TYPE") %>%
     arrange(NAME.y, DATE)  %>%
     select(-YEAR.x, -YEAR.y, -QUARTER, -NAME.x)  %>%
     rename(NAME = NAME.y)  %>%
     group_by(NAME) %>%
-    mutate(LOG_SALES_DIFF_4 = LOG_SALES_DIFF - lag(LOG_SALES_DIFF, 4))  %>%
+    mutate(
+           LOG_SALES_DIFF_4 = LOG_SALES - lag(LOG_SALES, 4))  %>%
     ungroup() %>%
     mutate(
         POST_1 = ifelse(DATE >= "2019 Q3", 1, 0),
@@ -533,7 +531,7 @@ reg_data_sales <- merge(company_characteristics_2018, data_sales, by = "TYPE") %
         NAME_factor = factor(NAME),
         T_cont = as.factor(T_cont)
     )  %>%
-    filter(DATE > "2018 Q4", DATE < "2020 Q2")
+    filter(DATE >= "2018 Q3", DATE < "2020 Q2")
 
 # View(reg_data_sales)
 
@@ -545,10 +543,9 @@ reg_data_sales <- merge(company_characteristics_2018, data_sales, by = "TYPE") %
 
 trend_graph_sales  <- reg_data_sales %>%
     group_by(T_cont, DATE) %>%
-    summarize(mean_sales = mean(SALES),
-              mean_sales_diff = mean(LOG_SALES_DIFF_4))  
+    summarize(mean_sales_diff = mean(LOG_SALES_DIFF_4))
 
-head(trend_graph_sales)
+
 
 
 # Mean sales difference by treatment group
@@ -633,6 +630,12 @@ etable(did_stock, did_sales, style.tex = style.tex("aer"), tex = TRUE)
 # testing the no-anticipation assumption 
 etable(did_stock_rb_5, did_stock_rb_10, style.tex = style.tex("aer"), tex = TRUE)
 
+
+# ---
+acrt_did_stock
+
+# ---
+acrt_did_sales
 ```
 
 ## Other 
