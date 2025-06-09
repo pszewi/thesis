@@ -40,7 +40,7 @@ Your abstract goes here.
 \pagebreak
 
 \tableofcontents
-\pagebreak
+% \pagebreak
 \listoffigures
 \listoftables
 \pagebreak
@@ -261,7 +261,7 @@ The non-anticipation assumption could be violated in certain cases. For example,
     \caption*{Treatment Groups indicated with numbers from (lowest dose) 1 to 4 (highest dose). Red line indicates the quarter which witnessed the Global Week For Future and the FFF climate strikes. Source: Refinitiv}
 \end{figure}
 
-Furthermore, it has to be noted that this analysis may be significantly impacted by the the loss of heterogeneity due to the sample size loss.
+Furthermore, it has to be noted that this analysis may be significantly impacted by the loss of heterogeneity due to the sample size loss.\footnote{Come back to that}
 
 Finally, one must additionally acknowledge one more assumption with respect to this part of the study. In this setting, the CTI works only as a proxy to the belief of consumers about the greenwashing-intensity of the companies. This is not an obvious assumption, as firms may try to be more (or less) deceitful to consumers than to investors. However, given the lack of studies on the relation between marketing, ESG reporting and ESG performance, I chose to assume that firms communicate similarly with both consumers and investors, and therefore that their ESG reports would reflect their sustainability-oriented marketing. 
 
@@ -270,115 +270,80 @@ Finally, one must additionally acknowledge one more assumption with respect to t
 \section{Results}\label{sect:results}
 
 
-\subsection{The Response of Stock Prices to Greenwashing}\footnote{Mention event window}
+\subsection{The Response of Stock Prices to Greenwashing}
 
-Column (1) in Table~\ref{tab:main_results} presents the results of estimation. 
+Column (1) in Table~\ref{tab:main_results} presents the results of estimation of the model on the cumulative abnormal return of companies. The model was estimated on a 40-day event window, with 20 days preceding the shock and 20 days following the shock. The length of the window was based on the expected short-term effects of the shock, following \textcite{schusterStockPriceReactions2023}/ This process resulted in three coefficients of interest --- $\beta_2, \beta_3, \beta_4$. These coefficients show the response of the stock market to the climate activism of the Global Week For Future, differentiated by the greenwashing-intensity of each company. In this specification, all three coefficients are negative, however insignificant. This implies that statistically, higher greenwashing intensity proxied by the $CTI$ index, did not impact the behaviour of the stock prices over time, relative to the sample of firms that greenwash the least. 
+
+Table~\ref{tab:acrt} displays the dose-wise average causal responses of each treatment-dose group. As described in Section~\ref{sect:methodology}, this parameter can be interpreted as the effect of increasing a company's greenwashing intensity from dose $d_{i-1}$ to dose $d_i$. As can be seen from column (1), both the $ACRT$ of switching from $d_2$ to $d_3$ and the  $ACRT$ of switching from $d_3$ to $d_4$ are insignificant. However, one can notice that the second effect is negative. 
 
 
-\subsection{The Response of Sales to Greenwashing}\footnote{Mention event window}
+
 
 \begin{table}[t]
     
     \captionof{table}{Results of Estimation}\label{tab:main_results}
     
     \centering
-    \begin{tabular}{lcc}
+    \begin{tabular}{lcccc}
         \toprule
         \toprule
-                                    & CAR           & $\Delta_4$ Log of Sales \\
-        Variables                   & (1)           & (2)\\
+        & \multicolumn{3}{c}{CAR}     & \multicolumn{1}{c}{$\Delta_4$ Log of Sales} \\
+        Variables                   & (1)           & (2) & (3)   & (4)\\
         \midrule
-        $Post \times D_2$           & -0.0014       & 0.0272\\
-                                    & (0.0050)      & (0.0181)\\
-        $Post \times D_3$           & -0.0014       & 0.0233\\
-                                    & (0.0050)      & (0.0176)\\
-        $Post \times D_4$           & -0.0081       & 0.0403$^{**}$\\
-                                    & (0.0050)      & (0.0198)\\
-        Entity FE                   & $\checkmark$  & $\checkmark$\\
-        Time FE                     & $\checkmark$  & $\checkmark$\\
-        Firms                       & 781           & 503\\
-        Time Periods                & 28            & 7\\
-        Observations                & 21,868        & 3,521\\
-        R$^2$                       & 0.90065       & 0.39530\\  
+        $Post \times D_2$           & -0.0014       &  -0.0011   & -0.0018  & 0.0272\\
+        & (0.0050)      &  (0.0052)  & (0.0064)  & (0.0181)\\
+        $Post \times D_3$           & -0.0014       &  -0.0002   & 0.0038  & 0.0233\\
+        & (0.0050)      &  (0.0052)  & (0.0063)  & (0.0176)\\
+        $Post \times D_4$           & -0.0081       &  -0.0056   & -0.0040  & 0.0403$^{**}$\\
+        & (0.0050)      &  (0.0051)  & (0.0063)  & (0.0198)\\
+        Entity FE                   & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$\\
+        Time FE                     & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$\\
+        Firms                       & 781           & 781  & 781  & 503\\
+        Time Periods                & 28            & 28  & 28  & 7\\
+        Observations                & 21,868        & 21,868  & 21,868  & 3,521\\
+        R$^2$                       & 0.90065       & 0.90055  & 0.90057  & 0.39530\\  
         \bottomrule
     \end{tabular}
     
     \begin{tablenotes}
         \footnotesize
-    \item Estimation Results of regressing the difference in differences on cumulative abnormal returns and the 4-quarter log difference of sales. Time FE is at the day level for (1) and Quarter for (2)\ \textbf{Add p-values and more description}
+        \item The sample period for columns (1), (2), and (3) lasts from September 1st, 2019 until the 10th of October 2019. The data for (4) covers the period from Q3 2018, until the Q1 2020. Column (1) shows the treatment for the shock on the 20th of September 2019. Columns (2) and (3) show the result when the treatment is moved taken as five and ten days earlier (respectively). Column (4) uses the Q3 2019 as the treatment period. Time FE is at the day level for columns (1), (2) and (3) and quarter level for column (4). Standard errors are clustered at the firm level and are in parentheses. $^{*}p<0.1, \text{ } ^{**}p<0.05,\text{ } ^{***}p<0.01$.
     \end{tablenotes}
 \end{table}
 
-\begin{table}
-    \captionof{table}{Robustness Checks Results}
-    \centering
-
+In addition to the DiD estimation, I also estimated an event study using the specification from (1), to assess the dynamic effects of greenwashing. These results are plotted in Figure~\ref{fig:eve_stock}. Each panel displays the dynamic treatment effects for a single treatment-dose group (relative to $d_1$). While the average effect estimated in column (1) of Table~\ref{tab:main_results} for the highest treatment-dose group is insignificant, the dynamic treatment effects are significant and negative in the post-treatment period. This suggests that having the highest greenwashing-intensity may have a negative impact on the cumulative abnormal returns of a firm, relative to the cumulative abnormal return if the firm engaged in the lowest greenwashing intensity. Moreover, this plot can be used to analyse possible violation of the strong parallel trends assumption. In the panel (a) of the figure, one can see that the pre-trend values for September 16th and 17th are negative. This creates a concern that the assumption may in fact not hold. It is also especially concerning, given that this test for pre-trends has low power \parencite{rothWhatsTrendingDifferenceindifferences2023}.
+                            
+\begin{table}[h] \centering
+    \captionof{table}{Average Causal Responses}\label{tab:acrt}
+    
     \begin{tabular}{lcc}
-    \toprule
-                                    & \multicolumn{2}{c}{CAR}\\
-        Variables:                  & (1)           & (2)\\
-    \midrule
-        $POST_{-5} \times D_2$      & -0.0011       &   \\
-                                    & (0.0052)      &   \\
-        $POST_{-5} \times D_3$      & -0.0002        &   \\
-                                    & (0.0052)      &   \\   
-        $POST_{-5} \times D_4$      & -0.0056       &   \\
-                                    & (0.0051)      &   \\
-        $POST_{-10} \times D_2$     &               & -0.0018\\
-                                    &               & (0.0064)\\
-        $POST_{-10} \times D_3$     &               & 0.0038\\
-                                    &               & (0.0063)\\
-        $POST_{-10} \times D_4$     &               & -0.0040\\
-                                    &               & (0.0063)\\
-        Entity FE                   & $\checkmark$  & $\checkmark$\\
-        Day FE                      & $\checkmark$  & $\checkmark$\\   
-        Firms                       & 781           & 781\\
-        Time Periods                & 28            & 28\\
-        Observations                & 21,868        & 21,868\\
-        R$^2$                       & 0.90055       & 0.90057\\
-    \bottomrule
+        \toprule
+        \toprule
+                            & CAR           & $\Delta_4$ Log of Sales \\
+        Variables           & (1)           & (2)\\
+        \midrule
+        $ACRT(D_3)$         & 0.0000        & -0.0038 \\
+                            & (0.0046)      & (0.0196)\\
+        $ACRT(D_4)$         & -0.0066       & 0.0170\\
+                            & (0.0152)      & (0.0212)\\
+        \bottomrule
     \end{tabular}
     
     \begin{tablenotes}
         \footnotesize
-    \item Estimation Results of regressing the difference in differences on cumulative abnormal returns and the 4-quarter log difference of sales.\ \textbf{Add p-values and more description}
+        \item Average causal response estimator by \textcite{callawayDifferenceinDifferencesContinuousTreatment2025}. $ACRT(D_i)$ describes the effect of changing the treatment dose from $d_{i-1}$ to $d_i$. $^{*}p<0.1, \text{ } ^{**}p<0.05,\text{ } ^{***}p<0.01$
     \end{tablenotes}
+    
 \end{table}
 
-
-
-\begin{table}[!htbp] \centering
-  \captionof{table}{Average Causal Responses}\label{}
-
-  \begin{tabular}{lcc}
-        \toprule
-        \toprule
-                                    & CAR           & $\Delta_4$ Log of Sales \\
-        Variables                   & (1)           & (2)\\
-        \midrule
-        $ACRT(D_3)$                 & 0.0000         & -0.0038 \\
-                                    & (0.0046)      & (0.0196)\\
-        $ACRT(D_4)$                 & -0.0066  & 0.0170\\
-                                    & (0.0152)      & (0.0212)\\
-        \bottomrule
-    \end{tabular}
-
-    \begin{tablenotes}
-        \footnotesize
-    \item Estimation of ACRT resulting from the regression. $ACRT(D_2)$ is omitted as it can't be estimated ($D_1$ is the lowest dose)
-    \end{tablenotes}
-
-\end{table}
-
-
-\newpage
-Event study plots:
+Finally, columns (2) and (3) it Table~\ref{tab:main_results} display the performed robustness checks on the no-anticipation assumption. They were estimated with the treatment period being moved up by 5 and 10 days, respectively. As can be seen from the table, the results of this estimation are also insignificant and negative. This may suggest that the stock market did not expect the FFF strikes to affect the firms differently with respect to their doses in advance of the strikes. 
 % \newpage
 
-\begin{figure}
-    \caption{Event Study Results --- Stock Prices}
-    \centering
 
+\begin{figure}
+    \caption{Event Study Results --- Stock Prices}\label{fig:eve_stock}
+    \centering
+    
     (a) Group 2
     
     \includegraphics[width=0.85\textwidth]{stock_price_eve_2.pdf} \\
@@ -397,10 +362,21 @@ Event study plots:
 
 % \newpage
 
+
+\subsection{The Response of Sales to Greenwashing}
+
+Column (4) in Table~\ref{tab:main_results} presents the results of estimation of the model on the year-on-year quarterly sales of companies. The model was estimated with an asymmetric event window of 4 quarters prior to the treatment and 3 quarters post-treatment. I chose the length of the event window such that all seasonality can be captured in the pre-treatment period, but such that it is not too long, to not allow for other events to affect the estimation. The post-treatment period was purposefully chosen to be short, as to avoid the interference with the covid pandemic. The three estimated coefficients show the response of the quarterly sales to the climate activism of the Global Week For Future, differentiated by the greenwashing-intensity of each company. Out of the three treatment doses, it appears that only the highest has a significant coefficient at the 5\% level. Interestingly, contrary to the results of the stock prices, it all coefficients are positive. This suggests a possibly different mechanism at play here, and implies that having the highest greenwashing-intensity can have a positive effect on the growth of the firm's sales, relative to greenwashing with the lowest intensity.\footnote{Make sure that you re-write this paragraph to have consistent terminology - sometimes use sales and sometimes growth in sales!!! }
+
+The $ACRT$'s displayed in column (2) of Table~\ref{tab:acrt} fail to reject the hypothesis, that increasing a firm's dose from $d_2$ to $d_3$, and from $d_3$ to $d_4$ significantly increases its quarterly sales. This is an interesting result, as the model suggests that on average the highest greenwashing level compared to the lowest level significantly affects quarterly sales, however it rejects the hypothesis that the marginal increase in greenwashing from the third dose to the highest dose increases sales.\footnote{I'm puzzled about this, try to explain better}
+
+Finally, in the same way as in the previous subsection, event studies were estimated for each of the treatment-dose groups. As can be seen, for each of the groups, there exist positive and significant dynamic effects in either the first or the second post-treatment period. This would suggest that having a higher greenwashing intensity in fact has a positive impact on sales growth.
+
+Nonetheless, it is advised to interpret these results with caution, as they could be impacted by the significant decrease in sample size. 
+
 \begin{figure}
     \caption{Event Study Results --- Sales}
     \centering
-
+    
     (a) Group 2
     
     \includegraphics[width=0.85\textwidth]{sales_eve_2.pdf} \\
@@ -417,19 +393,28 @@ Event study plots:
     \caption*{Sales performance event studies for individual treatment groups. Groups 2,3,4 received their respective dose.\ \textbf{NOTE:~MAKE SURE THAT THE FINAL VERSION HAS QUARTERS AND NOT NUMS}}
 \end{figure}
 
+\subsection{Interpretation}
+
+Overall, these results suggest different effects of greenwashing in presence of climate activism, on outcomes of firms. \textbf{HERE CITE SOME STUDIES AS TO WHY INVESTORS ARE NOT FOOLED BY THE GREENWASHING AND WHY CONSUMERS MAY NOT REACT TO ACTIVISM}.
 
 \newpage
 
 
-\section{Discussion}\label{sect:discussion}
+\section{Conclusion}\label{sect:discussion}
+% Summarize again the context, the findings and the contribution. Talk about the results and finally talk about the limitations of the study.
 
-List of things to add to the discussion:
-\begin{itemize}
-    \item Could've weighted my regression somehow to make it more accurate?
-    \item Better greenwashing measurements are needed
-    \item some of the consumers may not be impacted as they may be businesses etc.
+In times, where climate change is a pressing issue, companies might want to utilize deceitful communications to enhance their financial performance. It is important to understand whether they can successfully employ such strategies, and what mechanisms are responsible for this behaviour. 
 
-\end{itemize}
+This study contributes to this discussion, by investigating whether greenwashing impacts financial performance of companies in presence of a positive sustainability demand shock in the form of climate activism. I find that high levels of greenwashing in companies' ESG reports may be met with decreases in lower performance of a company on the stock market, due to a negative reaction of investors. At the same time, the findings suggest that higher level of greenwashing may positively impact the quarterly earnings growth of such companies. Nonetheless, both of these effects are very short-lived. These results are consistent with\ \dots. 
+
+However, this study also has limitations that point to possible future research avenues. Firstly, this study has been severely limited by the data quality. Greenwashing is difficult to measure, and thus more research in this area is needed. Moreover, it is imperative that the companies issuing their environmental communications make them more accessible to analysis in order to promote transparency. Clearer and standardized ESG reporting frameworks could both make them more accessible for research and analysis, and limit greenwashing behaviour. Furthermore, the results of my study could be plagued by the possible measurement errors from the adopted greenwashing measure. 
+
+Secondly, this study could be made more efficient with the use of better empirical strategies. For example, it could include extra factors such as past volatility of a given stock in order to increase the precision of the findings. 
+
+Thirdly, more research is needed in how different types of consumers differ in their perceptions and reactions to greenwashing. For example, in this study, a part of consumers could actually be businesses, who may react differently to an increase in climate activism and to greenwashing. 
+
+Finally, this study has employed certain assumptions that may not be true and require more research. For example, it is needed to establish whether the way that a company advertises is correlated with the way that it reports to investors, to see whether the relation found in this study has theoretical foundations. 
+
 
 % ---------------------------------------------------------------------------------------------------------
 % ---------------------------------------------------------------------------------------------------------
