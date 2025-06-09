@@ -147,7 +147,7 @@ In order to apply this method to my data, I proceeded as follows. First, I extra
 
 \subsection{Outcome Variables}
 
-The Refinitiv dataset was used to retrieve data on firms' characteristics, their price indices and their quarterly earnings. Moreover, it was also used to retrieve the prices for regional market indices (e.g.\ S\&P500, MSCI Europe, etc.) that were needed to estimate the normal returns for each company. The characteristic variables include the stock exchange of the listing, country of incorporation, country of domicile, the company's sector and the company's industry. The stock price data and sales data required distinct pre-processing methods. The following section first details the procedure for the stock data, followed by that for the sales data.
+The Refinitiv dataset was used to retrieve data on firms' characteristics, their price indices and their quarterly sales. Moreover, it was also used to retrieve the prices for regional market indices (e.g.\ S\&P500, MSCI Europe, etc.) that were needed to estimate the normal returns for each company. The characteristic variables include the stock exchange of the listing, country of incorporation, country of domicile, the company's sector and the company's industry. The stock price data and sales data required distinct pre-processing methods. The following section first details the procedure for the stock data, followed by that for the sales data.
 
 First, I log-differenced the price indices (defined as the stock price expressed as a fraction of the initial listing price) to transform them into percentage changes. The same has been done for the values of regional stock indices. I chose the daily frequency for the stock price data, which was motivated by the likely short-term effect on stock prices, as found by \textcite{schusterStockPriceReactions2023}.\footnote{Table~\ref{tab:data_freq} in Appendix~\ref{app:data:tabs} shows the total number of periods that were retrieved.}
 
@@ -165,12 +165,12 @@ This type of modelling is sufficient for my use case, as per the work of~\textci
 
 After estimating the model, I used it to predict the abnormal returns within the event window. Then, the abnormal returns for each of the securities were cumulatively summed to arrive at the Cumulative Abnormal Return (CAR). This was done, as aggregation across time is needed in order to draw useful inference from the results of the actual study. This results from the fact that estimating the average abnormal returns directly would not take into account the path of the data following treatment, but only the instantaneous effect of the treatment dose. 
 
-For the earnings data, the procedure only involved log-differencing of the data to arrive at percentage changes. However, as changes in sales can be seasonal, I instead create Year-on-Year growth rates, by using the difference of sales relative to the same quarter last year. The choice of quarterly frequency was motivated by the data availability, as it was the lowest frequency available. 
+For the sales data, the procedure only involved log-differencing of the data to arrive at percentage changes. However, as changes in sales can be seasonal, I instead create Year-on-Year growth rates, by using the difference of sales relative to the same quarter last year. The choice of quarterly frequency was motivated by the data availability, as it was the lowest frequency available. 
 
 
 \subsection{Merging}
 
-In the last step of the data preparation, I merged the dataset containing $CTI$ scores of companies, with the dataset containing the stock prices, and the dataset containing quarterly earnings of companies. This process was difficult, because company names are often reported differently between different services. In the process of merging, 60 observations were dropped for the stock price dataset, because they could not be merged. The final dataset contained 792 companies. For the dataset containing quarterly earnings, the loss in values was more severe, because of data availability. Unfortunately, the Refinitiv database did not contain the quarterly earnings for all companies in the sample, which restricted the number of companies to 503.\footnote{Re-read this before sending}
+In the last step of the data preparation, I merged the dataset containing $CTI$ scores of companies, with the dataset containing the stock prices, and the dataset containing quarterly sales of companies. This process was difficult, because company names are often reported differently between different services. In the process of merging, 60 observations were dropped for the stock price dataset, because they could not be merged. The final dataset contained 792 companies. For the dataset containing quarterly sales, the loss in values was more severe, because of data availability. Unfortunately, the Refinitiv database did not contain the quarterly sales for all companies in the sample, which restricted the number of companies to 503.\footnote{Re-read this before sending}
 
 
 \section{Methodology}\label{sect:methodology}
@@ -207,7 +207,8 @@ This framework shares the no-anticipation and the independent sampling assumptio
 
 The \textbf{Strong Parallel Trends (SPD) assumption} requires that the average evolution of  outcomes for the entire treated population if all experienced dose $d$ is equal to the path of outcomes that dose group $d$ actually experienced \parencite{callawayDifferenceinDifferencesContinuousTreatment2025}. This assumption is called the strong parallel trends, as it implies that the average response to the treatment would be the same for all dose groups, if they were to receive (for example) a lower dose $d$. It is more restrictive than the regular parallel trends assumption, and the researchers themselves argue that it may be unreasonable in many cases due to treatment effect heterogeneity of different groups. However, under this assumption, one can estimate the average causal response parameter, which the researchers denote as $ACRT$. They show that the $ACRT$ is equal to the difference in average potential outcomes between dose level $d$ and the next lowest dose, scaled by the difference between these two doses. 
 
-Furthermore, the authors extend this framework to allow for estimation of treatment effects, where there are no untreated units, implying a setting where all dose-groups are compared to the lowest-dose group. While in the case with an untreated group the $ATT$ estimates the effect of switching from no treatment to a treatment of dose $d$, they show that in this case, the $ATT$ compares the change from low-intensity treatment to high intensity treatment. This introduces a selection bias which cannot be solved with a standard parallel trends assumption, and therefore calls for the use of the strong parallel trends. Due to the fact that in my setting there are no explicitly untreated companies, but only companies that are in the lowest quartile of the CTI index, this assumption is required for the whole estimation process.
+Furthermore, the authors extend this framework to allow for estimation of treatment effects, where there are no untreated units. Instead, all dose-groups are compared to the lowest-dose group. In this case, the $ATT$, which typically shows the effect of switching between no treatment to a treatment dose $d$, cannot be recovered. Nonetheless, they show that one can instead estimate the change in outcomes resulting from switching from low-intensity treatment to a high intensity treatment. While this comparison would introduce a selection bias under standard parallel trends, they show that one can avoid it by imposing strong parallel trends. Since my setting lacks explicitly untreated companies, and instead uses the companies in the lowest quartile of the CTI index as the comparison group, this assumption is required for the whole estimation process.
+
 
 In order to retrieve the causal effect, I estimate the following multivalued specification:
 
@@ -215,7 +216,7 @@ In order to retrieve the causal effect, I estimate the following multivalued spe
     Y_{i,t} = \alpha_i + \phi_t + \sum_{d=2}^{4} \beta_d \cdot 1\{D_{i,d}=d\}\cdot Post_t + \varepsilon_{i,t}
 \end{equation}
 
-Where $Y_{i,t}$ is the outcome variable, $\alpha_i$ are the unit fixed effects, $\phi_i$ are the time fixed effects, $1\{D_{i}=d\}$ is a dummy variable equal to $1$ if the unit $i$ belongs to the treatment group $d$, $Post_t$ is the dummy variable equal to one in the period after the FFF climate strike of September 20th, 2019, and $\varepsilon_{i,t}$ is the residual. The standard errors are clustered at the company ($i$) level, following \textcite{abadieWhenShouldYou2022}.\footnote{Note: forgot to talk about the event window!} Note that $d=1$ is omitted, as the regression is estimated relative to the lowest dose group. In this specification, each $\beta_d$ estimates the difference between $ATT(d)$ and the $ATT(d_L)$, which is average difference in outcomes when treated with $d$ instead of $d_L$. Formally, it can be expressed as: 
+Where $Y_{i,t}$ is the outcome variable, $\alpha_i$ are the unit fixed effects, $\phi_i$ are the time fixed effects, $1\{D_{i}=d\}$ is a dummy variable equal to $1$ if the unit $i$ belongs to the treatment group $d$, $Post_t$ is the dummy variable equal to one in the period after the FFF climate strike of September 20th, 2019, and $\varepsilon_{i,t}$ is the residual. The standard errors are clustered at the company ($i$) level, following \textcite{abadieWhenShouldYou2022}. Note that $d=1$ is omitted, as the regression is estimated relative to the lowest dose group. In this specification, each $\beta_d$ estimates the difference between $ATT(d)$ and the $ATT(d_L)$, which is average difference in outcomes when treated with $d$ instead of $d_L$. Formally, it can be expressed as: 
 \begin{equation}
     \beta_d = E[Y|D = d] - E[Y |D = d_L] = ATT(d) - ATT(d_L) = E[Y_{t=2}(d) - Y_{t=2}(d_L)]
 \end{equation}
@@ -227,10 +228,10 @@ This is a common approach adopted by many applied researchers \parencite{acemogl
 
 Where the $\beta^{twfe}$ tries to aggregate the dose-specific $ATT$'s into a single number. They propose their own aggregation scheme that estimates the local average treatment effect ($ATT^{loc}$), and the local average causal response ($ACRT^{loc}$) which operate by weighing the treatment doses by the probability of observation $i$ being in dose group $d$. However, this aggregation is only described within the context of having untreated observations. As in this study the level treatment effects are estimated relative to a group treated at a lower intensity instead, I refrain from summarizing the results in this way, and present dose specific results in the next section.
 
-% \Delta Y_i = \beta_{0} + \sum_{T=1}^{4} \beta_T \cdot 1\{D_{i}=T\}\cdot Post_t + \varepsilon_{i,t}
+
 \subsection{Validity of Assumptions --- Stock Prices}
 
-The chosen framework requires no-anticipation and the strong parallel trends assumptions. With respect to the SPT, this assumption may be concerning, as in the same way as in \textcite{koenigImpulsePurchasesGun2023}, the companies self-select into being treated. To alleviate this concern, Figure~\ref{fig:stock_trend} shows that the firms stock prices followed similar paths no matter their treatment assignment.
+The chosen framework requires the strong parallel trends and the no-anticipation assumptions. With respect to the SPT, this assumption may be concerning, as in the same way as in \textcite{koenigImpulsePurchasesGun2023}, the companies self-select into being treated. To alleviate this concern, Figure~\ref{fig:stock_trend} shows that the firms stock prices followed similar paths no matter their treatment assignment.
 % \footnote{Expand more your description of the picture} 
 Furthermore, an event study is run in the next section to evaluate the possibility of pre-trends. However, it has to be noted that the authors of \textcite{callawayDifferenceinDifferencesContinuousTreatment2025} state that this method of evaluating the existence of pre-trends has low power, and therefore the lack of significance within the pre-trends does not necessarily imply that they actually do not exist. Nonetheless, the event study is estimated as per the standard practice.
 With respect to the no-anticipation assumption, concerns are more pronounced. In their event study, \textcite{schusterStockPriceReactions2023} found evidence of anticipation of the stock market within a period of 20 days prior to the FFF strikes. In order to alleviate this concern, an analysis is performed with the shock date being shifted to multiple different dates preceding the shock.
@@ -238,36 +239,47 @@ With respect to the no-anticipation assumption, concerns are more pronounced. In
 \begin{figure}[t]
     \caption{Mean Cumulative Abnormal Return (Daily)}\label{fig:stock_trend}
     \centering
-    \includegraphics[width=\textwidth]{stock_d_trend.pdf}
+    \includegraphics[width=0.9\textwidth]{stock_d_trend.pdf}
     \captionsetup{font=footnotesize}
-    \caption*{Treatment Groups indicated with numbers from (lowest dose) 1--4 (highest dose). Red line indicates the first Fridays For Future climate strike during the Global Week For Future. Source: Refinitiv}
+    \caption*{Treatment Groups indicated with numbers from (lowest dose) 1 to 4 (highest dose). Red line indicates the first Fridays For Future climate strike during the Global Week For Future. Source: Refinitiv}
 \end{figure}
 
 \subsection{Validity of Assumptions --- Sales}
 
-The argument with respect to the sales data follows similar reasoning, however seems to be less plagued by the necessary assumptions. The relative lack of interest in climate change and sustainability seems to validate the fact that there should be no differences prior to the shock in the quarterly sales of treated and untreated companies. Therefore, as long as the treatment is evenly distributed across different firms (Figure~\ref{fig:sales_trend}), the SPT assumption should hold. Nonetheless, it is analysed with an event study. With regard to the no-anticipation assumption, one could argue that consumers may need more time to re-orient their spending to more sustainable sources, following such an increase in interest. In such case they would be less likely to adjust their consumption prior to the FFF climate strikes, assuming that they would have heard about these protest before they happened. Therefore, in this case the assumptions seem more probable. On the other hand, one must acknowledge, that in this scheme, the CTI works only as a proxy to the belief of consumers about the greenwashing-intensity of the companies. This is not an obvious assumption, as firms may try to be more (or less) deceitful to consumers than to investors. However, given the lack of public information on marketing spending in relation to ESG, it is reasonable to assume that firms communicate similarly with both consumers and investors, and therefore that their ESG reports would reflect their sustainability-oriented marketing. 
+The analysis of greenwashing effects on quarterly sales requires the previously stated strong parallel trends and no-anticipation assumptions, but two additional concerns emerge.
+
+With respect to the strong parallel trends assumption, there are concerns that the firms' outcomes could perform differently due to self-selection. From Figure~\ref{fig:sales_trend}, it appears that although the trends of all treatment groups move in a similar direction, the outcomes of firms in the third quartile of the $CTI$ seem to diverge before the quarter of the shock. This could suggest a violation of SPT, however this question is also evaluated with an event study.
+
+The non-anticipation assumption could be violated in certain cases. For example, if the consumers were to stop buying goods from brands that they perceive as greenwashing before the start of the protest, this could violate the assumption. One theory that could support this argument is the work by \textcite{liaukonyteFrontiersSpillingBeans2023}. In this study the authors find that \textit{online} boycotting activity significantly impacted the sales of the boycotted companies. As the large amount of information related to FFF climate strikes spread on social media, this could violate the assumption in question, if the boycotts happened in quarters preceding the quarter of the shock. However, in preparation of this study, I found no calls for boycotting activities in advance of the quarter which includes the climate strikes. 
+
 
 \begin{figure}[t]
     \caption{Year-over-Year Change in Quarterly Sales}\label{fig:sales_trend}
     \centering
-    \includegraphics[width=\textwidth]{sales_trend.pdf}
+    \includegraphics[width=0.9\textwidth]{sales_trend.pdf}
     \captionsetup{font=footnotesize}
-    \caption*{Treatment Groups indicated with numbers from (lowest dose) 1--4 (highest dose). Red line indicates the quarter which witnessed the Global Week For Future. Source: Refinitiv}
+    \caption*{Treatment Groups indicated with numbers from (lowest dose) 1 to 4 (highest dose). Red line indicates the quarter which witnessed the Global Week For Future and the FFF climate strikes. Source: Refinitiv}
 \end{figure}
 
+Furthermore, it has to be noted that this analysis may be significantly impacted by the the loss of heterogeneity due to the sample size loss.
 
-\newpage
+Finally, one must additionally acknowledge one more assumption with respect to this part of the study. In this setting, the CTI works only as a proxy to the belief of consumers about the greenwashing-intensity of the companies. This is not an obvious assumption, as firms may try to be more (or less) deceitful to consumers than to investors. However, given the lack of studies on the relation between marketing, ESG reporting and ESG performance, I chose to assume that firms communicate similarly with both consumers and investors, and therefore that their ESG reports would reflect their sustainability-oriented marketing. 
+
+% \newpage
 
 \section{Results}\label{sect:results}
 
-\subsection{Stock Prices Response to Greenwashing}
-\subsection{Sales Response to Greenwashing}
 
-Result table:
+\subsection{The Response of Stock Prices to Greenwashing}\footnote{Mention event window}
 
-\begin{table}
+Column (1) in Table~\ref{tab:main_results} presents the results of estimation. 
+
+
+\subsection{The Response of Sales to Greenwashing}\footnote{Mention event window}
+
+\begin{table}[t]
     
-    \captionof{table}{Results of Estimation}
+    \captionof{table}{Results of Estimation}\label{tab:main_results}
     
     \centering
     \begin{tabular}{lcc}
@@ -359,7 +371,7 @@ Result table:
 \end{table}
 
 
-
+\newpage
 Event study plots:
 % \newpage
 
@@ -382,6 +394,8 @@ Event study plots:
     \captionsetup{font=footnotesize}
     \caption*{Stock price performance event studies for individual treatment groups. Groups 2,3,4 received their respective dose.\ \textbf{NOTE:~Make sure that the final version is prettier}}
 \end{figure}
+
+% \newpage
 
 \begin{figure}
     \caption{Event Study Results --- Sales}
