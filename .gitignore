@@ -8,7 +8,8 @@ writing/*
 !writing/thesis.tex
 !writing/titlepage.tex
 code/__pycache__
-code/*.html
+# code/*.html
+.html
 .vscode
 .lintr
 feedback/*
