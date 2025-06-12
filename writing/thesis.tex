@@ -277,9 +277,9 @@ Finally, one must additionally acknowledge one more assumption with respect to t
 \section{Results}\label{sect:results}
 
 
-\subsection{The Response of Stock Prices to Greenwashing}
+\subsection{The Response of Stock Prices to Greenwashing}\label{subsect:stocks}
 
-Column (1) in Table~\ref{tab:main_results} presents the results of estimation of the model on the cumulative abnormal return of companies. The model was estimated on a 40-day event window, with 20 days preceding the shock and 20 days following the shock. The length of the window was based on the expected short-term effects of the shock, following \textcite{schusterStockPriceReactions2023}. Moreover, it was purposefully made short, to make sure that the effects are not contaminated with behaviour related to the COP25 conference that happened at the beginning of December 2019. This process resulted in three coefficients of interest --- $\beta_2$, $\beta_3$, and $\beta_4$. These coefficients show the response of the stock market to the climate activism of the Global Week For Future, differentiated by the greenwashing-intensity of companies. In this specification, all three coefficients are negative and insignificant. This implies that statistically, higher greenwashing intensity proxied by the $CTI$ index, did not impact the behaviour of the stock prices over time, relative to the sample of firms that greenwash the least. 
+Column (1) in Table~\ref{tab:main_results} presents the results of estimation of the model on the cumulative abnormal return of companies. The model was estimated on a 40-day event window, with 20 days preceding the shock and 20 days following the shock. The length of the window was based on the expected short-term effects of the shock, following \textcite{schusterStockPriceReactions2023}. Moreover, it was purposefully made short, to make sure that the effects are not contaminated with behaviour related to the COP25 conference that happened at the beginning of December 2019.\footnote{Note that due to the stock market not working on weekends, the actual number of estimated periods equals 28.} This process resulted in three coefficients of interest --- $\beta_2$, $\beta_3$, and $\beta_4$. These coefficients show the response of the stock market to the climate activism of the Global Week For Future, differentiated by the greenwashing-intensity of companies. In this specification, all three coefficients are negative and insignificant. This implies that statistically, higher greenwashing intensity proxied by the $CTI$ index, did not impact the behaviour of the stock prices over time, relative to the sample of firms that greenwash the least. 
 
 
 \begin{table}[t]
@@ -326,7 +326,7 @@ Table~\ref{tab:acrt} displays the dose-wise average causal responses of each tre
         \toprule
         \toprule
                             & {CAR}           & {$\Delta_4$ Log of Sales} \\
-        Variables           & {(1)}           & {2)}\\
+        Variables           & {(1)}           & {(2)}\\
         \midrule
         $ACRT(D_3)$         & 0.000        & -0.004 \\
                             & (0.005)      & (0.020)\\
@@ -358,18 +358,18 @@ Finally, columns (2) and (3) in Table~\ref{tab:main_results} display the perform
     
     (a) Group 2
     
-    \includegraphics[width=0.85\textwidth]{stock_price_eve_2.pdf} \\
+    \includegraphics[width=0.79\textwidth]{stock_price_eve_2.pdf} \\
     
     (b) Group 3
     
-    \includegraphics[width=0.85\textwidth]{stock_price_eve_3.pdf} \\
+    \includegraphics[width=0.79\textwidth]{stock_price_eve_3.pdf} \\
     
     (c) Group 4
     
-    \includegraphics[width=0.85\textwidth]{stock_price_eve_4.pdf}
+    \includegraphics[width=0.79\textwidth]{stock_price_eve_4.pdf}
     
     \captionsetup{font=footnotesize}
-    \caption*{The effect of receiving treatment on the cumulative abnormal returns of stock prices. Group number indicates the treatment dose, with 2 being the lowest and 4 being the highest. Estimation window is set to 20 days before the treatment and to 20 days post treatment to display the short-term effects. 20th of September 2019 marks the first period of treatment and 19th of September 2019 is set as the reference. 95\% confidence intervals are reported.}
+    \caption*{The effect of receiving treatment on the cumulative abnormal returns of stock prices. Gaps in the graph are due to the inclusion of weekends in the data. Group number indicates the treatment dose, with 2 being the lowest and 4 being the highest. Estimation window is set to 20 days before the treatment and to 20 days post treatment to display the short-term effects. 20th of September 2019 marks the first period of treatment and 19th of September 2019 is set as the reference. 95\% confidence intervals are reported.}
 \end{figure}
 
 % \newpage
@@ -390,15 +390,15 @@ Finally, in the same way as in the previous subsection, event studies were estim
     
     (a) Group 2
     
-    \includegraphics[width=0.85\textwidth]{sales_eve_2.pdf} \\
+    \includegraphics[width=0.79\textwidth]{sales_eve_2.pdf} \\
     
     (b) Group 3
     
-    \includegraphics[width=0.85\textwidth]{sales_eve_3.pdf} \\
+    \includegraphics[width=0.79\textwidth]{sales_eve_3.pdf} \\
     
     (c) Group 4
     
-    \includegraphics[width=0.85\textwidth]{sales_eve_4.pdf}
+    \includegraphics[width=0.79\textwidth]{sales_eve_4.pdf}
     
     \captionsetup{font=footnotesize}
     \caption*{The effect of receiving treatment on the 4-quarter-log-difference of quarterly sales. Group number indicates the treatment dose, with 2 being the lowest and 4 being the highest. All estimates are relative to receiving the lowest dose/ Estimation window is set to 4 quarters before the treatment to account for seasonality and to 3 quarters after the treatment to display the effects but exclude the effects from the COVID-19 pandemic. 2019 Q3 is the quarter of treatment and 2019 Q2 is set as a reference period. 95\% confidence intervals are reported.}
@@ -481,138 +481,243 @@ Overall, this study offers empirical insight into greenwashing behaviour while a
 
 \pagebreak
 
-% \begin{sidewaystable}
-% \caption{Sample Composition}\label{tab:balanced_panel}
-% \footnotesize{} % Reduce font size
-% \setlength{\tabcolsep}{3pt} % Reduce column spacing
-% \begin{tabular}{lccc|lccc|lccc} %-chktex 44
-%     \toprule
-%     \multicolumn{4}{c|}{\textbf{ICB Industry}} & \multicolumn{4}{c|}{\textbf{Number of Employees}} & \multicolumn{4}{c}{\textbf{Country of Domicile}} \\
-%     \cmidrule(lr){1-4} \cmidrule(lr){5-8} \cmidrule(lr){9-12}
-%     Industry & Total & Treated & Control & Employees & Total & Treated & Control & Country & Total & Treated & Control \\
-%     \midrule
-%     Industrials & 120 (19\%) & 59 (18\%) & 61 (19\%) & 10,000+ & 487 (62\%) & 250 (63\%) & 237 (61\%) & United States & 376 (59\%) & 164 (51\%) & 212 (66\%) \\
-%     Consumer Discretionary & 99 (15\%) & 30 (9.4\%) & 69 (21\%) & 1001--5000 & 134 (17\%) & 70 (18\%) & 64 (16\%) & United Kingdom & 64 (10\%) & 38 (12\%) & 26 (8.1\%) \\
-%     Financials & 87 (14\%) & 65 (20\%) & 22 (6.9\%) & 5001--10,000 & 120 (15\%) & 54 (14\%) & 66 (17\%) & Canada & 55 (8.6\%) & 30 (9.4\%) & 25 (7.8\%) \\
-%     Basic Materials & 83 (13\%) & 347 (15\%) & 36 (11\%) & 201--500 & 20 (2.5\%) & 10 (2.5\%) & 10 (2.6\%) & Australia & 48 (7.5\%) & 31 (9.7\%) & 17 (5.3\%) \\
-%     Consumer Staples & 57 (8.9\%) & 20 (6.3\%) & 37 (12\%) & 501--1000 & 13 (1.6\%) & 5 (1.3\%) & 8 (2.1\%) & Other & 97 (15\%) & 56 (17\%) & 41 (12\%) \\
-%     Technology & 52 (8.1\%) & 36 (11\%) & 16 (5.0\%) & 11--50 & 8 (1.0\%) & 5 (1.3\%) & 3 (0.8\%) & Unknown & 155 & 84 & 71 \\
-%     Utilities & 47 (7.3\%) & 10 (3.1\%) & 37 (12\%) & 51--200 & 6 (0.8\%) & 4 (1.0\%) & 2 (0.5\%) & & & & \\
-%     Health Care & 46 (7.2\%) & 28 (8.8\%) & 18 (5.6\%) & 1--10 & 1 (0.1\%) & 1 (0.3\%) & 0 (0\%) & & & & \\
-%     Telecommunications & 20 (3.1\%) & 14 (4.4\%) & 6 (1.9\%) & Unknown & 6 & 4 & 2 & & & & \\
-%     Energy & 17 (2.7\%) & 7 (2.2\%) & 10 (3.1\%) & & & & & & & & \\
-%     Real Estate & 12 (1.9\%) & 3 (0.9\%) & 9 (2.8\%) & & & & & & & & \\
-%     Unknown & 155 & 84 & 71 & & & & & & & & \\
-%     \midrule
-%     Total & N = 795 & N = 403 & N = 392 & Total & N = 795 & N = 403 & N = 392 & Total & N = 795 & N = 403 & N = 392 \\
-%     \bottomrule
-% \end{tabular}\label{tab:sample_composition}
-% \end{sidewaystable}
-
-% \pagebreak
-
-
-
-\begingroup
-\renewcommand*{\arraystretch}{0.85}
-\begin{longtable}[c]{cc}
-    \caption{Allocation of countries to regional markets}\label{tab:mrkt_ind} \\
-       \toprule
-       Country & Market Index \\
-       \midrule
-       \endfirsthead{}
-       
-       \\
-       \toprule
-       Country & Market Index \\
-       \midrule
-       \endhead{}
-
-
-       \\
-       \midrule
-       \multicolumn{2}{c}{\footnotesize Note: All indices denominated in dollars (but actually as \% of their listing price I think)} \\
-       \bottomrule
-       \endfoot{}
-       
-       United States & S\&P 500 Composite \\
-       Canada & S\&P 500 Composite \\
-       Bermuda & S\&P 500 Composite \\
-       Cayman Islands & S\&P 500 Composite \\
-       
-       Mexico & MSCI EM Latin America  \\
-       Puerto Rico & MSCI EM Latin America  \\
-       Costa Rica & MSCI EM Latin America  \\
-       Barbados & MSCI EM Latin America  \\
-       Panama & MSCI EM Latin America  \\
-       Colombia & MSCI EM Latin America  \\
-       Brazil & MSCI EM Latin America  \\
-       Chile & MSCI EM Latin America  \\
-       Peru & MSCI EM Latin America  \\
-       Uruguay & MSCI EM Latin America  \\
-       Argentina & MSCI EM Latin America  \\
-       
-       United Kingdom & MSCI Europe  \\
-       Ireland & MSCI Europe  \\
-       Switzerland & MSCI Europe  \\
-       Netherlands & MSCI Europe  \\
-       Greece & MSCI Europe  \\
-       Germany & MSCI Europe  \\
-       Belgium & MSCI Europe  \\
-       Denmark & MSCI Europe  \\
-       Monaco & MSCI Europe  \\
-       Luxembourg & MSCI Europe  \\
-       France & MSCI Europe  \\
-       Sweden & MSCI Europe  \\
-       Isle of Man & MSCI Europe  \\
-       Spain & MSCI Europe  \\
-       Finland & MSCI Europe  \\
-       Romania & MSCI Europe  \\
-       Italy & MSCI Europe  \\
-       Austria & MSCI Europe  \\
-       Jersey & MSCI Europe  \\
-       Guernsey & MSCI Europe  \\
-       Turkey & MSCI Europe  \\
-       
-       
-       Hong Kong & MSCI Pacific  \\
-       Singapore & MSCI Pacific  \\
-       Japan & MSCI Pacific  \\
-       Australia & MSCI Pacific  \\
-       New Zealand & MSCI Pacific  \\
-       Papua New Guinea & MSCI Pacific  \\
-       
-       China & MSCI AC Asia  \\
-       India & MSCI AC Asia  \\
-       South Korea & MSCI AC Asia  \\
-       Taiwan & MSCI AC Asia  \\
-       Mongolia & MSCI AC Asia  \\
-       Indonesia & MSCI AC Asia  \\
-       Philippines & MSCI AC Asia  \\
-       
-       Israel & MSCI World  \\
-       Kazakhstan & MSCI World  \\
-       United Arab Emirates & MSCI World  \\
-       South Africa & MSCI World \\
+% ----------------------------------------------
+\begin{table}
+    \centering
+    \captionof{table}{Allocation of Countries to Regional Markets}\label{tab:mrkt_ind}
+    \footnotesize{
+        \begin{tabular}{lc}
+            \toprule
+            Country & Market Index \\
+            \midrule 
+            United States & S\&P 500 Composite \\
+            Canada & S\&P 500 Composite \\
+            Bermuda & S\&P 500 Composite \\
+        
+            Mexico & MSCI EM Latin America  \\
+            Panama & MSCI EM Latin America  \\
+            Colombia & MSCI EM Latin America  \\
+            Brazil & MSCI EM Latin America  \\
+            Chile & MSCI EM Latin America  \\
+            Peru & MSCI EM Latin America  \\
+            Argentina & MSCI EM Latin America  \\
+            
+            United Kingdom & MSCI Europe  \\
+            Ireland & MSCI Europe  \\
+            Switzerland & MSCI Europe  \\
+            Netherlands & MSCI Europe  \\
+            Greece & MSCI Europe  \\
+            Germany & MSCI Europe  \\
+            Belgium & MSCI Europe  \\
+            Denmark & MSCI Europe  \\
+            Monaco & MSCI Europe  \\
+            Luxembourg & MSCI Europe  \\
+            France & MSCI Europe  \\
+            Sweden & MSCI Europe  \\
+            Spain & MSCI Europe  \\
+            Finland & MSCI Europe  \\
+            Guernsey & MSCI Europe \\ 
+            Romania & MSCI Europe  \\
+            Italy & MSCI Europe  \\
+            
+            
+            Hong Kong & MSCI Pacific  \\
+            Singapore & MSCI Pacific  \\
+            Japan & MSCI Pacific  \\
+            Australia & MSCI Pacific  \\
+            New Zealand & MSCI Pacific  \\
+            Papua New Guinea & MSCI Pacific  \\
+            
+            China & MSCI AC Asia  \\
+            India & MSCI AC Asia  \\
+            South Korea & MSCI AC Asia  \\
+            Taiwan & MSCI AC Asia  \\
+            Philippines & MSCI AC Asia  \\
+            \bottomrule
+        
+        \end{tabular}
+    }
     
-\end{longtable}
-\endgroup
+\end{table}
 
-\begin{table}[!h]
-    \captionof{table}{Estimation periods for each frequency}\label{tab:data_freq}
-    \begin{tabular}{ccc}
+\pagebreak
+% ----------------------------------------------
+
+\begin{table}
+    \centering
+    \captionof{table}{Treatment Dose Distribution Across Countries}
+    % \resizebox{14cm}{!}{
+    \footnotesize{
+   \begin{tabular}{lccccc}
+    \toprule
+    Country & Overall & 1 & 2 & 3 & 4\\
+    \midrule
+    United States & 373 (59\%) & 123 (74\%) & 93 (59\%) & 88 (57\%) & 69 (45\%)\\
+    United Kingdom & 64 (10\%) & 14 (8.4\%) & 13 (8.3\%) & 17 (11\%) & 20 (13\%)\\
+    Canada & 55 (8.7\%) & 12 (7.2\%) & 11 (7.0\%) & 12 (7.8\%) & 20 (13\%)\\
+    Australia & 47 (7.4\%) & 7 (4.2\%) & 10 (6.4\%) & 9 (5.8\%) & 21 (14\%)\\
+    Ireland & 9 (1.4\%) & 0 (0\%) & 4 (2.5\%) & 4 (2.6\%) & 1 (0.6\%)\\
+    Switzerland & 7 (1.1\%) & 1 (0.6\%) & 1 (0.6\%) & 2 (1.3\%) & 3 (1.9\%)\\
+    Mexico & 6 (0.9\%) & 0 (0\%) & 2 (1.3\%) & 4 (2.6\%) & 0 (0\%)\\
+    Bermuda & 6 (0.9\%) & 1 (0.6\%) & 4 (2.5\%) & 1 (0.6\%) & 0 (0\%)\\
+    South Korea & 5 (0.8\%) & 0 (0\%) & 0 (0\%) & 1 (0.6\%) & 4 (2.6\%)\\
+    Taiwan & 5 (0.8\%) & 0 (0\%) & 2 (1.3\%) & 2 (1.3\%) & 1 (0.6\%)\\
+    India & 5 (0.8\%) & 1 (0.6\%) & 1 (0.6\%) & 2 (1.3\%) & 1 (0.6\%)\\
+    Japan & 4 (0.6\%) & 0 (0\%) & 1 (0.6\%) & 1 (0.6\%) & 2 (1.3\%)\\
+    Brazil & 4 (0.6\%) & 1 (0.6\%) & 1 (0.6\%) & 1 (0.6\%) & 1 (0.6\%)\\
+    China & 4 (0.6\%) & 1 (0.6\%) & 2 (1.3\%) & 0 (0\%) & 1 (0.6\%)\\
+    New Zealand & 4 (0.6\%) & 1 (0.6\%) & 2 (1.3\%) & 0 (0\%) & 1 (0.6\%)\\
+    Luxembourg & 3 (0.5\%) & 2 (1.2\%) & 0 (0\%) & 1 (0.6\%) & 0 (0\%)\\
+    Netherlands & 3 (0.5\%) & 0 (0\%) & 1 (0.6\%) & 1 (0.6\%) & 1 (0.6\%)\\
+    Singapore & 3 (0.5\%) & 0 (0\%) & 0 (0\%) & 3 (1.9\%) & 0 (0\%)\\
+    Argentina & 3 (0.5\%) & 1 (0.6\%) & 1 (0.6\%) & 0 (0\%) & 1 (0.6\%)\\
+    Chile & 3 (0.5\%) & 1 (0.6\%) & 2 (1.3\%) & 0 (0\%) & 0 (0\%)\\
+    Spain & 2 (0.3\%) & 0 (0\%) & 1 (0.6\%) & 0 (0\%) & 1 (0.6\%)\\
+    Sweden & 2 (0.3\%) & 0 (0\%) & 1 (0.6\%) & 0 (0\%) & 1 (0.6\%)\\
+    France & 2 (0.3\%) & 1 (0.6\%) & 1 (0.6\%) & 0 (0\%) & 0 (0\%)\\
+    Greece & 2 (0.3\%) & 0 (0\%) & 0 (0\%) & 0 (0\%) & 2 (1.3\%)\\
+    Hong Kong & 2 (0.3\%) & 0 (0\%) & 0 (0\%) & 1 (0.6\%) & 1 (0.6\%)\\
+    Colombia & 1 (0.2\%) & 0 (0\%) & 0 (0\%) & 1 (0.6\%) & 0 (0\%)\\
+    Finland & 1 (0.2\%) & 0 (0\%) & 0 (0\%) & 1 (0.6\%) & 0 (0\%)\\
+    Germany & 1 (0.2\%) & 0 (0\%) & 0 (0\%) & 0 (0\%) & 1 (0.6\%)\\
+    Guernsey & 1 (0.2\%) & 0 (0\%) & 0 (0\%) & 0 (0\%) & 1 (0.6\%)\\
+    Italy & 1 (0.2\%) & 0 (0\%) & 1 (0.6\%) & 0 (0\%) & 0 (0\%)\\
+    Panama & 1 (0.2\%) & 0 (0\%) & 0 (0\%) & 0 (0\%) & 1 (0.6\%)\\
+    Papua New Guinea & 1 (0.2\%) & 0 (0\%) & 0 (0\%) & 1 (0.6\%) & 0 (0\%)\\
+    Peru & 1 (0.2\%) & 0 (0\%) & 1 (0.6\%) & 0 (0\%) & 0 (0\%)\\
+    Philippines & 1 (0.2\%) & 0 (0\%) & 0 (0\%) & 1 (0.6\%) & 0 (0\%)\\
+    Romania & 1 (0.2\%) & 0 (0\%) & 1 (0.6\%) & 0 (0\%) & 0 (0\%)\\
+    Unknown & 148 & 29 & 37 & 41 & 41\\
+    \midrule
+    Total & 781 & 196 &  194 & 195 & 196\\
+    \bottomrule
+    \end{tabular}
+    }
+
+\end{table}
+
+% ----------------------------------------------
+
+\begin{table}
+    \centering
+    \captionof{table}{Treatment Distribution Across Industries}\label{tab:industries}
+    \begin{tabular}{lccccc}
+    \toprule
+    Industry & Overall & 1 & 2 & 3 & 4 \\
+    \midrule
+    Industrials & 119 (19\%) & 31 (19\%) & 33 (21\%) & 27 (18\%) & 28 (18\%)\\
+    Consumer Discretionary & 99 (16\%) & 39 (23\%) & 32 (20\%) & 21 (14\%) & 7 (4.5\%)\\
+    Financials & 87 (14\%) & 11 (6.6\%) & 13 (8.3\%) & 20 (13\%) & 43 (28\%)\\
+    Basic Materials & 82 (13\%) & 17 (10\%) & 17 (11\%) & 25 (16\%) & 23 (15\%)\\
+    Consumer Staples & 56 (8.8\%) & 19 (11\%) & 17 (11\%) & 14 (9.1\%) & 6 (3.9\%)\\
+    Technology & 52 (8.2\%) & 5 (3.0\%) & 11 (7.0\%) & 18 (12\%) & 18 (12\%)\\
+    Utilities & 46 (7.3\%) & 21 (13\%) & 15 (9.6\%) & 9 (5.8\%) & 1 (0.6\%)\\
+    Health Care & 45 (7.1\%) & 13 (7.8\%) & 5 (3.2\%) & 11 (7.1\%) & 16 (10\%)\\
+    Telecommunications & 19 (3.0\%) & 2 (1.2\%) & 4 (2.5\%) & 6 (3.9\%) & 7 (4.5\%)\\
+    Energy & 16 (2.5\%) & 6 (3.6\%) & 4 (2.5\%) & 1 (0.6\%) & 5 (3.2\%)\\
+    Real Estate & 12 (1.9\%) & 3 (1.8\%) & 6 (3.8\%) & 2 (1.3\%) & 1 (0.6\%)\\
+    Unknown & 148 & 29 & 37 & 41 & 41\\
+    \midrule 
+    Total & 781 & 196 & 194 & 195 & 196\\
+    \bottomrule
+    \end{tabular}
+
+\end{table}
+
+% ----------------------------------------------
+
+
+
+% ----------------------------------------------
+\begin{table}
+    \centering
+    \captionof{table}{Treatment Distribution Across Stock Exchanges}\label{tab:exchngs}
+    
+    \begin{tabular}{lccccc}
+    \toprule
+    Exchange & Overall & 1  & 2 & 3 & 4 \\
+    \midrule
+    NYSE & 379 (49\%) & 109 (56\%) & 99 (51\%) & 98 (50\%) & 73 (37\%)\\
+    Nasdaq & 100 (13\%) & 32 (16\%) & 22 (11\%) & 24 (12\%) & 22 (11\%)\\
+    London SE & 68 (8.7\%) & 13 (6.6\%) & 17 (8.8\%) & 18 (9.2\%) & 20 (10\%)\\
+    Toronto SE & 56 (7.2\%) & 17 (8.7\%) & 9 (4.6\%) & 12 (6.2\%) & 18 (9.2\%)\\
+    Australian SE & 55 (7.0\%) & 8 (4.1\%) & 13 (6.7\%) & 9 (4.6\%) & 25 (13\%)\\
+    Boerse Frankfurt & 23 (2.9\%) & 5 (2.6\%) & 5 (2.6\%) & 7 (3.6\%) & 6 (3.1\%)\\
+    Tokyo SE & 20 (2.6\%) & 0 (0\%) & 5 (2.6\%) & 7 (3.6\%) & 8 (4.1\%)\\
+    Euronext Paris & 12 (1.5\%) & 0 (0\%) & 3 (1.5\%) & 3 (1.5\%) & 6 (3.1\%)\\
+    Hong Kong Exchange & 10 (1.3\%) & 2 (1.0\%) & 5 (2.6\%) & 1 (0.5\%) & 2 (1.0\%)\\
+    Borsa Italiana & 7 (0.9\%) & 1 (0.5\%) & 2 (1.0\%) & 2 (1.0\%) & 2 (1.0\%)\\
+    NASDAQ Helsinki & 7 (0.9\%) & 3 (1.5\%) & 0 (0\%) & 2 (1.0\%) & 2 (1.0\%)\\
+    NASDAQ Stockholm & 6 (0.8\%) & 1 (0.5\%) & 1 (0.5\%) & 1 (0.5\%) & 3 (1.5\%)\\
+    Six Swiss Exchange & 6 (0.8\%) & 1 (0.5\%) & 2 (1.0\%) & 1 (0.5\%) & 2 (1.0\%)\\
+    NASDAQ Copenhagen & 4 (0.5\%) & 0 (0\%) & 1 (0.5\%) & 0 (0\%) & 3 (1.5\%)\\
+    BME Exchange & 4 (0.5\%) & 0 (0\%) & 1 (0.5\%) & 2 (1.0\%) & 1 (0.5\%)\\
+    Euronext Amsterdam & 4 (0.5\%) & 1 (0.5\%) & 1 (0.5\%) & 1 (0.5\%) & 1 (0.5\%)\\
+    Singapore Exchange & 3 (0.4\%) & 1 (0.5\%) & 0 (0\%) & 2 (1.0\%) & 0 (0\%)\\
+    Wiener Boerse AG & 3 (0.4\%) & 0 (0\%) & 2 (1.0\%) & 1 (0.5\%) & 0 (0\%)\\
+    Euronext Brussels & 3 (0.4\%) & 0 (0\%) & 1 (0.5\%) & 2 (1.0\%) & 0 (0\%)\\
+    Taiwan SE & 2 (0.3\%) & 1 (0.5\%) & 1 (0.5\%) & 0 (0\%) & 0 (0\%)\\
+    Korea Exchange & 2 (0.3\%) & 1 (0.5\%) & 0 (0\%) & 1 (0.5\%) & 0 (0\%)\\
+    National SE & 2 (0.3\%) & 0 (0\%) & 2 (1.0\%) & 0 (0\%) & 0 (0\%)\\
+    Oslo Bors & 2 (0.3\%) & 0 (0\%) & 1 (0.5\%) & 0 (0\%) & 1 (0.5\%)\\
+    Athens SE & 1 (0.1\%) & 0 (0\%) & 0 (0\%) & 1 (0.5\%) & 0 (0\%)\\
+    Boerse Hamburg & 1 (0.1\%) & 0 (0\%) & 0 (0\%) & 0 (0\%) & 1 (0.5\%)\\
+    Santiago SE & 1 (0.1\%) & 0 (0\%) & 1 (0.5\%) & 0 (0\%) & 0 (0\%)\\
+    \midrule
+    Total &  781 & 196 & 194 & 195 & 196 \\
+    \bottomrule
+\end{tabular}
+
+\end{table}
+
+% ----------------------------------------------
+
+\begin{table}
+    \centering
+    \captionof{table}{Treatment Distribution Across Firm Sizes}\label{tab:firm_size}
+    
+    \begin{tabular}{lccccc}
         \toprule
-        Frequency & Normal Returns Estimation & Event Window \\
+        Number of Employees & Overall & 1 & 2 & 3 & 4 \\
         \midrule
-        % Monthly & 2014--01--01 --- 2018--05--31 & 2018--06--01 --- yyyy---mm---dd \\ 
-        Weekly & 2016--01--01 --- 2019--06--30 & 2019--07--01 --- yyyy---mm---dd \\
-        % Daily & 2019--01--01 --- 2019--07--31 & 2019--08--01 --- 2019--08--xx\\
-        Quarterly (Sales) && \\ 
+        10,000+ Employees & 478 (62\%) & 117 (60\%) & 116 (60\%) & 128 (66\%) & 117 (61\%)\\
+        5001--10,000 Employees & 118 (15\%) & 36 (18\%) & 29 (15\%) & 32 (16\%) & 21 (11\%)\\
+        1001--5000 Employees & 132 (17\%) & 34 (17\%) & 34 (18\%) & 25 (13\%) & 39 (20\%)\\
+        501--1000 Employees & 13 (1.7\%) & 3 (1.5\%) & 4 (2.1\%) & 2 (1.0\%) & 4 (2.1\%)\\
+        201--500 Employees & 20 (2.6\%) & 3 (1.5\%) & 7 (3.6\%) & 5 (2.6\%) & 5 (2.6\%)\\
+        51--200 Employees & 6 (0.8\%) & 0 (0\%) & 2 (1.0\%) & 1 (0.5\%) & 3 (1.6\%)\\
+        11--50 Employees & 7 (0.9\%) & 2 (1.0\%) & 1 (0.5\%) & 1 (0.5\%) & 3 (1.6\%)\\
+        1--10 Employees & 1 (0.1\%) & 0 (0\%) & 0 (0\%) & 0 (0\%) & 1 (0.5\%)\\
+        Unknown & 6 & 1 & 1 & 1 & 3\\
+        \midrule
+        Total &  781 & 196 & 194 & 195 & 196 \\
         \bottomrule
     \end{tabular}
+
+\end{table}
+
+% ----------------------------------------------
+%        \multicolumn{2}{c}{\footnotesize Note: All indices denominated in dollars (but actually as \% of their listing price I think)} \\
+
+
+
+\begin{table}[ht]
+    \captionof{table}{Estimation Periods for Variable}\label{tab:data_freq}
+    \begin{tabular}{l| c c c| c c c}
+        \toprule
+        Variable     & \multicolumn{3}{c|}{Normal Returns} & \multicolumn{3}{c}{Event Window} \\
+                     & Start & End          & N                 &   Start & End     &     N \\ 
+        \midrule
+        Stock Prices & 2019--01--01 & 2019--07--31 & 211 & 2019--09--01 & 2019--10--10 & 28\\
+        Sales        & ---           &     ---     & --- & 2018 Q3 & 2020 Q2 & 7\\  
+        \bottomrule
+    \end{tabular}
+
+    \vspace{0.2cm}
+
     \begin{tablenotes}
         \footnotesize
-        \item \textbf{NOTE:\@ THINK WHETHER TO INCLUDE NUMBER OF PERIODS OF ESTIMATION, THINK WHETHER THAT SHOULD BE SYMMETRICAL FOR EACH OF THE FREQUENCIES}
+        \item Date ranges for the pre-processing and estimation of each variable. Normal returns were only needed for the estimation of cumulative abnormal returns of stock prices.
     \end{tablenotes}
 \end{table}
 
@@ -657,8 +762,47 @@ Formally, the assumption is defined as:
 
 \section{Robustness Checks}\label{app:robustness}
 
-Here put the event study plots for robustness checks
+This section presents event studies for robustness checks of the no-anticipation assumption (Section~\ref{subsect:stocks}). Figure~\ref{fig:eve_stock_rbc_6} shows the event study with treatment period being moved up to 5 days before the first climate strike (15th of September). The reference day is set as the last day before the weekend (13th of September). Figure~\ref{fig:eve_stock_rbc_10} shows the event study with treatment period being moved up to 10 days before the first climate strike. The reference day is set to 9th of September. As visible from both of the figures, there are no anticipatory effects visible in the original pre-treatment period.
 
+\begin{figure}
+    \caption{Stock Prices Robustness Check --- 5 days}\label{fig:eve_stock_rbc_6}
+    \centering
+    
+    (a) Group 2
+    
+    \includegraphics[width=0.79\textwidth]{stock_price_eve_2_rbc_6.pdf} \\
+    
+    (b) Group 3
+    
+    \includegraphics[width=0.79\textwidth]{stock_price_eve_3_rbc_6.pdf} \\
+    
+    (c) Group 4
+    
+    \includegraphics[width=0.79\textwidth]{stock_price_eve_4_rbc_6.pdf}
+    
+    \captionsetup{font=footnotesize}
+    \caption*{The effect of receiving treatment on the cumulative abnormal returns of stock prices. Group number indicates the treatment dose, with 2 being the lowest and 4 being the highest. Gaps in the graph are due to the inclusion of weekends in the data. 15th of September 2019 marks the first period of treatment and 13th of September 2019 is set as the reference. 95\% confidence intervals are reported.}
+\end{figure}
+
+\begin{figure}
+    \caption{Stock Prices Robustness Check --- 10 days}\label{fig:eve_stock_rbc_10}
+    \centering
+    
+    (a) Group 2
+    
+    \includegraphics[width=0.79\textwidth]{stock_price_eve_2_rbc_10.pdf} \\
+    
+    (b) Group 3
+    
+    \includegraphics[width=0.79\textwidth]{stock_price_eve_3_rbc_10.pdf} \\
+    
+    (c) Group 4
+    
+    \includegraphics[width=0.79\textwidth]{stock_price_eve_4_rbc_10.pdf}
+    
+    \captionsetup{font=footnotesize}
+    \caption*{The effect of receiving treatment on the cumulative abnormal returns of stock prices. Group number indicates the treatment dose, with 2 being the lowest and 4 being the highest. Gaps in the graph are due to the inclusion of weekends in the data. 10th of September 2019 marks the first period of treatment and 9th of September 2019 is set as the reference. 95\% confidence intervals are reported.}
+\end{figure}
 
 
 \end{document}
