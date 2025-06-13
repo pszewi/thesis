@@ -101,12 +101,13 @@ eve_by_t <- function(object, t_group, event_date, daily = FALSE, qtr = FALSE) {
     } else if (qtr) {
         plot_df$dates <- as.yearqtr(plot_df$dates)
         plot_df$dates <- as.character(plot_df$dates)
+        plot_event_date <- as.character(event_date)
     }
     
     # make plot
     p <- ggplot(data = as.data.frame(plot_df)) +
         geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
-        # geom_vline(xintercept = ref, linetype = "dashed", color = "grey50") +
+        geom_vline(xintercept = plot_event_date, linetype = "dashed", color = "red") +
         geom_errorbar(aes(x = dates, ymin = ci_l, ymax = ci_h),
                       width = 0, color = "black") +
         geom_point(aes(x = dates, y = estimates, group=1),
@@ -223,10 +224,12 @@ ggsave("images/output/nyt_articles.pdf", height=5.5, width=11)
 ```
 
 ## Google trends data
-```{r, google_trends}
+
+### FFF
+```{r, google_trends_fff}
 
 fff_google <- read.csv("data/FFF_googletrends.csv", skip = 2,
-                       colClasses = c("Date", "character"), 
+                       colClasses = c("Date", "character"),
                        col.names = c("week", "value")) %>%
     mutate(
         value = ifelse(value == "<1", 1, value),
@@ -240,28 +243,70 @@ fff_google <- fff_google %>%
 
 # Create plot with academic styling
 ggplot(data = fff_google) +
-        geom_line(aes(x = week, y = value, group = 1), linewidth = 0.7, color = "black") +
-        geom_point(data = subset(fff_google, is_spike), 
-                             aes(x = week, y = value), 
-                             color = "darkred", size = 2, shape = 19) +
-        theme_classic(base_size = 12) +
-        theme(
-                text = element_text(family = "Times"),
-                axis.text = element_text(size = 13),
-                axis.text.x = element_text(angle = 45, hjust = 1),
-                axis.title = element_text(size = 16),
-                axis.title.x = element_blank(),
-                panel.grid.major.y = element_line(color = "gray90", linewidth = 0.3),
-                panel.grid.minor = element_blank(),
-                plot.margin = unit(c(1, 1, 1, 1), "lines")
-        ) +
-        scale_x_date(date_breaks = "3 months", date_labels = "%b %Y") +
-        labs(
-                # x = "Time",
-                y = "Relative search interest (%)"
-        )
+    geom_line(aes(x = week, y = value, group = 1), linewidth = 0.7, color = "black") +
+    geom_point(data = subset(fff_google, is_spike),
+               aes(x = week, y = value),
+               color = "darkred", size = 2, shape = 19) +
+    theme_classic(base_size = 12) +
+    theme(
+        text = element_text(family = "Times"),
+        axis.text = element_text(size = 13),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.title = element_text(size = 16),
+        axis.title.x = element_blank(),
+        panel.grid.major.y = element_line(color = "gray90", linewidth = 0.3),
+        panel.grid.minor = element_blank(),
+        plot.margin = unit(c(1, 1, 1, 1), "lines")
+    ) +
+    scale_x_date(date_breaks = "3 months", date_labels = "%b %Y") +
+    labs(
+        # x = "Time",
+        y = "Relative search interest (%)"
+    )
 
 ggsave("images/output/fff_trend.pdf", height = 5, width=10)
+```
+
+### Climate change query
+```{r, google_trends_clim}
+
+clim_google <- read.csv("data/climchange_googletrends.csv", skip = 2,
+                        colClasses = c("Date", "character"),
+                        col.names = c("week", "value")) %>%
+    mutate(
+        value = ifelse(value == "<1", 1, value),
+        value = as.integer(value)
+    )
+# View(clim_google)
+
+# Identify significant spikes in the data (top 5%)
+clim_google <- clim_google %>%
+    mutate(is_spike = week %in% c((as.Date("2019-03-15") - 5), (as.Date("2019-05-24") - 5), (as.Date("2019-09-20") - 5),
+                                  (as.Date("2019-09-27") - 5), (as.Date("2019-11-29") - 5)))
+
+# Create plot with academic styling
+ggplot(data = clim_google) + geom_line(aes(x = week, y = value, group = 1), linewidth = 0.7, color = "black") +
+    geom_point(data = subset(clim_google, is_spike), 
+               aes(x = week, y = value), 
+               color = "darkred", size = 2, shape = 19) +
+    theme_classic(base_size = 12) +
+    theme(
+        text = element_text(family = "Times"),
+        axis.text = element_text(size = 13),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.title = element_text(size = 16),
+        axis.title.x = element_blank(),
+        panel.grid.major.y = element_line(color = "gray90", linewidth = 0.3),
+        panel.grid.minor = element_blank(),
+        plot.margin = unit(c(1, 1, 1, 1), "lines")
+    ) +
+    scale_x_date(date_breaks = "3 months", date_labels = "%b %Y") +
+    labs(
+        # x = "Time",
+        y = "Relative search interest (%)"
+    )
+
+ggsave("images/output/climchange_trend.pdf", height = 5, width=10)
 ```
 
 ## Loading Data for Analysis
@@ -501,7 +546,7 @@ reg_data_sales <- merge(company_characteristics_2018, data_sales, by = "TYPE") %
 
 ```
 
-### Trend evolution per gro %>%up
+### Trend evolution per group
 
 ```{r, trend_evo_sales}
 
