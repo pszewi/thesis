@@ -651,36 +651,16 @@ acrt_did_sales
 
 ```{r, desc_stats, asis=TRUE}
 
-ggplot(data = reg_data_d,
-       #    aes(x = factor(ICB_INDUSTRY_NAME))) +
-       aes(x = factor(ICB_INDUSTRY_NAME), fill = factor(T_))) +
-    # geom_bar(fill   = "steelblue", color  = "black", width  = 0.7) +
-    geom_bar(position = "fill", width = 0.7) +
-    labs(
-         x     = "Category",
-         y     = "Count",
-         title = "Distribution of Categories", 
-         fill="Treatment") +
-    theme_bw(base_size = 14) +
-    theme(
-          panel.grid.major    = element_blank(),
-          panel.grid.minor    = element_blank(),
-          axis.text.x         = element_text(angle = 45, hjust = 1),
-          plot.title          = element_text(hjust = 0.5, face = "bold"),
-          axis.title          = element_text(face = "bold"))
-
-
 # here I made some tables for the latex document (descriptive statistics)
-# EMPLOYEES
 library(gtsummary)
 
-tbl_ltx <- reg_data_d %>%
+tbl_ltx <- reg_data_sales %>%
     distinct(NAME, .keep_all = TRUE) %>%
-    # mutate(BOURSE_NAME.x = str_to_title(BOURSE_NAME.x)) %>%
-    select(EMPLOYEES, T_cont) %>%
+    # mutate(BOURSE_NAME = str_to_title(BOURSE_NAME)) %>%
+    select(BOURSE_NAME, T_cont) %>%
     tbl_summary(
                 by = T_cont,
-                statistic = list(EMPLOYEES ~ "{n} ({p}%)")) %>%
+                statistic = list(BOURSE_NAME ~ "{n} ({p}%)")) %>%
     add_overall() %>%
     modify_header(
                   label     = "Number of ...",
