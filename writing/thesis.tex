@@ -10,6 +10,7 @@
 \usepackage{caption}
 \usepackage{longtable}
 \usepackage{setspace}
+\usepackage{multirow}
 \usepackage[flushleft]{threeparttable}
 \usepackage{siunitx}
 \usepackage[hidelinks]{hyperref}
@@ -24,8 +25,7 @@
   table-text-alignment = center,
 %   parse-numbers = true
 }
-
-% \title{}
+\AtBeginBibliography{\small}
 \author{Your Name}
 \date{Date of submission: \today}
 \renewcommand{\arraystretch}{1.3}
@@ -55,26 +55,23 @@
 
 \section{Introduction}\label{sect:introduction}
 
-In recent years, climate change has become more pronounced in the public discourse, due to its global importance. Policymakers, international organizations as well as consumers have been growing more aware of the problems facing the world in the upcoming years \parencite{pew2022climate}. This awareness has lead to a rapid expansion of the sustainable finance industry, with as much as \$20.6 billion dollars flowing into ESG investment funds in 2019 \parencite{hale2020sustainable}. At the same time, companies trying to answer the needs of their consumers have reoriented their supply chains and started transitioning to more sustainable methods of production \parencite{pwc2023supplychain, pwc2023sustainability}. However, while this structural shift can bring about benefits, it also opens up avenues for greenwashing \parencite{villenaMoreSustainableSupply2020}. 
+In recent years, climate change has become more pronounced in the public discourse, due to its global importance. Policymakers, international organizations as well as consumers have been growing more aware of the problems facing the world in the upcoming years \parencite{pew2022climate}. This awareness has lead to a rapid expansion of the sustainable finance industry, with as much as \$20.6 billion dollars flowing into ESG investment funds in 2019 \parencite{hale2020sustainable}. At the same time, companies trying to answer the needs of their consumers have reoriented their supply chains and started transitioning to more sustainable methods of production \parencite{pwc2023supplychain, pwc2023sustainability}. However, while this structural shift can bring about benefits, it also opens up avenues for greenwashing \parencite{villenaMoreSustainableSupply2020}.
 
 According to \textcite{lyonMeansEndGreenwash2015}, greenwashing is defined as ``any communication that misleads people into adopting overly positive beliefs about an organization's  environmental performance, practices, or products'', and is generally regarded as a phenomenon that has negative effects on the performance of the markets. For example, both theoretical \parencite{wuBadGreenwashingGood2020, cartellierCanInvestorsCurb2023} and empirical \parencite{barrageAdvertisingEnvironmentalStewardship2020, marquisScrutinyNormsSelective2016, kimGreenwashVsBrownwash2015} literature suggest, that when investments in sustainability are largely unobservable, it may be optimal for a firm to appear sustainable through observable actions, such as corporate communication, while not carrying through with their investment. Engaging in such behaviour can imply a misallocation of capital, as shareholders would invest their funds in companies that do not align with their sustainability goals \parencite{kimGreenwashVsBrownwash2015}, and can cause a decrease in the welfare of consumers, as misleading marketing may imply purchases of products that are not aligned with their sustainable preferences \parencite{barrageAdvertisingEnvironmentalStewardship2020}.
 
-% work more on the second sentence!
-At the same time, relatively little is known about the profitability of greenwashing, when demand for sustainability suddenly rises. It remains unclear, what are the consumer and investor reactions following, for example, an increase in interest around climate change, and what are their implications for the financial performance of greenwashing firms. For example, if these stakeholders can identify firms that engage in greenwashing, they could switch away from these companies, when they start demanding more sustainable action, which could have negative implications for companies' financial performance. Alternatively, if they were to believe that a company is credible in their efforts, a demand shock could be profitable for greenwashing firms as they would appear more sustainable.  
+At the same time, relatively little is known about the profitability of greenwashing, when demand for sustainability suddenly rises. It remains unclear, what are the consumer and investor reactions following, for example, an increase in interest around climate change, and what are their implications for the financial performance of greenwashing firms. For instance, if these stakeholders can identify firms that engage in greenwashing, they may choose to stop supporting them when their demand for sustainability increases, which could have negative implications for companies' financial performance. Alternatively, if they were to believe that a company is credible in their efforts, a demand shock could be profitable for greenwashing firms as they would appear more sustainable. This problem is especially relevant in the context of recent increases in popularity of climate activism and the fact that climate activists often speak out against companies that they believe may be greenwashing \parencite{pew2021genz, horton2022greenwashing}.
 
 
-My approach in investigating this issue consists of three steps. Firstly, I collect a large sample of sustainability reports for a set of publicly listed companies. After extracting their contents, the reports are used to create a Cheap-Talk-Index ($CTI$) that gauges the credibility of climate commitments made by these companies \parencite{binglerHowCheapTalk2024}. This index serves as a proxy for perceived greenwashing, following the contributions of~\cite{coenAreCorporateClimate2022}.
+My approach in investigating this issue consists of three steps. Firstly, I collect a large sample of sustainability reports for a set of publicly listed companies. After extracting their contents, the reports are used to create a Cheap-Talk-Index ($CTI$) that gauges the credibility of climate commitments made by these companies \parencite{binglerHowCheapTalk2024}. This index serves as a proxy for perceived greenwashing, following the contributions of~\textcite{coenAreCorporateClimate2022}.
 
 Secondly, I exploit the positive sustainability demand shock in the form of the world-wide September 2019 climate strikes organized by Fridays For Future (20 \& 27 September 2019) during the ``Global Week for Future''. As these events attracted a lot of attention (which is further explored in the next section), they provide a natural setting to study the effect of perceived greenwashing on the financial performance of companies. Using a multivalued difference-in-differences (DiD) design, I test whether higher greenwashing intensity had an impact on the Cumulative Abnormal Returns (CAR) of companies' stock prices following the climate protests. My results indicate that only companies that greenwash the most, experienced relative decreases in their CAR, therefore, suggesting that while extreme degrees of greenwashing may be penalized by investors, it may remain undetected when it is less pronounced.
 
-Finally, I use the same procedure to investigate the effects on the growth of sales of the abovementioned companies. I argue that, if a company engages in greenwashing in their corporate communications, this behaviour will also be reflected in their consumer-oriented marketing. Based on this, I again use the $CTI$ to test whether the sales growth of greenwashing companies has been substantially impacted following the shock. Results indicate that, on average, greenwashing more does not impact the sales growth of a company, for all but the highest greenwashing quartile. For companies in that group, greenwashing has a positive effect on the outcome variable, suggesting that consumers act differently from investors, as high greenwashing intensity has a positive effect on the sales growth. This result suggests that consumers may be convinced by environmental communication, which aligns with the findings of \textcite{schmuckMisleadingConsumersGreen2018,parguelCanEvokingNature2015}. Moreover, the dynamic results show that firms engaging in higher greenwashing have experienced a small, and temporary increase in their sales growth following the shock. 
+Finally, I use the same procedure to investigate the effects on the growth of sales of the abovementioned companies. I argue that, if a company engages in greenwashing in their corporate communications, this behaviour will also be reflected in their consumer-oriented marketing. Based on this, I again use the $CTI$ to test whether the sales growth of greenwashing companies has been substantially impacted following the shock. Results indicate that, on average, greenwashing more does not impact the sales growth of a company, for all but the firms with the highest greenwashing levels. For companies in that group, greenwashing has a positive effect on the outcome variable, suggesting that consumers, unlike investors, may be convinced by high levels of greenwashing in firm communications. This aligns with the experimental findings of \textcite{schmuckMisleadingConsumersGreen2018,parguelCanEvokingNature2015}, that find that green advertisement may have a positive effect on consumer perception of a company. Moreover, the dynamic results show that firms engaging in greenwashing have experienced a small, and temporary increase in their sales growth following the shock. 
 
-% ---------------- add to the lit review and think how you described results --------------------
-% The primary substantive contribution of this study is to use novel data and methods to quantify the importance of information in consumer choice in an important real-world market.
-This study is related to two streams of literature.\footnote{I think I should expand on this and describe the studies a bit more (one line about what they do). Also consider whether a third contribution is needed!} First, it contributes to the body of work concerning the link between financial markets and company's environmental performance. Within this literature, some studies focus on the causes of greenwashing \parencite{servaesImpactCorporateSocial2013,berroneDoesGreenwashingPay2017,kimGreenwashVsBrownwash2015,testaDoesItPay2018}, with a number of researchers arguing that it can be explained with signalling theory \parencite{lyonGreenwashCorporateEnvironmental2011,wuBadGreenwashingGood2020}. Other studies focus on the reaction of the market to stakeholder pressure caused by climate-related events \parencite{birindelliJustBlahBlah2023,schusterStockPriceReactions2023, diaz-raineyTrumpVsParis2021, bouzzineStockPriceReactions2021,cartellierCanInvestorsCurb2023, }. A third set of findings concerns the effects of greenwashing on the financial performance of a company \textit{after} company's greenwashing is exposed \parencite{tetiDoesGreenwashingAffect2024, karpoffReputationalPenaltiesEnvironmental2005, konarDoesMarketValue2001,torelliGreenwashingEnvironmentalCommunication2020}. This paper complements prior literature, by investigating whether it is profitable for a company to greenwash in presence of rising stakeholder pressures, and \textit{before} its deceptive actions are uncovered.\footnote{Look at remarks by David.}
+This study is related to two streams of literature. First, it contributes to the body of work concerning the link between financial markets and company's environmental performance. Within this literature, some studies focus on the causes of greenwashing \parencite{duchinSustainabilityGreenwashingEvidence2025, servaesImpactCorporateSocial2013,berroneDoesGreenwashingPay2017,kimGreenwashVsBrownwash2015,testaDoesItPay2018}, with a number of researchers arguing that it can be explained with signalling theory \parencite{lyonGreenwashCorporateEnvironmental2011,wuBadGreenwashingGood2020}. Other studies focus on the reaction of the market to stakeholder pressure caused by climate-related events \parencite{birindelliJustBlahBlah2023,schusterStockPriceReactions2023, diaz-raineyTrumpVsParis2021, bouzzineStockPriceReactions2021,cartellierCanInvestorsCurb2023, }. A third set of findings concerns the effects of greenwashing on the financial performance of a company \textit{after} company's greenwashing is exposed \parencite{tetiDoesGreenwashingAffect2024, karpoffReputationalPenaltiesEnvironmental2005, konarDoesMarketValue2001,torelliGreenwashingEnvironmentalCommunication2020}. This paper complements prior literature, by investigating whether it is profitable for a company to greenwash in presence of rising stakeholder pressures, and \textit{before} its deceptive actions are uncovered.
 
 
-Second, it contributes to literature on the link between consumer behaviour and deception. A number of studies focusing on this topic find that deceptive information, may cause consumers to make less informed choices \parencite{raoDemandHealthyProducts2017,bronnenbergPharmacistsBuyBayer2015}. For example, \textcite{barrageAdvertisingEnvironmentalStewardship2020}, finds that BP's environmental marketing campaign dampened the negative reactions of consumers following an oil spill in which the company was involved. Others find that consumers can be influenced by environmental messaging \parencite{parguelCanEvokingNature2015,schmuckMisleadingConsumersGreen2018,nyilasyPerceivedGreenwashingInteractive2014}. This study complements this literature by testing whether companies can reap the benefits of deception in presence of an increase in consumer activism.
+Second, it contributes to literature on the link between consumer behaviour and deception. A number of studies focusing on this topic find that deceptive information, may cause consumers to make less informed choices \parencite{raoDemandHealthyProducts2017,bronnenbergPharmacistsBuyBayer2015}. For example, \textcite{barrageAdvertisingEnvironmentalStewardship2020}, finds that BP's environmental marketing campaign dampened the negative reactions of consumers following an oil spill in which the company was involved. Others find that consumers can be influenced by environmental messaging \parencite{parguelCanEvokingNature2015,schmuckMisleadingConsumersGreen2018,nyilasyPerceivedGreenwashingInteractive2014}. This study complements this literature by testing whether companies can reap the benefits of deception in presence of an increase in climate activism.
 
 The remainder of the paper is organized as follows. Section~\ref{sect:background} describes the events leading up to and after the shock and presents the argument for the choice of the treatment variable. Section~\ref{sect:data} outlines the procedures for collecting and processing the data. Section~\ref{sect:methodology} summarizes the used methodology and compares it with the typical difference-in-differences framework. Section~\ref{sect:results} describes and interprets the results. Section~\ref{sect:discussion} describes the limitations and concludes.
 
@@ -117,14 +114,14 @@ Overall, the action taken by the FFF grasped the imagination of the public with 
 \subsection{ESG Reports}
 
 
-This study uses broadly defined responsibility reports for the construction of the main measure of greenwashing. These reports contain information meant for investors and stakeholders. They inform the reader on initiatives undertaken by the company in various areas related to corporate social responsibility (CSR). This study focuses on the sustainability section of these reports, that contains information on the impact that the company has on the environment, its production standards, as well as the climate risk a company is exposed to. To illustrate, \citeauthor{walmart2018csr}'s 2018 Global Responsibility Report contains a dedicated sustainability section that describes the impact of Walmart's activities on the environment. This report also contains a dedicated ``ESG commitments'' section, that outlines the company's ESG goals and their progress on attaining them.\footnote{This Walmart Inc.~report, as well as others can be easily accessed \href{https://www.responsibilityreports.com/Company/walmart-inc}{\underbar{here}}.}
+This study uses broadly defined responsibility reports for the construction of the main measure of greenwashing. These reports contain information meant for investors and stakeholders. They inform the reader on initiatives undertaken by the company in various areas related to Corporate Social Responsibility (CSR). This study focuses on the sustainability section of these reports, that contains information on the impact that the company has on the environment, its production standards, as well as the climate risk a company is exposed to. To illustrate, \citeauthor{walmart2018csr}'s 2018 Global Responsibility Report contains a dedicated sustainability section that describes the impact of Walmart's activities on the environment. This report also contains a dedicated ``ESG commitments'' section, that outlines the company's ESG goals and their progress on attaining them.\footnote{This Walmart Inc.~report, as well as others can be easily accessed \href{https://www.responsibilityreports.com/Company/walmart-inc}{\underbar{here}}.}
 
 These reports are desirable for a number of reasons. Firstly, literature points to the fact that investors care about sustainability and climate risks, and that they reward companies when these report on actions related to them \parencite{ilhanClimateRiskDisclosure2023,kruegerImportanceClimateRisks2020,pastorSustainableInvestingEquilibrium2021,testaDoesItPay2018}. From the firm perspective, corporate communication allows it to raise its market value, when they inform their investors sufficiently \parencite{servaesImpactCorporateSocial2013}. Furthermore, by communicating on their ESG activity, they can increase their legitimacy to its stakeholders \parencite{torelliGreenwashingEnvironmentalCommunication2020}. From this one can conclude that it is in the interest of these companies, to communicate as much information as possible through this channel, to reap the rewards. 
 
-However, as these reports do not fall under the oversight of any institutions (unlike e.g.,~annual earnings reports), they allow companies to introduce deception in their communications. For example, the companies issuing these reports, may overstate their environmental achievements, or understate the damages that they caused, and as such use them to appeal to their stakeholders. There can be many reasons why this behaviour can be incentivized. To illustrate, if investment in sustainability is unobservable, companies may benefit from overstating their actual investments \parencite{wuBadGreenwashingGood2020}. Alternatively, if their activity negatively affects the environment, they may desire to diminish the negative reputational impacts of their actions \parencite{marquisScrutinyNormsSelective2016, binglerCheapTalkCherrypicking2022}.\footnote{For a more comprehensive review, see~\cite{kimGreenwashVsBrownwash2015}} In addition to over-/under-reporting, companies can also utilize other strategies to impact the perception of the stakeholders. For example, \textcite{parguelCanEvokingNature2015,schmuckMisleadingConsumersGreen2018} find that referring to nature and including nature-related graphics in their communications can positively influence their perception of the company. Given all of these reasons, they seem to provide a rich source of (possible) greenwashing behaviour.
+However, as these reports do not fall under the oversight of any institutions (unlike e.g.,~annual earnings reports), they allow companies to introduce deception in their communications. For example, the companies issuing these reports, may overstate their environmental achievements, or understate the damages that they caused, and as such use them to appeal to their stakeholders. There can be many reasons why this behaviour can be incentivized. To illustrate, if investment in sustainability is unobservable, companies may benefit from overstating their actual investments \parencite{wuBadGreenwashingGood2020}. Alternatively, if their activity negatively affects the environment, they may desire to diminish the negative reputational impacts of their actions \parencite{marquisScrutinyNormsSelective2016, binglerCheapTalkCherrypicking2022}.\footnote{For a more comprehensive review, see~\cite{kimGreenwashVsBrownwash2015}} In addition to over-/under-reporting, companies can also utilize other strategies to impact the perception of the stakeholders. For example, \textcite{parguelCanEvokingNature2015,schmuckMisleadingConsumersGreen2018} find that referring to nature and including nature-related graphics in their communications can positively influence their perception of the company. Given all of these reasons, the ESG reports seem to provide a rich source of (possible) greenwashing behaviour.
 
 
-Finally, they are a good measure of greenwashing, as they come directly from the company and thus are free from interference of other parties. For example, some researchers rely on the use of ESG scores in their analyses.\footnote{Cite something here (maybe from studies cited below).} However, as these scores are calculated by external providers, they can be biased, which can be seen given inconsistencies of scores, between different rating agencies \parencite{bergAggregateConfusionDivergence2022, chatterjiRatingsFirmsConverge2016}. This suggests that they may not provide a good estimate of company's environmental performance. Therefore, I refrain from using them as my measure of greenwashing. Instead, I chose to use the underlying reports, and proxy greenwashing following the method of~\cite{binglerHowCheapTalk2024}. The method, together with the data collection procedure, are described in the next section.\footnote{Probably also re-write a bit.}
+Finally, they are a good measure of greenwashing, as they come directly from the company and thus are free from interference of other parties. For example, some researchers rely on the use of ESG scores in their analyses \parencite{servaesImpactCorporateSocial2013, flammerDoesCorporateSocial2015, linsSocialCapitalTrust2017}. However, as these scores are calculated by external providers, they can be biased, which can be seen given inconsistencies of scores, between different rating agencies \parencite{bergAggregateConfusionDivergence2022, chatterjiRatingsFirmsConverge2016}. This suggests that they may not provide a good estimate of company's environmental performance. Therefore, I refrain from using them as my measure of greenwashing. Instead, I chose to use the underlying reports, and proxy greenwashing following the method of~\textcite{binglerHowCheapTalk2024}. The method, together with the data collection procedure, are described in the next section.
 
 
 \section{Data}\label{sect:data}
@@ -152,11 +149,10 @@ In order to apply this method to my data, I proceeded as follows. First, I extra
 
 \subsection{Outcome Variables}
 
-The Refinitiv dataset was used to retrieve data on firms' characteristics, their price indices and their quarterly sales. Moreover, it was also used to retrieve the prices for regional market indices (e.g.\ S\&P500, MSCI Europe, etc.) that were needed to estimate the normal returns for each company. The characteristic variables include the stock exchange of the listing, country of incorporation, country of domicile, the company's sector and the company's industry. The stock price data and sales data required distinct pre-processing methods. The following section first details the procedure for the stock data, followed by that for the sales data.
+The \citeauthor{refinitiv2025} dataset was used to retrieve data on firms' characteristics, their price indices and their quarterly sales. Moreover, it was also used to retrieve the prices for regional market indices (e.g.\ S\&P500, MSCI Europe, etc.) that were needed to estimate the normal returns for each company. The characteristic variables include the stock exchange of the listing, country of incorporation, country of domicile, the company's sector and the company's industry. The stock price data and sales data required distinct pre-processing methods. The following section first details the procedure for the stock data, followed by that for the sales data.
 
 First, I log-differenced the price indices (defined as the stock price expressed as a fraction of the initial listing price) to transform them into percentage changes. The same has been done for the values of regional stock indices. I chose the daily frequency for the stock price data, which was motivated by the likely short-term effect on stock prices, as found by \textcite{schusterStockPriceReactions2023}.\footnote{Table~\ref{tab:data_freq} in Appendix~\ref{app:extra_figs} shows the total number of periods that were retrieved.}
 
-% \subsubsection{Abnormal Returns}
 
 In order to plausibly estimate the effect of the treatment on stock returns, I needed to separate the effects of the market movement from the movement of the stock of the company itself. These abnormal returns were estimated following the market model approach outlined in~\textcite{mackinlayEventStudiesEconomics1997}. This approach relies on estimating the expected stock return by predicting it using the return of the whole market. As the sample contains companies from multiple continents with potentially differing markets, each company was allocated to a geographical market index by their country of domicile.\footnote{The allocation can be viewed in Table~\ref{tab:mrkt_ind} in the Appendix~\ref{app:extra_figs}.} If the country of domicile was missing, the regional index was based instead on the country of listing. The model was separately estimated for each company using 212 daily observations that predate the estimation window of interest. Below I report the regression specification used for the estimation:
 \begin{equation}\label{eq:reg_market_model}
@@ -167,7 +163,6 @@ where $RN_{it}$ is the return of the security $i$ at time $t$ predicted by the r
 This type of modelling is sufficient for my use case, as per the work of~\textcite{mackinlayEventStudiesEconomics1997}, employing more sophisticated models (e.g.~factor models) yields limited improvement in studies that do not rely on within-group variation, such as within-sector variation.
 
 After estimating the model, I used it to predict the abnormal returns within the event window. Then, the abnormal returns for each of the securities were cumulatively summed to arrive at the Cumulative Abnormal Return (CAR). This was done, as aggregation across time is needed in order to draw useful inference from the results of the actual study. This results from the fact that estimating the average abnormal returns directly would not take into account the path of the data following treatment, but only the instantaneous effect of the treatment dose.
-% \footnote{Make clearer with respect to the reasoning and my later DiD}
 
 For the sales data, the procedure only involved log-differencing of the data to arrive at percentage changes. However, as changes in sales can be seasonal, I instead create Year-on-Year growth rates, by using the difference of sales relative to the same quarter last year. The choice of quarterly frequency was motivated by the data availability, as it was the lowest frequency available. 
 
@@ -227,9 +222,10 @@ where the $\beta^{\text{twfe}}$ tries to aggregate the dose-specific $ATT$'s int
 \subsection{Validity of Assumptions --- Stock Prices}
 
 The chosen framework requires the strong parallel trends and the no-anticipation assumptions. With respect to the SPT, this assumption may be concerning, as in the same way as in \textcite{koenigImpulsePurchasesGun2023}, the companies self-select into being treated. To alleviate this concern, Figure~\ref{fig:stock_trend} shows that the firms stock prices followed similar paths no matter their treatment assignment.
-% \footnote{Expand more your description of the picture} 
+
 Furthermore, an event study is run in the next section to evaluate the possibility of pre-trends. However, it has to be noted that the authors of \textcite{callawayDifferenceinDifferencesContinuousTreatment2025} state that this method of evaluating the existence of pre-trends has low power, and therefore the lack of significance within the pre-trends does not necessarily imply that they actually do not exist. Nonetheless, the event study is estimated as per the standard practice.
-With respect to the no-anticipation assumption, concerns are more pronounced. In their event study, \textcite{schusterStockPriceReactions2023} found evidence of anticipation of the stock market within a period of 20 days prior to the FFF strikes. In order to alleviate this concern, an analysis is performed with the shock date being shifted to multiple different dates preceding the shock.
+
+With respect to the no-anticipation assumption, concerns are more pronounced. In their event study, \textcite{schusterStockPriceReactions2023} found evidence of anticipation of the stock market within a period of 20 days prior to the FFF strikes. In order to alleviate this concern, an analysis is performed with the shock date being moved up to, respectively, 5 and 10 days before the occurrence of the actual climate strikes. If anticipation was present, these robustness checks should show significant effects. 
 
 \begin{figure}[t]
     \caption{Mean Cumulative Abnormal Return (Daily)}\label{fig:stock_trend}
@@ -241,9 +237,9 @@ With respect to the no-anticipation assumption, concerns are more pronounced. In
 
 \subsection{Validity of Assumptions --- Sales}
 
-The analysis of greenwashing effects on quarterly sales requires the previously stated strong parallel trends and no-anticipation assumptions, but two additional concerns emerge.
+The analysis of greenwashing effects on quarterly sales growth requires the previously stated strong parallel trends and no-anticipation assumptions, but additional concerns emerge.
 
-With respect to the strong parallel trends assumption, there are concerns that the firms' outcomes could perform differently due to self-selection. From Figure~\ref{fig:sales_trend}, it appears that although the trends of all treatment groups move in a similar direction, the outcomes of firms in the third quartile of the $CTI$ seem to diverge before the quarter of the shock. This could suggest a violation of SPT, however this question is also evaluated with an event study.
+With respect to the strong parallel trends assumption, there are concerns that the firms' outcomes could perform differently due to self-selection. From Figure~\ref{fig:sales_trend}, it appears that although the trends of all treatment groups move in a similar direction, the outcomes of firms in the third quartile of the $CTI$ seem to diverge before the quarter of the shock. As this could suggest a violation of SPT, I estimate an event study to assess the credibility of this assumption.
 
 The non-anticipation assumption could be violated in certain cases. For example, if the consumers were to stop buying goods from brands that they perceive as greenwashing before the start of the protest, this could violate the assumption. One theory that could support this argument is the work by \textcite{liaukonyteFrontiersSpillingBeans2023}. In this study, the authors find that \textit{online} boycotting activity significantly impacted the sales of the boycotted companies. As the large amount of information related to FFF climate strikes spread on social media, this could violate the assumption in question, if the boycotts happened in quarters preceding the quarter of the shock. However, in preparation of this study, I found no calls for boycotting activities in advance of the quarter which includes the climate strikes. 
 
@@ -256,7 +252,9 @@ The non-anticipation assumption could be violated in certain cases. For example,
     \caption*{Treatment Groups indicated with numbers from (lowest dose) 1 to 4 (highest dose). Red line indicates the quarter which witnessed the Global Week For Future and the FFF climate strikes. Source: Refinitiv}
 \end{figure}
 
-Furthermore, it has to be noted that this analysis may be significantly impacted by the loss of heterogeneity due to the sample size loss.  
+Another assumption that needs to be validated, is the lack of other events that could contaminate the effects of the shock. One such event was the United Nations Climate Change Conference, also known as COP25. It was held by the Spanish government in the last quarter of 2019 and in principle, it could contaminate the effect of this study. However, the international impact of this event was described as very limited, as news outlets reported that the agreed upon statements were disappointing \parencite{SenguptaCOP252019}, which could imply that its impact on consumer behaviour was small, due to the lack of its international impact.
+
+Moreover, it has to be noted that this analysis may be significantly impacted by the loss of heterogeneity due to the sample size loss. As previously mentioned the sample was significantly restricted, however its characteristics with respect to the distribution of treatment remain similar.\footnote{See tables of Appendix~\ref{app:extra_figs}}    
 
 Finally, one must additionally acknowledge one more assumption with respect to this part of the study. In this setting, the $CTI$ works only as a proxy to the belief of consumers about the greenwashing-intensity of the companies. This is not an obvious assumption, as firms may try to be more (or less) deceitful to consumers than to investors. As a result, there is potential for  measurement error in the estimated coefficients. For example, a company may greenwash in their ESG reports pointed at investors, but may focus more on other aspects of their business in their marketing. In that case, the firm's greenwashing directed at the consumers would be less than their $CTI$ implies, which would bias the coefficients of this study towards zero. On the other hand, if the firm would be more misleading towards consumers, this could imply a positive bias, as the firms' communications could be more focused on the environmentally-friendly information than implied by the $CTI$. Nonetheless, for the bias affect the estimates, it would require that firms systematically act in this way. Given this fact, and the lack of studies on the relation between marketing, ESG reporting and ESG performance, it seems plausible to assume that while the error is possible, it would be small due to the size and heterogeneity of the sample. Accordingly, this study takes as given that firms will, on average, communicate similarly with both consumers and investors, and therefore, that their ESG reports will reflect their sustainability-oriented marketing. 
 
@@ -335,11 +333,6 @@ Table~\ref{tab:acrt} displays the dose-wise average causal responses for each do
 
 In addition to the DiD estimation, I also estimated an event study using the specification from column~(1), to assess the dynamic effects of greenwashing. These results are plotted in Figure~\ref{fig:eve_stock}. Each panel displays the dynamic treatment effects for a single treatment-dose group (relative to $d_1$). While the average effect estimated in column~(1) of Table~\ref{tab:main_results} for the highest treatment-dose group is insignificant, the dynamic treatment effects are significant and negative in the post-treatment period. This suggests that having the highest greenwashing-intensity may have a negative impact on the cumulative abnormal returns of a firm, relative to the cumulative abnormal return if the firm engaged in the lowest greenwashing intensity. However, this effect is small and temporary. Moreover, this plot can be used to analyse possible violation of the strong parallel trends assumption. In the panel (a) of the figure, one can see that the pre-trend values for September 16th and 17th are negative. This creates a concern that the assumption may in fact not hold. It is also concerning, given that this test for pre-trends has low power \parencite{rothWhatsTrendingDifferenceindifferences2023}.
                             
-
-Finally, columns (2) and (3) in Table~\ref{tab:main_results} display the performed robustness checks on the no-anticipation assumption. They were estimated with the treatment period being moved up by 5 and 10 days, respectively. As can be seen from the table, the results of this estimation are also insignificant and negative. This suggests that the stock market did not expect the FFF strikes to affect the firms differently with respect to their doses in advance of the strikes. Event studies for these robustness checks can be found in Appendix~\ref{app:robustness}.
-% \newpage
-
-
 \begin{figure}
     \caption{Event Study Results --- Stock Prices}\label{fig:eve_stock}
     \centering
@@ -359,6 +352,11 @@ Finally, columns (2) and (3) in Table~\ref{tab:main_results} display the perform
     \captionsetup{font=footnotesize}
     \caption*{The effect of receiving treatment on the cumulative abnormal returns of stock prices. Gaps in the graph are due to the inclusion of weekends in the data. Group number indicates the treatment dose, with 2 being the lowest and 4 being the highest. All estimates are relative to receiving dose $d_1$. Estimation window is set to 20 days before the treatment and to 20 days post treatment to display the short-term effects. 20th of September 2019 marks the first period of treatment and 19th of September 2019 is set as the reference. 95\% confidence intervals are reported.}
 \end{figure}
+
+Finally, columns (2) and (3) in Table~\ref{tab:main_results} display the performed robustness checks on the no-anticipation assumption. They were estimated with the treatment period being moved up by 5 and 10 days, respectively. As can be seen from the table, the results of this estimation are also insignificant and negative. This suggests that the stock market did not expect the FFF strikes to affect the firms differently with respect to their doses in advance of the strikes. Event studies for these robustness checks can be found in Appendix~\ref{app:robustness}.
+% \newpage
+
+
 
 % \newpage
 
@@ -392,35 +390,36 @@ Finally, in the same way as in the previous subsection, event studies were estim
     \caption*{The effect of receiving treatment on the 4-quarter-log-difference of quarterly sales. Group number indicates the treatment dose, with 2 being the lowest and 4 being the highest. All estimates are relative to receiving dose $d_1$. Estimation window is set to 4 quarters before the treatment to account for seasonality and to 3 quarters after the treatment to display the effects but exclude the effects from the COVID-19 pandemic. 2019 Q3 is the period of treatment and 2019 Q2 is set as a reference period. 95\% confidence intervals are reported.}
 \end{figure}
 
-However, it is advised to interpret these results with caution, as they could be impacted by the significant decrease in sample size, and the COP25 conference that happened in the fourth quarter of 2019. 
+Nonetheless, it is advised to interpret these results with caution, due to the necessary assumptions mentioned in Section~\ref{sect:methodology}.
 
 
 
-\subsection{Interpretation}
+\subsection{Mechanisms}
 
-Overall, these results suggest different effects of greenwashing depending on the outcome of interest. Due to a concern about the possible measurement errors within the study, I interpret the effects in terms of signs and magnitudes, instead of focusing on the precise values of parameters.\footnote{I think I should add more of an interpretation to this section in the context of the literature.}
+Overall, these results suggest different effects of greenwashing depending on the outcome of interest. Due to a concern about the possible measurement errors within the study, I interpret the effects in terms of signs and magnitudes, instead of focusing on the precise values of parameters.
 
-The results for cumulative abnormal returns, although insignificant, suggest a negative effect. The average dose-wise treatment effects, imply that greenwashing more than other firms did not have an effect on stock performance in the analysed period. However, the dynamic treatment effects for the highest treatment dose suggest that firms that greenwash the most may be temporarily penalized relative to others, however by a small margin. With respect to the second and third treatment doses, the lack of both average effects and dynamic effects can suggest that there exists some threshold of greenwashing above which firms are penalized, and below which firms' greenwashing is not detected.
+The results for cumulative abnormal returns, although insignificant, suggest a negative effect. The average dose-wise treatment effects, imply that greenwashing more than other firms did not have an effect on stock performance in the analysed period. However, the dynamic treatment effects for the highest treatment dose suggest that firms that greenwash the most may be temporarily penalized relative to others, however by a small margin. With respect to the second and third treatment doses, the lack of both average effects and dynamic effects may suggest that there exists some threshold of greenwashing above which firms are penalized, and below which firms' greenwashing is not detected. This is consistent with results of the study by \textcite{ilhanClimateRiskDisclosure2023}, where the authors suggest that markets incorporate climate risks into its equity valuations, when its information is of high quality. In this case, these findings could correspond to the fact, that when perceived greenwashing is less pronounced, and investors are possibly less sure of it, they may choose not to act on their perceptions. On the other hand, when greenwashing of a company is more explicit, they may interpret their perceptions as more credible and react accordingly.
 
-The effects for the sales growth of companies are starkly different, and present overall positive results. While the average treatment effects suggest that higher greenwashing does not, on average, affect the growth of sales for all but the highest dose group, the event studies present a more nuanced picture. The significant and positive (dynamic) reaction of sales growth observed across all groups in the post-treatment periods, may suggest that consumers can be misled with environmental information, which would be consistent with previous studies by \citeauthor{schmuckMisleadingConsumersGreen2018} and \citeauthor{parguelCanEvokingNature2015}. Moreover, the large magnitude of the effect for the group receiving dose $d_4$ implies that consumers could positively respond to higher intensity of greenwashing. Nonetheless, all of these dynamic effects are temporary and last only a quarter.
 
-% \newpage
+The effects for the sales growth of companies are starkly different, and present overall positive results. While the average treatment effects suggest that higher greenwashing does not, on average, affect the growth of sales, for all but the highest dose group, the event studies present a more nuanced picture. The significant and positive (dynamic) reaction of sales growth observed across all groups in the post-treatment periods, may suggest that consumers can be misled with environmental information, which would be consistent with previous studies by \citeauthor{schmuckMisleadingConsumersGreen2018} and \citeauthor{parguelCanEvokingNature2015}. Moreover, the large magnitude of the effect for the group receiving dose $d_4$ implies that consumers could positively respond to higher intensity of greenwashing. Nonetheless, all of these dynamic effects are temporary and last only a quarter.
+
+Taken together, these results suggest that when investors and consumers start demanding more sustainability, their reactions differ. While consumers move their consumption towards companies that appear more environmentally-friendly, investors move away from them. 
+
+\newpage
 \section{Conclusion}\label{sect:discussion}
-% Summarize again the context, the findings and the contribution. Talk about the results and finally talk about the limitations of the study.
 
-% extra notes: could it be that the size of the company plays a role? Differential reaction to firms that have are large and profitable vs. to firms that are smaller and have lower profits. investors could perceive the actions of the smaller firm as unprofitable and therefore bad - Kim and Lyon (2015)
 
-In times when climate change is a pressing issue, companies might want to utilize deceitful communications to enhance their financial performance. It is important to understand whether they can successfully employ such strategies, and what mechanisms are responsible for this behaviour.\footnote{I think I should try to expand on the limitations (in the context of future research) and on my results.}
+In times when climate change is a pressing issue, companies might want to utilize deceitful communications to enhance their financial performance. It is important to understand whether they can successfully employ such strategies, and what mechanisms are responsible for this behaviour. Furthermore, it is important to understand how stakeholder pressures shape the profitability of firm's greenwashing.
 
-This study contributes to this discussion, by presenting empirical results on impacts of greenwashing on financial performance of companies in presence of a positive sustainability demand shock in the form of climate activism. I find that high levels of greenwashing in companies' ESG reports may be met with decreases in performance of a company on the stock market, due to a negative reaction of investors. At the same time, the findings suggest that higher level of greenwashing may positively impact the quarterly sales growth of such companies. Nonetheless, both of these effects are very short-lived. 
+This study contributes to this discussion, by presenting empirical results on impacts of greenwashing on financial performance of companies in presence of a positive sustainability demand shock in the form of climate activism. I find that only high levels of greenwashing in companies' ESG reports may be met with temporary decreases in performance of a company on the stock market, due to a negative reaction of investors. At the same time, the findings suggest that higher level of greenwashing may positively impact the quarterly sales growth of such companies. Nonetheless, both of these effects are very short-lived. 
 
 Broadly, these results highlight a need for more standardized and transparent methods of corporate communication. As some of the greenwashing can be undetected by investors, and the sales growth increases in greenwashing, standardizing corporate communications could improve the relations between firms and their stakeholders. Implementing standardized reporting procedures could help align the incentives between all parties and thus achieve better outcomes. 
 
-However, this study also has limitations that point to possible future research avenues. Firstly, this study has been severely limited by the data quality. Greenwashing is difficult to measure, and so, the results of this study could be affected by measurement error. Thus, more research in this area is needed. Secondly, this study could be made more efficient with the use of better empirical strategies. For example, it could include extra factors such as past volatility of a given stock in order to increase the precision of the findings. Moreover, future studies could account for differential effects based on the scale and profitability of a company, as these could imply differential effects. 
+However, this study also has limitations that point to possible future research avenues. Firstly, it has been severely limited by the data quality. Greenwashing is difficult to measure, and so, the results could be affected by measurement error. Thus, more research in this area is needed. Secondly, it could be made more efficient with the use of better empirical strategies. For example, it could include extra factors such as past volatility of a given stock in order to increase the precision of the findings. Moreover, future studies could account for differential effects based on the scale and profitability of a company, as these could imply differential effects. Furthermore, they could also employ more controls that could account for differences related to industry or the continent of domicile, as the data could exhibit heterogenous treatment effects based on these characteristics.  
 
-Thirdly, more research is needed in how different types of consumers differ in their perceptions and reactions to greenwashing. For example, in this study, a part of consumers could actually be businesses, who may react differently to an increase in climate activism and to greenwashing. Therefore, future research should account for differences across consumers groups. 
+Thirdly, further study is required in how different types of consumers differ in their perceptions and reactions to greenwashing. For example, in this paper, a part of consumers could actually be businesses, who may react differently to an increase in climate activism and to greenwashing. Therefore, future research should account for differences across consumers groups. 
 
-Finally, this study has employed assumptions that may not be fully satisfied, which implies that more research is required to establish whether the estimated results replicate in other similar scenarios. For example, it is needed to establish whether the way that a company advertises is correlated with the way that it reports to investors, to see whether the relation found in this study has theoretical foundations. 
+Finally, this study has employed assumptions that may not be fully satisfied, which implies that future work should try to establish whether the estimated results replicate in other similar scenarios. For example, it is needed to establish whether the way that a company advertises is correlated with the way that it reports to investors, to see whether the relation found in this study has theoretical foundations. 
 
 Overall, this study offers empirical insight into greenwashing behaviour while acknowledging its contextual and methodological limitations. Consequently, these conclusions should be viewed as a useful starting point, rather than a definitive endpoint, and motivate future research.
 
@@ -577,6 +576,13 @@ This section presents additional figures related to the background section (Figu
             \bottomrule
         
         \end{tabular}
+        
+    \vspace{0.1cm}
+
+    \begin{tablenotes}
+        \footnotesize
+        \item Allocation of countries to regional market indices used in the computation of normal returns. Based on the contents of included market indices.
+    \end{tablenotes}
     }
 
 \end{table}
@@ -940,40 +946,80 @@ This section provides additional descriptions to the process of creating the dat
 
 \subsection{Cheap-Talk Index}\label{app:data:cti}
 
-The models for estimation were retrieved from\ \dots
 
-The table below presents multiple examples of data classified by the researchers in training the model:\ \dots 
+Table~\ref{data:cti:model_tab} below presents examples of data classified by the researchers in training of the model:
 
-Reports that contained less than 3 climate related paragraphs were dropped due to having to little data, which was prone to producing outliers.
+\begin{table}[ht]
+    \caption{ClimateBert Classification Examples}\label{data:cti:model_tab}
+    \centering
+    \small
+    \begin{tabular}{l|p{6cm}|p{6cm}}
+        \toprule
+        Task & Affirmative & Negative \\
+        \midrule
+        \multirow{8}{*}{Climate related} & ``Projects with potential limited adverse social or environmental impacts that are few in number, generally site specific, largely reversible and readily addressed through mitigation measures. Issues relating to these risks may lead to fines, penalties or legal non-compliance and reputational damage. Examples could include increased use of energy or increased atmospheric emissions'' & ``A material portion of this network is still relatively immature and there are risks that may develop over time. For example, it is possible that branches may not be able to sustain the level of revenue or profitability that they currently achieve (or that it is forecasted that they will achieve)'' \\
+        \midrule
+        \multirow{8}{*}{Specific} & ``We emitted 13.4 million tonnes CO2 of Scope 2 (indirect emissions), being emissions arising from our consumption of purchased electricity, steam or heat. Our Scope 3 emissions include emissions from a broad range of sources, including shipping and land transportation. More details on our Scope 3 emissions will be available in our 2014''  &  ``Global climate change could exacerbate certain of the threats facing our business, including the frequency and severity of weather-related events referred to in Performance of critical infrastructure'' \\ 
+        \bottomrule
+    \end{tabular}
+
+    \vspace{0.2cm}
+
+    \begin{tablenotes}
+        \footnotesize
+        \item Examples of data used in the training of the models in \textcite{binglerHowCheapTalk2024,binglerCheapTalkCherrypicking2022}.
+        \item Source: \href{https://huggingface.co/datasets/climatebert/environmental_claims}{huggingface.co/datasets/climatebert}
+    \end{tablenotes}
+\end{table}
+
+
+In order to make sure that the $CTI$ was not overly impacted by reports that contained a small number of climate-related paragraphs, reports that contained less than 3 climate related paragraphs were dropped due to having to little data. Having less than 3 climate related paragraphs was prone to producing outliers, as it implied that a company could be classified with the $CTI$ of 0, 0.5 or 1.
 
 \subsection{Merging}\label{app:data:merging}
 
-The merging of the data was a difficult process, as company names are often reported differently between different services. Multiple strategies were used to merge the data. Firstly, the data was merged on the names retrieved from the \href{https://responsibilityreports.com}{ResponsibilityReports.com} and the longest version of names available in the Refinitiv database.\@ \textbf{This resulted in \dots\ observations}. After that, the datasets were merged on the stock tickers conditional on being listed on the same exchange.\@ \textbf{This resulted in \dots\ observations}. Finally, the remaining companies were merged using fuzzy matching.\ \textbf{Unfortunately this has left \dots\ observations missing}.
+The merging of the data was a difficult process, as company names are often reported differently between different services. In order to solve this problem, I retrieved 2 different lengths of company names from Refinitiv (under 40 and under 60 characters), the exchanges that they were listed on, and their tickers. Firstly, the data was merged on the names retrieved from the \href{https://responsibilityreports.com}{ResponsibilityReports.com} and the longest version of names available in the Refinitiv database. For observations that were not merged, I used the shorter length of company names to further increase the number of observations. After that, I tried to merge on the stock tickers conditional on the company being listed on the same exchange. A final approach relied on merging using fuzzy matching. Then, the dataset was checked for duplicates, in case a company was included more than once in the final dataset. This procedure resulted in the number of companies mentioned in the main text.  
 
 \section{Models}\label{app:models}
 
 This section presents the formal versions of the model assumptions using the framework of potential outcomes of~\textcite{rubinEstimatingCausalEffects1974}.
 
 \subsection{Default Difference-in-Differences}
-\subsubsection{Parallel Trends (PT)}
 
-Formally it is given by: 
+Formally the parallel trends is given by: 
 \begin{equation}
-    \mathbb{E}[Y_{i,2}(0) - Y_{i,1}(0) | D_i = 1] = \mathbb{E}[Y_{i,2}(0) - Y_{i,1}(0) | D_i = 0]
+    \mathbb{E}[Y_{t=2}(0) - Y_{t=1}(0) | D = d] = \mathbb{E}[Y_{t=2}(0) - Y_{t=1}(0) | D = 0] \quad \forall \space d \in D.
 \end{equation}
 
-\subsubsection{No anticipation}
-Formally, the assumption is defined as:
-
+Formally, the no-anticipation assumption is defined as:
 \begin{equation}
     Y_{i,1}(0) = Y_{i,1}(1) \text{ for all } i \text{ with } D_i = 1
 \end{equation}
 
+Under these assumptions, and multivalued treatment, the authors argue that one can identify the average dose-wise treatment on the treated:
+\begin{equation}
+    ATT(d|d) = \mathbb{E}[\Delta Y |D = d] - \mathbb{E}[\Delta Y |D = 0]
+\end{equation}
+But when identifying the average dose-wise causal response between a high dose ($h$) and low dose ($l$), they show that it is biased:
+\begin{gather}
+ACRT(h) = \mathbb{E}[\Delta Y |D = h] - \mathbb{E}[\Delta Y |D = l] \\ 
+    = AT T (h|h) - ATT(l|l) \\
+    = \mathbb{E}[Y_{t=2}(h) - Y_{t=2}(l)|D = h] + (ATT(l|h) - ATT(l|l)),
+\end{gather}
 
+Where the second term of the final expression represents the selection bias. Therefore, in principle one can estimate the $ATT(d|d)$ under the conventional parallel trends.
 \subsection{Multivalued Difference-in-Differences}
 
-% \small
-% \centering
+In this setting, the only assumption that differs in its specification is the Strong Parallel Trends assumption that is defined as: 
+\begin{equation}
+    \mathbb{E}[Y_{t=2}(d) - Y_{t=1}(0) | D > 0] = \mathbb{E}[Y_{t=2}(d) - Y_{t=1}(0)|D = d] \quad \forall \space d \in D.
+\end{equation}
+
+\textcite{callawayDifferenceinDifferencesContinuousTreatment2025} show that under this assumption, the selection bias drops out and the $ACRT$ is unbiased. However, as this study does not have an untreated group, and instead uses the lowest-dose group as the comparison, it requires that SPT holds even for the estimation of ``level'' effects, as the these effects correspond to:
+\begin{equation}
+    \mathbb{E}[\Delta Y|D = d] - \mathbb{E}[\Delta Y |D = d_L] = ATT(d|d) - ATT(d_L|d_L),
+\end{equation}
+Which, as just shown, is biased under the conventional parallel trends.
+
 
 \renewcommand\thefigure{\thesection.\arabic{figure}}
 \section{Robustness Checks}\label{app:robustness}
